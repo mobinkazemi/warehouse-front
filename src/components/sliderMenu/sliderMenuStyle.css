@@ -1,0 +1,29 @@
+.ant-menu-inline {
+  height: 96% !important;
+}
+.ant-menu-item {
+  font-size: 15px;
+  font-weight: bold;
+}
+
+.ant-menu-light .ant-menu-submenu-selected > .ant-menu-submenu-title {
+  color: #ff7f00 !important;
+}
+
+.ant-menu-light .ant-menu-submenu-selected {
+  background-color: #f5f5f5 !important;
+}
+
+.ant-menu-item-selected {
+  color: #ff7f00 !important;
+}
+
+.slider-submenu-title {
+  font-size: 14px;
+}
+
+.slider-submenu-item {
+  font-size: 13px;
+  font-family: "iranSans";
+  font-weight: 10;
+}

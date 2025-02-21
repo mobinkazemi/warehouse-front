@@ -1,0 +1,55 @@
+@font-face {
+  font-family: "iranSans";
+  src: url("/src/assets/fonts/iransans/IRANSansWeb.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "iranSans-medium";
+  src: url("/src/assets/fonts/iransans/IRANSansWeb-Medium.ttf")
+    format("truetype");
+}
+
+@font-face {
+  font-family: "iranSans-bold";
+  src: url("/src/assets/fonts/iransans/IRANSansWeb_Bold.ttf") format("truetype");
+}
+@font-face {
+  font-family: "iranSans-light";
+  src: url("/src/assets/fonts/iransans/IRANSansWeb-Light.ttf")
+    format("truetype");
+}
+
+@font-face {
+  font-family: "iranSans-ultraLight";
+  src: url("/src/assets/fonts/iransans/IRANSansWeb-UltraLight.ttf")
+    format("truetype");
+}
+
+h1 {
+  font-family: "iranSans";
+}
+span {
+  font-family: "iranSans";
+}
+label {
+  font-family: "iranSans";
+}
+
+th {
+  font-family: "iranSans-medium";
+}
+
+td {
+  font-family: "iranSans-ultraLight";
+}
+
+.ant-modal-confirm-content {
+  font-family: "iranSans-ultraLight";
+}
+
+.ant-form-item-explain-error {
+  font-family: "iranSans-ultraLight";
+  margin-top: 5px;
+  margin-bottom: 10px;
+  font-size: 12px;
+}

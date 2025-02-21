@@ -1,0 +1,10 @@
+body {
+  background-image: url("/background.jpeg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  height: 100vh;
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  margin: 0; /* Remove default margin */
+}
