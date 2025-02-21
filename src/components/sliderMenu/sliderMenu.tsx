@@ -31,7 +31,7 @@ const items: MenuItem[] = [
   //   ),
   // },
   {
-    label: "تجهیزات",
+    label: "مدیریت انبار",
     key: ROUTES_ENUM.__SWITCHES__,
     icon: <CodepenOutlined style={{ fontSize: "1.5rem" }} />,
     children: [
@@ -39,7 +39,7 @@ const items: MenuItem[] = [
         type: "submenu",
         className: "slider-submenu-title",
         key: v4(),
-        label: "سوییچ ها",
+        label: "محصولات",
         children: [
           {
             className: "slider-submenu-item",
@@ -53,94 +53,9 @@ const items: MenuItem[] = [
           },
         ],
       },
-      {
-        label: "روتر ها",
-        key: NavKeys.ROUTERS,
-        icon: <CodepenOutlined />,
-        disabled: true,
-      },
     ],
   },
-  {
-    label: "مدیریت هاردنینگ",
-    key: ROUTES_ENUM.__CIS__,
-    icon: <SecurityScanOutlined style={{ fontSize: "1.5rem" }} />,
-    children: [
-      {
-        type: "submenu",
-        className: "slider-submenu-title",
-        key: v4(),
-        label: "سی‌ آی‌ اس",
-        children: [
-          {
-            className: "slider-submenu-item",
-            label: "لیست",
-            key: ROUTES_ENUM.CIS_LIST,
-            disabled: false,
-          },
-          {
-            className: "slider-submenu-item",
-            label: "ایجاد",
-            key: ROUTES_ENUM.CIS_CREATE,
-            disabled: false,
-          },
-        ],
-      },
-      {
-        type: "submenu",
-        className: "slider-submenu-title",
 
-        key: v4(),
-        label: "دسته بندی",
-        children: [
-          {
-            className: "slider-submenu-item",
-            label: "لیست",
-            key: ROUTES_ENUM.CATEGORY_LIST,
-            disabled: false,
-          },
-          {
-            className: "slider-submenu-item",
-            label: "ایجاد",
-            key: ROUTES_ENUM.CATEGORY_CREATE,
-            disabled: false,
-          },
-        ],
-      },
-      {
-        type: "submenu",
-        className: "slider-submenu-title",
-
-        key: v4(),
-        label: "هاردنینگ",
-        children: [
-          {
-            className: "slider-submenu-item",
-            label: "لیست",
-            key: ROUTES_ENUM.HARDENING_LIST,
-            disabled: false,
-          },
-          {
-            className: "slider-submenu-item",
-            label: "ایجاد",
-            key: ROUTES_ENUM.HARDENING_CREATE,
-            disabled: false,
-          },
-        ],
-      },
-    ],
-  },
-  {
-    label: "سیستم عامل",
-    key: ROUTES_ENUM.__OS__,
-    icon: <LinuxOutlined style={{ fontSize: "1.5rem" }} />,
-    children: [
-      {
-        label: "لیست",
-        key: ROUTES_ENUM.OS_LIST,
-      },
-    ],
-  },
 ];
 
 interface LevelKeysProps {
