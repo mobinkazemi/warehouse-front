@@ -6,6 +6,8 @@ import { TOKEN_KEY_ENUM } from "../../../shared/enums/token.enum";
 import { useNavigate } from "react-router-dom";
 import { ROUTES_ENUM } from "../../../shared/enums/routes.enum";
 import { ColorPalletEnum } from "../../../shared/enums/colorPallet.enum";
+import { ROLE_LOCAL_STORAGE_ENUM } from "../../../shared/enums/localStorageRoleKey.enum";
+import { getMyRole } from "../../../shared/functions/get-my-role";
 
 type FieldType = {
   username?: string;
@@ -21,6 +23,9 @@ const LoginPage: React.FC = () => {
     console.log(response);
     if (response.result) {
       localStorage.setItem(TOKEN_KEY_ENUM.ACCESS, response.token as string);
+
+      const thisRole = await getMyRole();
+      localStorage.setItem(ROLE_LOCAL_STORAGE_ENUM.ROLE, thisRole.role);
       message.success(response.message);
       setTimeout(() => {
         navigator(ROUTES_ENUM.HOME);
@@ -100,7 +105,10 @@ const LoginPage: React.FC = () => {
                 size="large"
                 type="primary"
                 htmlType="submit"
-                style={{ width: "30%", backgroundColor: ColorPalletEnum.Primary }}
+                style={{
+                  width: "30%",
+                  backgroundColor: ColorPalletEnum.Primary,
+                }}
               >
                 ورود
               </Button>

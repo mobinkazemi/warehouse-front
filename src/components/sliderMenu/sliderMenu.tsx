@@ -1,7 +1,5 @@
 import React, { useState } from "react";
-import {
-  CodepenOutlined,
-} from "@ant-design/icons";
+import { CodepenOutlined } from "@ant-design/icons";
 import type { MenuProps } from "antd";
 import { Menu } from "antd";
 import { ROUTES_ENUM } from "../../shared/enums/routes.enum";
@@ -22,55 +20,48 @@ const items: MenuItem[] = [
   //     />
   //   ),
   // },
-  {
-    label: "مدیریت انبار",
-    key: ROUTES_ENUM.__SWITCHES__,
-    icon: <CodepenOutlined style={{ fontSize: "1.5rem" }} />,
-    children: [
-      {
-        type: "submenu",
-        className: "slider-submenu-title",
-        key: v4(),
-        label: "محصولات",
-        children: [
-          {
-            className: "slider-submenu-item",
-            label: "لیست",
-            key: ROUTES_ENUM.SWITCHES_LIST,
-          },
-          {
-            className: "slider-submenu-item",
-            label: "ایجاد",
-            key: ROUTES_ENUM.SWITCHES_CREATE,
-          },
-        ],
-      },
-    ],
-  },
+  // {
+  //   label: "مدیریت انبار",
+  //   key: ROUTES_ENUM.__SWITCHES__,
+  //   icon: <CodepenOutlined style={{ fontSize: "1.5rem" }} />,
+  //   children: [
+  //     {
+  //       type: "submenu",
+  //       className: "slider-submenu-title",
+  //       key: v4(),
+  //       label: "محصولات",
+  //       children: [
+  //         {
+  //           className: "slider-submenu-item",
+  //           label: "لیست",
+  //           key: ROUTES_ENUM.SWITCHES_LIST,
+  //         },
+  //         {
+  //           className: "slider-submenu-item",
+  //           label: "ایجاد",
+  //           key: ROUTES_ENUM.SWITCHES_CREATE,
+  //         },
+  //       ],
+  //     },
+  //   ],
+  // },
   {
     label: "مدیریت کاربران",
-    key: ROUTES_ENUM.__SWITCHES__,
+    key: ROUTES_ENUM.USERS_LIST,
     icon: <CodepenOutlined style={{ fontSize: "1.5rem" }} />,
-    children: [
-      {
-        type: "submenu",
-        className: "slider-submenu-title",
-        key: v4(),
-        label: "محصولات",
-        children: [
-          {
-            className: "slider-submenu-item",
-            label: "لیست",
-            key: ROUTES_ENUM.SWITCHES_LIST,
-          },
-          {
-            className: "slider-submenu-item",
-            label: "ایجاد",
-            key: ROUTES_ENUM.SWITCHES_CREATE,
-          },
-        ],
-      },
-    ],
+
+    // children: [
+    //   {
+    //     className: "slider-submenu-item",
+    //     label: "لیست",
+    //     key: ROUTES_ENUM.SWITCHES_LIST,
+    //   },
+    //   {
+    //     className: "slider-submenu-item",
+    //     label: "ایجاد",
+    //     key: ROUTES_ENUM.SWITCHES_CREATE,
+    //   },
+    // ],
   },
 ];
 

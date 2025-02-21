@@ -13,6 +13,9 @@ interface IBackendRoutes {
     login: IRoute;
     register: IRoute;
   };
+  user: {
+    myself: IRoute;
+  };
   switch: {
     create: IRoute;
     info: IRoute;
@@ -73,6 +76,7 @@ export const BACKEND_ROUTES: IBackendRoutes = {
       url: "/auth/signup",
     },
   },
+  user: { myself: { method: "get", url: "/users/myself" } },
   switch: {
     create: {
       method: "post",

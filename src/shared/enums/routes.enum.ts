@@ -13,6 +13,13 @@ export enum ROUTES_ENUM {
   //
   //
   // ####################################
+  //          users
+  USERS_LIST = "/users/list",
+
+  //
+  //
+  //
+  // ####################################
   //            Hardening & CIS
   __CIS__ = "/cis",
   CIS_LIST = "/cis/list",
