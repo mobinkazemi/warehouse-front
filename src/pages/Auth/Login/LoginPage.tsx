@@ -18,7 +18,7 @@ const LoginPage: React.FC = () => {
 
   const onFinish: FormProps<FieldType>["onFinish"] = async (values: any) => {
     const response = await loginUser(values);
-
+    console.log(response);
     if (response.result) {
       localStorage.setItem(TOKEN_KEY_ENUM.ACCESS, response.token as string);
       message.success(response.message);

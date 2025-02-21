@@ -14,7 +14,7 @@ export const loginUser = async (values: any): Promise<IResponse> => {
     return {
       result: true,
       message: res?.data?.message,
-      token: res?.data?.data?.token,
+      token: res?.data?.data?.access,
     };
   } catch (error) {
     return { result: false, message: (error as any)?.response?.data?.message };

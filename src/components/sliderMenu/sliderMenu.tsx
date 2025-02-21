@@ -1,8 +1,6 @@
 import React, { useState } from "react";
 import {
   CodepenOutlined,
-  SecurityScanOutlined,
-  LinuxOutlined,
 } from "@ant-design/icons";
 import type { MenuProps } from "antd";
 import { Menu } from "antd";
@@ -11,13 +9,7 @@ import "./sliderMenuStyle.css";
 import { v4 } from "uuid";
 import { ColorPalletEnum } from "../../shared/enums/colorPallet.enum";
 type MenuItem = Required<MenuProps>["items"][number];
-enum NavKeys {
-  HOME_PAGE = "HOME PAGE",
-  SWITCHES = "SWITCHES",
-  SWITCHES_LIST = "SWITCHES LIST",
-  SWITCHES_CREATE = "SWITCHES CREATE",
-  ROUTERS = "ROUTERS",
-}
+
 const items: MenuItem[] = [
   // {
   //   label: "صفحه اصلی",
@@ -55,7 +47,31 @@ const items: MenuItem[] = [
       },
     ],
   },
-
+  {
+    label: "مدیریت کاربران",
+    key: ROUTES_ENUM.__SWITCHES__,
+    icon: <CodepenOutlined style={{ fontSize: "1.5rem" }} />,
+    children: [
+      {
+        type: "submenu",
+        className: "slider-submenu-title",
+        key: v4(),
+        label: "محصولات",
+        children: [
+          {
+            className: "slider-submenu-item",
+            label: "لیست",
+            key: ROUTES_ENUM.SWITCHES_LIST,
+          },
+          {
+            className: "slider-submenu-item",
+            label: "ایجاد",
+            key: ROUTES_ENUM.SWITCHES_CREATE,
+          },
+        ],
+      },
+    ],
+  },
 ];
 
 interface LevelKeysProps {
