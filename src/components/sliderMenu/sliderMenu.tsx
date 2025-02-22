@@ -6,63 +6,41 @@ import { ROUTES_ENUM } from "../../shared/enums/routes.enum";
 import "./sliderMenuStyle.css";
 import { v4 } from "uuid";
 import { ColorPalletEnum } from "../../shared/enums/colorPallet.enum";
+import { ROLE_LOCAL_STORAGE_ENUM } from "../../shared/enums/localStorageRoleKey.enum";
+import { TOKEN_KEY_ENUM } from "../../shared/enums/token.enum";
+import { ProjectRole } from "project-roles-enum";
+
 type MenuItem = Required<MenuProps>["items"][number];
 
-const items: MenuItem[] = [
-  // {
-  //   label: "صفحه اصلی",
-  //   key: ROUTES_ENUM.HOME,
-  //   icon: (
-  //     <Icon
-  //       component={() => (
-  //         <img style={{ width: "60px" }} src="/douranLogo.png" />
-  //       )}
-  //     />
-  //   ),
-  // },
-  // {
-  //   label: "مدیریت انبار",
-  //   key: ROUTES_ENUM.__SWITCHES__,
-  //   icon: <CodepenOutlined style={{ fontSize: "1.5rem" }} />,
-  //   children: [
-  //     {
-  //       type: "submenu",
-  //       className: "slider-submenu-title",
-  //       key: v4(),
-  //       label: "محصولات",
-  //       children: [
-  //         {
-  //           className: "slider-submenu-item",
-  //           label: "لیست",
-  //           key: ROUTES_ENUM.SWITCHES_LIST,
-  //         },
-  //         {
-  //           className: "slider-submenu-item",
-  //           label: "ایجاد",
-  //           key: ROUTES_ENUM.SWITCHES_CREATE,
-  //         },
-  //       ],
-  //     },
-  //   ],
-  // },
-  {
-    label: "مدیریت کاربران",
-    key: ROUTES_ENUM._USERS_,
-    icon: <CodepenOutlined style={{ fontSize: "1.5rem" }} />,
-    children: [
+let items: MenuItem[] = [];
+
+if (localStorage.getItem(TOKEN_KEY_ENUM.ACCESS)) {
+  if (
+    localStorage.getItem(ROLE_LOCAL_STORAGE_ENUM.ROLE) === ProjectRole.Admin
+  ) {
+    items = [
       {
-        className: "slider-submenu-item",
-        label: "لیست",
-        key: ROUTES_ENUM.USERS_LIST,
+        label: "مدیریت کاربران",
+        key: ROUTES_ENUM._USERS_,
+        icon: <CodepenOutlined style={{ fontSize: "1.5rem" }} />,
+        children: [
+          {
+            className: "slider-submenu-item",
+            label: "لیست",
+            key: ROUTES_ENUM.USERS_LIST,
+          },
+          {
+            className: "slider-submenu-item",
+            label: "ایجاد",
+            key: ROUTES_ENUM.USERS_CREATE,
+          },
+        ],
       },
-      {
-        className: "slider-submenu-item",
-        label: "ایجاد",
-        key: ROUTES_ENUM.USERS_CREATE,
-      },
-    ],
-  },
-];
+    ];
+  }
+} else {
+  items = [];
+}
 
 interface LevelKeysProps {
   key?: string;
