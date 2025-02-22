@@ -23,64 +23,14 @@ const BaseLayout: React.FC = () => {
       //
       //
       //
-      // SWITCHES
+      // USERS
       //
-      case ROUTES_ENUM.SWITCHES_LIST:
-        navigator(ROUTES_ENUM.SWITCHES_LIST);
+      case ROUTES_ENUM.USERS_LIST:
+        navigator(ROUTES_ENUM.USERS_LIST);
         break;
 
-      case ROUTES_ENUM.SWITCHES_CREATE:
-        navigator(ROUTES_ENUM.SWITCHES_CREATE);
-        break;
-
-      //
-      //
-      //
-      //
-      // CIS
-      //
-      case ROUTES_ENUM.CIS_LIST:
-        navigator(ROUTES_ENUM.CIS_LIST);
-        break;
-
-      case ROUTES_ENUM.CIS_CREATE:
-        navigator(ROUTES_ENUM.CIS_CREATE);
-        break;
-
-      //
-      //
-      //
-      //
-      // CATEGORY
-      //
-      case ROUTES_ENUM.CATEGORY_CREATE:
-        navigator(ROUTES_ENUM.CATEGORY_CREATE);
-        break;
-
-      case ROUTES_ENUM.CATEGORY_LIST:
-        navigator(ROUTES_ENUM.CATEGORY_LIST);
-        break;
-
-      //
-      //
-      //
-      //
-      // HARDENING
-      //
-      case ROUTES_ENUM.HARDENING_CREATE:
-        navigator(ROUTES_ENUM.HARDENING_CREATE);
-        break;
-      case ROUTES_ENUM.HARDENING_LIST:
-        navigator(ROUTES_ENUM.HARDENING_LIST);
-        break;
-      //
-      //
-      //
-      //
-      // OPERATING SYSTEM
-      //
-      case ROUTES_ENUM.OS_LIST:
-        navigator(ROUTES_ENUM.OS_LIST);
+      case ROUTES_ENUM.USERS_CREATE:
+        navigator(ROUTES_ENUM.USERS_CREATE);
         break;
     }
   };

@@ -8,11 +8,7 @@ import { BACKEND_ROUTES } from "../../../shared/backendRoutes";
 interface DataType {
   id: React.Key;
   username: string;
-  ip: string;
-  model: string;
-  series: string;
-  os: string;
-  connectionStatus: boolean | null;
+  role: string;
 }
 
 const { url: listUrl, method: listMethod } = BACKEND_ROUTES.user.list;
@@ -27,19 +23,11 @@ const UsersListPage: React.FC = () => {
     },
     {
       title: "نام",
-      dataIndex: "name",
+      dataIndex: "username",
     },
     {
-      title: "آدرس آی‌پی",
-      dataIndex: "ip",
-    },
-    {
-      title: "مدل",
-      dataIndex: "model",
-    },
-    {
-      title: "سری",
-      dataIndex: "series",
+      title: "نقش",
+      dataIndex: "role",
     },
     {
       title: "اقدامات",
@@ -61,7 +49,10 @@ const UsersListPage: React.FC = () => {
   useEffect(() => {
     apiClient[listMethod](listUrl).then(({ data }) => {
       setUseresListData(
-        data.data.map((sw: any) => ({ ...sw, connectionStatus: null }))
+        data.data.map((sw: any) => ({
+          ...sw,
+          role: sw.roles[0]?.name || "ندارد",
+        }))
       );
     });
   }, []);

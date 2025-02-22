@@ -11,7 +11,7 @@ import UsersListPage from "./pages/Users/list/list.users";
 
 const router = createBrowserRouter([
   {
-    path: "/", // Base path
+    path: ROUTES_ENUM.HOME, // Base path
     element: <BaseLayout />, // Wrap with BaseLayout
     children: [
       {

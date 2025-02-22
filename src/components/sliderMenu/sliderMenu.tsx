@@ -47,21 +47,20 @@ const items: MenuItem[] = [
   // },
   {
     label: "مدیریت کاربران",
-    key: ROUTES_ENUM.USERS_LIST,
+    key: ROUTES_ENUM._USERS_,
     icon: <CodepenOutlined style={{ fontSize: "1.5rem" }} />,
-
-    // children: [
-    //   {
-    //     className: "slider-submenu-item",
-    //     label: "لیست",
-    //     key: ROUTES_ENUM.SWITCHES_LIST,
-    //   },
-    //   {
-    //     className: "slider-submenu-item",
-    //     label: "ایجاد",
-    //     key: ROUTES_ENUM.SWITCHES_CREATE,
-    //   },
-    // ],
+    children: [
+      {
+        className: "slider-submenu-item",
+        label: "لیست",
+        key: ROUTES_ENUM.USERS_LIST,
+      },
+      {
+        className: "slider-submenu-item",
+        label: "ایجاد",
+        key: ROUTES_ENUM.USERS_CREATE,
+      },
+    ],
   },
 ];
 
