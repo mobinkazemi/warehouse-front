@@ -15,6 +15,8 @@ interface IBackendRoutes {
   };
   user: {
     myself: IRoute;
+    list: IRoute;
+    delete: IRoute;
   };
   switch: {
     create: IRoute;
@@ -76,7 +78,11 @@ export const BACKEND_ROUTES: IBackendRoutes = {
       url: "/auth/signup",
     },
   },
-  user: { myself: { method: "get", url: "/users/myself" } },
+  user: {
+    myself: { method: "get", url: "/users/myself" },
+    list: { method: "get", url: "/users/list" },
+    delete: { method: "delete", url: "/users/delete" },
+  },
   switch: {
     create: {
       method: "post",

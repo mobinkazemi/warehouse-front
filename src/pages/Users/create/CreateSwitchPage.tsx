@@ -29,7 +29,7 @@ const SwitchCreationPage: React.FC = () => {
           rules: [
             {
               required: true,
-              message: "آدرس آی‌پی سوییچ را وارد کنید",
+              message: "آدرس آی‌پی کاربر را وارد کنید",
             },
           ],
         },
@@ -39,7 +39,7 @@ const SwitchCreationPage: React.FC = () => {
           rules: [
             {
               required: true,
-              message: "نام کاربری جهت اتصال به سوییچ را وارد کنید",
+              message: "نام کاربری جهت اتصال به کاربر را وارد کنید",
             },
           ],
         },
@@ -49,7 +49,7 @@ const SwitchCreationPage: React.FC = () => {
           rules: [
             {
               required: true,
-              message: "گذرواژه جهت اتصال به سوییچ را وارد کنید",
+              message: "گذرواژه جهت اتصال به کاربر را وارد کنید",
             },
           ],
         },

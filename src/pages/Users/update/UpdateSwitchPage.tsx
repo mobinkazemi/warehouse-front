@@ -26,22 +26,22 @@ const UpdateSwitchPage: React.FC = () => {
         {
           name: "name",
           label: "نام",
-          rules: [{ required: true, message: "نام سوییچ را وارد کنید" }],
+          rules: [{ required: true, message: "نام کاربر را وارد کنید" }],
         },
         {
           name: "ip",
           label: "آی‌پی",
-          rules: [{ required: true, message: "آدرس آی‌پی سوییچ را وارد کنید" }],
+          rules: [{ required: true, message: "آدرس آی‌پی کاربر را وارد کنید" }],
         },
         {
           name: "model",
           label: "مدل",
-          rules: [{ required: true, message: "مدل سوییچ را وارد کنید" }],
+          rules: [{ required: true, message: "مدل کاربر را وارد کنید" }],
         },
         {
           name: "series",
           label: "سری",
-          rules: [{ required: true, message: "سری سوییچ را وارد کنید" }],
+          rules: [{ required: true, message: "سری کاربر را وارد کنید" }],
         },
         {
           name: "username",
@@ -49,7 +49,7 @@ const UpdateSwitchPage: React.FC = () => {
           rules: [
             {
               required: true,
-              message: "نام کاربری جهت اتصال به سوییچ را وارد کنید",
+              message: "نام کاربری جهت اتصال به کاربر را وارد کنید",
             },
           ],
         },
@@ -59,7 +59,7 @@ const UpdateSwitchPage: React.FC = () => {
           rules: [
             {
               required: true,
-              message: "گذرواژه جهت اتصال به سوییچ را وارد کنید",
+              message: "گذرواژه جهت اتصال به کاربر را وارد کنید",
             },
           ],
         },

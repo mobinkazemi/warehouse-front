@@ -4,36 +4,36 @@ import apiClient from "../../../../configs/axios.config";
 import { BACKEND_ROUTES, setId } from "../../../../shared/backendRoutes";
 
 interface IProps {
-  switchId: number;
-  setDeletedSwitch: Function;
-  deletedSwitch: number[];
+  userId: number;
+  setDeletedUser: Function;
+  deletedUser: number[];
 }
-const { method, url } = BACKEND_ROUTES.switch.delete;
+const { method, url } = BACKEND_ROUTES.user.delete;
 
 /**
  * DeleteButton component
  *
- * This component represents a button which can be used to delete a switch.
+ * This component represents a button which can be used to delete a user.
  *
  * @param {IProps} data - The props for the DeleteButton component.
- * @param {number} data.switchId - The ID of the switch to be deleted.
+ * @param {number} data.userId - The ID of the user to be deleted.
  * @returns {ReactElement} The DeleteButton component.
  */
 export const DeleteButton: React.FC<IProps> = ({
-  switchId,
-  setDeletedSwitch,
-  deletedSwitch,
+  userId,
+  setDeletedUser,
+  deletedUser,
 }: IProps): React.ReactElement => {
   const showDeleteConfirm = () => {
     Modal.confirm({
-      title: "آیا از حذف این سوییچ اطمینان دارید؟",
-      content: "امکان بازگشت این سوییچ وجود ندارد",
+      title: "آیا از حذف این کاربر اطمینان دارید؟",
+      content: "امکان بازگشت این کاربر وجود ندارد",
       okText: "بله، حذف شود",
       okType: "danger",
       cancelText: "خیر، منصرف شدم",
       onOk: async () => {
-        setDeletedSwitch([...deletedSwitch, switchId]);
-        await apiClient[method](setId({ id: switchId, url }));
+        setDeletedUser([...deletedUser, userId]);
+        await apiClient[method](setId({ id: userId, url }));
       },
       onCancel() {
         console.log("User cancelled the deletion");
@@ -43,7 +43,7 @@ export const DeleteButton: React.FC<IProps> = ({
 
   return (
     <Flex wrap gap="small">
-      <Tooltip title="حذف سوییچ">
+      <Tooltip title="حذف کاربر">
         <Button
           onClick={showDeleteConfirm}
           type="primary"

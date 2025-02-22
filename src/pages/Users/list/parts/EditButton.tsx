@@ -1,21 +1,21 @@
 import { Button, Flex, Tooltip } from "antd";
 import { EditOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
-import { ROUTES_ENUM } from "../../../../../shared/enums/routes.enum";
+import { ROUTES_ENUM } from "../../../../shared/enums/routes.enum";
 
 interface IProps {
-  cisId: number;
+  userId: number;
 }
-export const EditButton: React.FC<IProps> = ({ cisId }: IProps) => {
+export const EditButton: React.FC<IProps> = ({ userId }: IProps) => {
   const navigator = useNavigate();
 
   return (
     <Flex wrap gap="small">
-      <Tooltip title="ویرایش سی آی اس">
+      <Tooltip title="ویرایش کاربر">
         <Button
           type="primary"
           onClick={() =>
-            navigator(ROUTES_ENUM.CIS_UPDATE.replace(":id", String(cisId)))
+            navigator(ROUTES_ENUM.USERS_UPDATE.replace(":id", String(userId)))
           }
           icon={<EditOutlined />}
         ></Button>
