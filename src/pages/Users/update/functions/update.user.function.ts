@@ -1,15 +1,17 @@
 import apiClient from "../../../../configs/axios.config";
 import { BACKEND_ROUTES } from "../../../../shared/backendRoutes";
-import { ISwitch } from "../../interface";
 
 interface IResponse {
   result: boolean;
   message: string;
 }
-const { method, url } = BACKEND_ROUTES.switch.update;
-export const updateSwitch = async (values: ISwitch): Promise<IResponse> => {
+const { method, url } = BACKEND_ROUTES.user.update;
+export const updateUser = async (values: any): Promise<IResponse> => {
   try {
-    let res = await apiClient[method](url, values);
+    let res = await apiClient[method](
+      url.replace(":id", String(values.id)),
+      values
+    );
 
     return { result: true, message: res?.data?.message };
   } catch (error) {

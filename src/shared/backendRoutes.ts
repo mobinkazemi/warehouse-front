@@ -17,6 +17,8 @@ interface IBackendRoutes {
     myself: IRoute;
     list: IRoute;
     delete: IRoute;
+    info: IRoute;
+    update: IRoute;
   };
   switch: {
     create: IRoute;
@@ -82,6 +84,8 @@ export const BACKEND_ROUTES: IBackendRoutes = {
     myself: { method: "get", url: "/users/myself" },
     list: { method: "get", url: "/users/list" },
     delete: { method: "delete", url: "/users/delete" },
+    info: { method: "get", url: "/users/byId/:id" },
+    update: { method: "patch", url: "/users/update/:id" },
   },
   switch: {
     create: {
