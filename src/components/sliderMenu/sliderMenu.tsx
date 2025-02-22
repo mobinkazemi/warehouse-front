@@ -8,12 +8,10 @@ import { v4 } from "uuid";
 import { ColorPalletEnum } from "../../shared/enums/colorPallet.enum";
 import { ROLE_LOCAL_STORAGE_ENUM } from "../../shared/enums/localStorageRoleKey.enum";
 import { TOKEN_KEY_ENUM } from "../../shared/enums/token.enum";
-import { ProjectRole } from "project-roles-enum";
-
+import ProjectRole from "project-roles-enum/src/roles.enum";
 type MenuItem = Required<MenuProps>["items"][number];
 
 let items: MenuItem[] = [];
-
 if (localStorage.getItem(TOKEN_KEY_ENUM.ACCESS)) {
   if (
     localStorage.getItem(ROLE_LOCAL_STORAGE_ENUM.ROLE) ===
