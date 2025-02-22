@@ -8,6 +8,7 @@ import LoginPage from "./pages/Auth/Login/LoginPage";
 import RegisterPage from "./pages/Auth/Register/RegisterPage";
 import BaseLayout from "./components/BaseLayout";
 import UsersListPage from "./pages/Users/list/list.users";
+import UserCreationPage from "./pages/Users/create/create";
 
 const router = createBrowserRouter([
   {
@@ -39,6 +40,10 @@ const router = createBrowserRouter([
       {
         path: ROUTES_ENUM.USERS_LIST,
         element: <UsersListPage></UsersListPage>,
+      },
+      {
+        path: ROUTES_ENUM.USERS_CREATE,
+        element: <UserCreationPage></UserCreationPage>,
       },
     ],
   },
