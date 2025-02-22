@@ -16,7 +16,8 @@ let items: MenuItem[] = [];
 
 if (localStorage.getItem(TOKEN_KEY_ENUM.ACCESS)) {
   if (
-    localStorage.getItem(ROLE_LOCAL_STORAGE_ENUM.ROLE) === ProjectRole.Admin
+    localStorage.getItem(ROLE_LOCAL_STORAGE_ENUM.ROLE) ===
+    ProjectRole.Super_Admin
   ) {
     items = [
       {
