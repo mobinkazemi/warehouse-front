@@ -4,11 +4,10 @@ import type { MenuProps } from "antd";
 import { Menu } from "antd";
 import { ROUTES_ENUM } from "../../shared/enums/routes.enum";
 import "./sliderMenuStyle.css";
-import { v4 } from "uuid";
 import { ColorPalletEnum } from "../../shared/enums/colorPallet.enum";
 import { ROLE_LOCAL_STORAGE_ENUM } from "../../shared/enums/localStorageRoleKey.enum";
 import { TOKEN_KEY_ENUM } from "../../shared/enums/token.enum";
-import ProjectRole from "project-roles-enum/src/roles.enum";
+import { ProjectRole } from "../../shared/enums/project.roles.enum";
 type MenuItem = Required<MenuProps>["items"][number];
 
 let items: MenuItem[] = [];
