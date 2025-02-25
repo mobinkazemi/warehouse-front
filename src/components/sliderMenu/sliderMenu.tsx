@@ -51,6 +51,23 @@ if (localStorage.getItem(TOKEN_KEY_ENUM.ACCESS)) {
           },
         ],
       },
+      {
+        label: "مدیریت محصولات",
+        key: ROUTES_ENUM._PRODUCT_,
+        icon: <CodepenOutlined style={{ fontSize: "1.5rem" }} />,
+        children: [
+          {
+            className: "slider-submenu-item-project-list",
+            label: "لیست",
+            key: ROUTES_ENUM.PRODUCT_LIST,
+          },
+          {
+            className: "slider-submenu-item-project-create",
+            label: "ایجاد",
+            key: ROUTES_ENUM.PRODUCT_CREATE,
+          },
+        ],
+      },
     ];
   }
 } else {

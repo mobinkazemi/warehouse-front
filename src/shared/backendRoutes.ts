@@ -30,6 +30,13 @@ interface IBackendRoutes {
     info: IRoute;
     delete: IRoute;
   };
+  product: {
+    create: IRoute;
+    list: IRoute;
+    update: IRoute;
+    info: IRoute;
+    delete: IRoute;
+  };
 }
 
 export const BACKEND_ROUTES: IBackendRoutes = {
@@ -59,5 +66,12 @@ export const BACKEND_ROUTES: IBackendRoutes = {
     list: { method: "get", url: "/projects/list" },
     info: { method: "get", url: "/projects/byId/:id" },
     delete: { method: "delete", url: "/projects/delete/:id" },
+  },
+  product: {
+    create: { method: "post", url: "/products/create" },
+    update: { method: "patch", url: "/products/update/:id" },
+    list: { method: "get", url: "/products/list" },
+    info: { method: "get", url: "/products/byId/:id" },
+    delete: { method: "delete", url: "/products/delete/:id" },
   },
 };

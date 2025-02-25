@@ -13,6 +13,7 @@ import UpdateUserPage from "./pages/Users/update/updateUserPage";
 import ProjectCreationPage from "./pages/Projects/create/create";
 import ProjectsListPage from "./pages/Projects/list/list.projects";
 import UpdateProjectPage from "./pages/Projects/update/updateProjectPage";
+import ProductCreationPage from "./pages/Products/create/create";
 
 const router = createBrowserRouter([
   {
@@ -70,6 +71,23 @@ const router = createBrowserRouter([
         path: ROUTES_ENUM.PROJECTS_UPDATE,
         element: <UpdateProjectPage></UpdateProjectPage>,
       },
+      //
+      //
+      //
+      //
+      // PROJECT
+      {
+        path: ROUTES_ENUM.PRODUCT_CREATE,
+        element: <ProductCreationPage></ProductCreationPage>,
+      },
+      // {
+      //   path: ROUTES_ENUM.PROJECTS_LIST,
+      //   element: <ProjectsListPage></ProjectsListPage>,
+      // },
+      // {
+      //   path: ROUTES_ENUM.PROJECTS_UPDATE,
+      //   element: <UpdateProjectPage></UpdateProjectPage>,
+      // },
     ],
   },
 ]);

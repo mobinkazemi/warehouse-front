@@ -46,6 +46,20 @@ const BaseLayout: React.FC = () => {
       case ROUTES_ENUM.PROJECTS_CREATE:
         navigator(ROUTES_ENUM.PROJECTS_CREATE);
         break;
+
+      //
+      //
+      //
+      //
+      // PROJECTS
+      //
+      case ROUTES_ENUM.PRODUCT_LIST:
+        navigator(ROUTES_ENUM.PRODUCT_LIST);
+        break;
+
+      case ROUTES_ENUM.PRODUCT_CREATE:
+        navigator(ROUTES_ENUM.PRODUCT_CREATE);
+        break;
     }
   };
   return (

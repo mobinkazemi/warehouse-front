@@ -30,4 +30,15 @@ export enum ROUTES_ENUM {
   PROJECTS_UPDATE = "/projects/update/:id",
   PROJECTS_CREATE = "/projects/create",
   PROJECTS_DELETE = "/projects/delete/:id",
+
+  //
+  //
+  //
+  // ####################################
+  //          product
+  _PRODUCT_ = "/product",
+  PRODUCT_LIST = "/product/list",
+  PRODUCT_UPDATE = "/product/update/:id",
+  PRODUCT_CREATE = "/product/create",
+  PRODUCT_DELETE = "/product/delete/:id",
 }
