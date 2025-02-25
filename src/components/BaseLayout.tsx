@@ -32,6 +32,20 @@ const BaseLayout: React.FC = () => {
       case ROUTES_ENUM.USERS_CREATE:
         navigator(ROUTES_ENUM.USERS_CREATE);
         break;
+
+      //
+      //
+      //
+      //
+      // PROJECTS
+      //
+      case ROUTES_ENUM.PROJECTS_LIST:
+        navigator(ROUTES_ENUM.PROJECTS_LIST);
+        break;
+
+      case ROUTES_ENUM.PROJECTS_CREATE:
+        navigator(ROUTES_ENUM.PROJECTS_CREATE);
+        break;
     }
   };
   return (

@@ -23,14 +23,31 @@ if (localStorage.getItem(TOKEN_KEY_ENUM.ACCESS)) {
         icon: <CodepenOutlined style={{ fontSize: "1.5rem" }} />,
         children: [
           {
-            className: "slider-submenu-item",
+            className: "slider-submenu-item-user-list",
             label: "لیست",
             key: ROUTES_ENUM.USERS_LIST,
           },
           {
-            className: "slider-submenu-item",
+            className: "slider-submenu-item-user-create",
             label: "ایجاد",
             key: ROUTES_ENUM.USERS_CREATE,
+          },
+        ],
+      },
+      {
+        label: "مدیریت پروژه ها",
+        key: ROUTES_ENUM._PROJECTS_,
+        icon: <CodepenOutlined style={{ fontSize: "1.5rem" }} />,
+        children: [
+          {
+            className: "slider-submenu-item-project-list",
+            label: "لیست",
+            key: ROUTES_ENUM.PROJECTS_LIST,
+          },
+          {
+            className: "slider-submenu-item-project-create",
+            label: "ایجاد",
+            key: ROUTES_ENUM.PROJECTS_CREATE,
           },
         ],
       },

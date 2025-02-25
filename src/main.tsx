@@ -10,6 +10,9 @@ import BaseLayout from "./components/BaseLayout";
 import UsersListPage from "./pages/Users/list/list.users";
 import UserCreationPage from "./pages/Users/create/create";
 import UpdateUserPage from "./pages/Users/update/updateUserPage";
+import ProjectCreationPage from "./pages/Projects/create/create";
+import ProjectsListPage from "./pages/Projects/list/list.projects";
+import UpdateProjectPage from "./pages/Projects/update/updateProjectPage";
 
 const router = createBrowserRouter([
   {
@@ -49,6 +52,23 @@ const router = createBrowserRouter([
       {
         path: ROUTES_ENUM.USERS_UPDATE,
         element: <UpdateUserPage></UpdateUserPage>,
+      },
+      //
+      //
+      //
+      //
+      // PROJECT
+      {
+        path: ROUTES_ENUM.PROJECTS_CREATE,
+        element: <ProjectCreationPage></ProjectCreationPage>,
+      },
+      {
+        path: ROUTES_ENUM.PROJECTS_LIST,
+        element: <ProjectsListPage></ProjectsListPage>,
+      },
+      {
+        path: ROUTES_ENUM.PROJECTS_UPDATE,
+        element: <UpdateProjectPage></UpdateProjectPage>,
       },
     ],
   },

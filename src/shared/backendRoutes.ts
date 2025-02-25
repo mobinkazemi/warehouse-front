@@ -23,6 +23,13 @@ interface IBackendRoutes {
   role: {
     list: IRoute;
   };
+  project: {
+    create: IRoute;
+    list: IRoute;
+    update: IRoute;
+    info: IRoute;
+    delete: IRoute;
+  };
 }
 
 export const BACKEND_ROUTES: IBackendRoutes = {
@@ -45,5 +52,12 @@ export const BACKEND_ROUTES: IBackendRoutes = {
   },
   role: {
     list: { method: "get", url: "/roles/list" },
+  },
+  project: {
+    create: { method: "post", url: "/projects/create" },
+    update: { method: "patch", url: "/projects/update/:id" },
+    list: { method: "get", url: "/projects/list" },
+    info: { method: "get", url: "/projects/byId/:id" },
+    delete: { method: "delete", url: "/projects/delete/:id" },
   },
 };
