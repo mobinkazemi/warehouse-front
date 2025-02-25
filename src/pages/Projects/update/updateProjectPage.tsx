@@ -33,11 +33,17 @@ const UpdateProjectPage: React.FC = () => {
           label: "کد",
           rules: [{ required: true, message: "کد پروژه را وارد کنید" }],
         },
+      ]}
+      dropdownItems={[
         {
           name: "status",
           label: "وضعیت",
           rules: [{ required: true, message: "وضعیت پروژه را وارد کنید" }],
         },
+      ]}
+      dropdownData={[
+        { value: "active", label: "active" },
+        { value: "inactive", label: "inactive" },
       ]}
       buttonTitle={"ویرایش پروژه"}
       infoAPI={BACKEND_ROUTES.project.info}
