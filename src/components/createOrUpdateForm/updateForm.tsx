@@ -4,6 +4,8 @@ import { IRoute, setId } from "../../shared/backendRoutes";
 import apiClient from "../../configs/axios.config";
 import { ColorPalletEnum } from "../../shared/enums/colorPallet.enum";
 import { Rule } from "antd/es/form";
+import { Select } from "antd";
+import { DefaultOptionType } from "antd/es/select";
 
 interface IItem {
   type?: "number" | "text";
@@ -17,9 +19,12 @@ interface IProps {
   infoAPI: IRoute;
   title: string;
   items: IItem[];
+  dropdownItems?: IItem[];
+  dropdownData?: DefaultOptionType[] | undefined;
   buttonTitle: string;
   onFinish: (values: any) => void;
 }
+
 const UpdateForm: React.FC<IProps> = (data: IProps) => {
   const [initialData, setInitialData] = useState<any>();
   const [form] = Form.useForm();
@@ -104,6 +109,27 @@ const UpdateForm: React.FC<IProps> = (data: IProps) => {
               </Row>
             ))}
 
+            {/*  */}
+            {data.dropdownItems && data.dropdownData
+              ? data.dropdownItems.map((item, index) => (
+                  <Row key={index} gutter={[16, 16]}>
+                    <Col span={5} style={{ textAlign: "right" }}>
+                      <label>{item.label}:</label>
+                    </Col>
+                    <Col span={19}>
+                      <Form.Item
+                        name={item.name}
+                        rules={item.rules}
+                        style={{ marginBottom: "16px" }}
+                      >
+                        {<Select options={data.dropdownData} />}
+                      </Form.Item>
+                    </Col>
+                  </Row>
+                ))
+              : null}
+            {/*  */}
+
             <Row>
               <Col span={24} style={{ textAlign: "center", marginTop: "20px" }}>
                 <Form.Item>
@@ -129,3 +155,13 @@ const UpdateForm: React.FC<IProps> = (data: IProps) => {
 };
 
 export default UpdateForm;
+
+// const handleChange = (value: string) => {
+//   console.log(`selected ${value}`);
+// };
+
+// const App: React.FC = () => (
+
+// );
+
+// export default App;
