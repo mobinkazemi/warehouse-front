@@ -26,8 +26,8 @@ export const DeleteButton: React.FC<IProps> = ({
 }: IProps): React.ReactElement => {
   const showDeleteConfirm = () => {
     Modal.confirm({
-      title: "آیا از حذف این کاربر اطمینان دارید؟",
-      content: "امکان بازگشت این کاربر وجود ندارد",
+      title: "آیا از حذف این محصول اطمینان دارید؟",
+      content: "امکان بازگشت این محصول وجود ندارد",
       okText: "بله، حذف شود",
       okType: "danger",
       cancelText: "خیر، منصرف شدم",
@@ -43,7 +43,7 @@ export const DeleteButton: React.FC<IProps> = ({
 
   return (
     <Flex wrap gap="small">
-      <Tooltip title="حذف کاربر">
+      <Tooltip title="حذف محصول">
         <Button
           onClick={showDeleteConfirm}
           type="primary"

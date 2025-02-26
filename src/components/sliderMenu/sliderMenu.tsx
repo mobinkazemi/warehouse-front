@@ -57,12 +57,12 @@ if (localStorage.getItem(TOKEN_KEY_ENUM.ACCESS)) {
         icon: <CodepenOutlined style={{ fontSize: "1.5rem" }} />,
         children: [
           {
-            className: "slider-submenu-item-project-list",
+            className: "slider-submenu-item-product-list",
             label: "لیست",
             key: ROUTES_ENUM.PRODUCT_LIST,
           },
           {
-            className: "slider-submenu-item-project-create",
+            className: "slider-submenu-item-product-create",
             label: "ایجاد",
             key: ROUTES_ENUM.PRODUCT_CREATE,
           },

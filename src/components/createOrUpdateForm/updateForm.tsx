@@ -12,6 +12,7 @@ interface IItem {
   name: string;
   label: string;
   rules?: Rule[];
+  disabled?: boolean;
 }
 
 interface IProps {
@@ -66,14 +67,14 @@ const UpdateForm: React.FC<IProps> = (data: IProps) => {
         }
         bordered={false}
         style={{
-          width: 500,
+          width: "50%",
           borderRadius: "10px",
           boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
         }}
       >
         <div
           style={{
-            maxHeight: "400px",
+            maxHeight: "500px",
             overflowY: "auto",
             paddingRight: "10px",
           }}
@@ -100,6 +101,7 @@ const UpdateForm: React.FC<IProps> = (data: IProps) => {
                       <InputNumber min={1} style={{ width: "100%" }} />
                     ) : (
                       <Input
+                        disabled={item?.disabled ? true : false}
                         size="large"
                         type={item.name === "password" ? "password" : "text"}
                       />
@@ -122,7 +124,16 @@ const UpdateForm: React.FC<IProps> = (data: IProps) => {
                         rules={item.rules}
                         style={{ marginBottom: "16px" }}
                       >
-                        {<Select options={data.dropdownData} />}
+                        {
+                          <Select
+                            options={data.dropdownData}
+                            defaultValue={
+                              initialData && item?.name
+                                ? initialData[item.name]
+                                : null
+                            }
+                          />
+                        }
                       </Form.Item>
                     </Col>
                   </Row>

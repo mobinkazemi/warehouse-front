@@ -19,16 +19,33 @@ const ProductsListPage: React.FC = () => {
 
   const columns = [
     {
+      title: "شناسه محصول",
+      dataIndex: "id",
+    },
+    {
       title: "نام",
       dataIndex: "name",
     },
     {
-      title: "کد",
-      dataIndex: "code",
+      title: "نوع",
+      dataIndex: "type",
+    },
+
+    {
+      title: "برند",
+      dataIndex: "brand",
     },
     {
-      title: "وضعیت",
-      dataIndex: "status",
+      title: "پارت نامبر",
+      dataIndex: "partNumber",
+    },
+    {
+      title: "سریال نامبر",
+      dataIndex: "serialNumber",
+    },
+    {
+      title: "کد پروژه",
+      dataIndex: "code",
     },
     {
       title: "اقدامات",

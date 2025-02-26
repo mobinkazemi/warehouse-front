@@ -4,6 +4,7 @@ import { useParams } from "react-router-dom";
 import { BACKEND_ROUTES } from "../../../shared/backendRoutes";
 import UpdateForm from "../../../components/createOrUpdateForm/updateForm";
 import { updateProduct } from "./functions/update.product.function";
+import { productTypesList } from "../create/poduct.types";
 
 const UpdateProductPage: React.FC = () => {
   const { id } = useParams();
@@ -26,25 +27,39 @@ const UpdateProductPage: React.FC = () => {
         {
           name: "name",
           label: "نام",
-          rules: [{ required: true, message: "نام محصول را وارد کنید" }],
+        },
+        {
+          name: "brand",
+          label: "برند",
+        },
+        {
+          name: "partNumber",
+          label: "پارت نامبر",
+        },
+        {
+          name: "serialNumber",
+          label: "سریال نامبر",
+        },
+        {
+          name: "description",
+          label: "توضیحات",
         },
         {
           name: "code",
-          label: "کد",
-          rules: [{ required: true, message: "کد محصول را وارد کنید" }],
+          label: "کد پروژه",
+          disabled: true,
         },
       ]}
       dropdownItems={[
         {
-          name: "status",
-          label: "وضعیت",
-          rules: [{ required: true, message: "وضعیت محصول را وارد کنید" }],
+          name: "type",
+          label: "نوع",
         },
       ]}
-      dropdownData={[
-        { value: "active", label: "active" },
-        { value: "inactive", label: "inactive" },
-      ]}
+      dropdownData={productTypesList.map((item) => ({
+        label: item,
+        value: item,
+      }))}
       buttonTitle={"ویرایش محصول"}
       infoAPI={BACKEND_ROUTES.product.info}
     />

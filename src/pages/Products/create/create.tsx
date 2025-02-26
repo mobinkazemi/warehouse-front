@@ -35,7 +35,7 @@ const ProductCreationPage: React.FC = () => {
     if (response.result) {
       message.success(response.message);
       setTimeout(() => {
-        navigator(ROUTES_ENUM.PROJECTS_LIST);
+        navigator(ROUTES_ENUM.PRODUCT_LIST);
         window.location.reload();
       }, 1000);
     } else {

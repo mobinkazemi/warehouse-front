@@ -16,7 +16,7 @@ export const EditButton: React.FC<IProps> = ({ productId }: IProps) => {
           type="primary"
           onClick={() =>
             navigator(
-              ROUTES_ENUM.PROJECTS_UPDATE.replace(":id", String(productId))
+              ROUTES_ENUM.PRODUCT_UPDATE.replace(":id", String(productId))
             )
           }
           icon={<EditOutlined />}

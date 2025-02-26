@@ -14,6 +14,8 @@ import ProjectCreationPage from "./pages/Projects/create/create";
 import ProjectsListPage from "./pages/Projects/list/list.projects";
 import UpdateProjectPage from "./pages/Projects/update/updateProjectPage";
 import ProductCreationPage from "./pages/Products/create/create";
+import ProductsListPage from "./pages/Products/list/list.product";
+import UpdateProductPage from "./pages/Products/update/updateProductPage";
 
 const router = createBrowserRouter([
   {
@@ -75,10 +77,18 @@ const router = createBrowserRouter([
       //
       //
       //
-      // PROJECT
+      // PRODUCT
       {
         path: ROUTES_ENUM.PRODUCT_CREATE,
         element: <ProductCreationPage></ProductCreationPage>,
+      },
+      {
+        path: ROUTES_ENUM.PRODUCT_LIST,
+        element: <ProductsListPage></ProductsListPage>,
+      },
+      {
+        path: ROUTES_ENUM.PRODUCT_UPDATE,
+        element: <UpdateProductPage></UpdateProductPage>,
       },
       // {
       //   path: ROUTES_ENUM.PROJECTS_LIST,
