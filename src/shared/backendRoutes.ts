@@ -37,6 +37,13 @@ interface IBackendRoutes {
     info: IRoute;
     delete: IRoute;
   };
+  permission: {
+    list: IRoute;
+    update: IRoute;
+    info: IRoute;
+    addRoleToPermission: IRoute;
+    removeRoleFromPermission: IRoute;
+  };
 }
 
 export const BACKEND_ROUTES: IBackendRoutes = {
@@ -73,5 +80,15 @@ export const BACKEND_ROUTES: IBackendRoutes = {
     list: { method: "get", url: "/products/list" },
     info: { method: "get", url: "/products/byId/:id" },
     delete: { method: "delete", url: "/products/delete/:id" },
+  },
+  permission: {
+    update: { method: "patch", url: "/permissions/update/:id" },
+    list: { method: "get", url: "/permissions/list" },
+    info: { method: "get", url: "/permissions/byId/:id" },
+    addRoleToPermission: { method: "post", url: "/permissions/addRole" },
+    removeRoleFromPermission: {
+      method: "delete",
+      url: "/permissions/removeRole",
+    },
   },
 };

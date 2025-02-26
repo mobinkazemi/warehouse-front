@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { CodepenOutlined } from "@ant-design/icons";
+import { CodepenOutlined, RadiusSettingOutlined } from "@ant-design/icons";
 import type { MenuProps } from "antd";
 import { Menu } from "antd";
 import { ROUTES_ENUM } from "../../shared/enums/routes.enum";
@@ -65,6 +65,18 @@ if (localStorage.getItem(TOKEN_KEY_ENUM.ACCESS)) {
             className: "slider-submenu-item-product-create",
             label: "ایجاد",
             key: ROUTES_ENUM.PRODUCT_CREATE,
+          },
+        ],
+      },
+      {
+        label: "مدیریت دسترسی ها",
+        key: ROUTES_ENUM._PERMISSION_,
+        icon: <CodepenOutlined style={{ fontSize: "1.5rem" }} />,
+        children: [
+          {
+            className: "slider-submenu-item-product-list",
+            label: "لیست دسترسی ها",
+            key: ROUTES_ENUM.PERMISSION_LIST,
           },
         ],
       },

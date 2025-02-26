@@ -60,6 +60,16 @@ const BaseLayout: React.FC = () => {
       case ROUTES_ENUM.PRODUCT_CREATE:
         navigator(ROUTES_ENUM.PRODUCT_CREATE);
         break;
+
+      //
+      //
+      //
+      //
+      // PERMISSIONS
+      //
+      case ROUTES_ENUM.PERMISSION_LIST:
+        navigator(ROUTES_ENUM.PERMISSION_LIST);
+        break;
     }
   };
   return (

@@ -41,4 +41,13 @@ export enum ROUTES_ENUM {
   PRODUCT_UPDATE = "/product/update/:id",
   PRODUCT_CREATE = "/product/create",
   PRODUCT_DELETE = "/product/delete/:id",
+
+  //
+  //
+  //
+  // ####################################
+  //          permission
+  _PERMISSION_ = "/permission",
+  PERMISSION_LIST = "/permission/list",
+  PERMISSION_UPDATE = "/permission/update/:id",
 }
