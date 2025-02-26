@@ -22,6 +22,7 @@ interface IBackendRoutes {
   };
   role: {
     list: IRoute;
+    getCurrentPermissions: IRoute;
   };
   project: {
     create: IRoute;
@@ -66,6 +67,7 @@ export const BACKEND_ROUTES: IBackendRoutes = {
   },
   role: {
     list: { method: "get", url: "/roles/list" },
+    getCurrentPermissions: { method: "get", url: "/roles/get-permissions/:id" },
   },
   project: {
     create: { method: "post", url: "/projects/create" },

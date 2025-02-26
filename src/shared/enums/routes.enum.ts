@@ -48,6 +48,5 @@ export enum ROUTES_ENUM {
   // ####################################
   //          permission
   _PERMISSION_ = "/permission",
-  PERMISSION_LIST = "/permission/list",
-  PERMISSION_UPDATE = "/permission/update/:id",
+  ROLE_LIST = "/role/list",
 }

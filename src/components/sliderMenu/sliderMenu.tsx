@@ -75,8 +75,8 @@ if (localStorage.getItem(TOKEN_KEY_ENUM.ACCESS)) {
         children: [
           {
             className: "slider-submenu-item-product-list",
-            label: "لیست دسترسی ها",
-            key: ROUTES_ENUM.PERMISSION_LIST,
+            label: "لیست نقش ها",
+            key: ROUTES_ENUM.ROLE_LIST,
           },
         ],
       },
