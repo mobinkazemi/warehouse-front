@@ -16,7 +16,6 @@ import UpdateProjectPage from "./pages/Projects/update/updateProjectPage";
 import ProductCreationPage from "./pages/Products/create/create";
 import ProductsListPage from "./pages/Products/list/list.product";
 import UpdateProductPage from "./pages/Products/update/updateProductPage";
-import PermissionsListPage from "./pages/Permissions/list/list.permissions";
 
 const router = createBrowserRouter([
   {
@@ -90,15 +89,6 @@ const router = createBrowserRouter([
       {
         path: ROUTES_ENUM.PRODUCT_UPDATE,
         element: <UpdateProductPage></UpdateProductPage>,
-      },
-      //
-      //
-      //
-      //
-      // PERMISSION
-      {
-        path: ROUTES_ENUM.PERMISSION_LIST,
-        element: <PermissionsListPage></PermissionsListPage>,
       },
     ],
   },
