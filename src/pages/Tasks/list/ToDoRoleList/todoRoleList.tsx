@@ -117,7 +117,9 @@ const ToDoRoleList: React.FC = () => {
               assignerRole: item.assignerRole.name,
               assigneeRole: item.assigneeRole.name,
               description: item.description,
-              product: item.products[0].type + " - " + item.products[0].brand,
+              product: item.products[0]
+                ? item.products[0].type + " - " + item.products[0].brand
+                : "",
               project: item.project.name + " - " + item.project.code,
               createdAt: new Date().toLocaleDateString(),
               id: item.id,
