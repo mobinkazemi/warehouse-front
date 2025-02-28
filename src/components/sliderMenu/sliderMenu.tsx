@@ -101,7 +101,20 @@ if (localStorage.getItem(TOKEN_KEY_ENUM.ACCESS)) {
     ];
   }
 } else {
-  items = [];
+  items = items = [
+    {
+      label: "مدیریت تسک ها",
+      key: ROUTES_ENUM._TASKS_,
+      icon: <CodepenOutlined style={{ fontSize: "1.5rem" }} />,
+      children: [
+        {
+          className: "slider-submenu-item-task-todo-list",
+          label: "تسک های نقش من",
+          key: ROUTES_ENUM.TASKS_TODO_ROLE_LIST,
+        },
+      ],
+    },
+  ];
 }
 
 interface LevelKeysProps {
