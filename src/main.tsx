@@ -18,6 +18,7 @@ import ProductsListPage from "./pages/Products/list/list.product";
 import UpdateProductPage from "./pages/Products/update/updateProductPage";
 import RolesListPage from "./pages/Roles/list/list.roles";
 import ToDoRoleList from "./pages/Tasks/list/ToDoRoleList/todoRoleList";
+import DoneByMyUserList from "./pages/Tasks/list/DoneUserList/DoneTasksByUser";
 
 const router = createBrowserRouter([
   {
@@ -109,6 +110,10 @@ const router = createBrowserRouter([
       {
         path: ROUTES_ENUM.TASKS_TODO_ROLE_LIST,
         element: <ToDoRoleList></ToDoRoleList>,
+      },
+      {
+        path: ROUTES_ENUM.TASKS_DONE_BY_ME_LIST,
+        element: <DoneByMyUserList></DoneByMyUserList>,
       },
       //
       //

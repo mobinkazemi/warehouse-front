@@ -87,14 +87,19 @@ if (localStorage.getItem(TOKEN_KEY_ENUM.ACCESS)) {
   ) {
     items = [
       {
-        label: "مدیریت تسک ها",
+        label: "مدیریت وظایف",
         key: ROUTES_ENUM._TASKS_,
         icon: <CodepenOutlined style={{ fontSize: "1.5rem" }} />,
         children: [
           {
             className: "slider-submenu-item-task-todo-list",
-            label: "تسک های نقش من",
+            label: "وظایف کنونی نقش کاربر",
             key: ROUTES_ENUM.TASKS_TODO_ROLE_LIST,
+          },
+          {
+            className: "slider-submenu-item-task-done-by-me-list",
+            label: "وظایف انجام شده کاربر",
+            key: ROUTES_ENUM.TASKS_DONE_BY_ME_LIST,
           },
         ],
       },
@@ -102,14 +107,19 @@ if (localStorage.getItem(TOKEN_KEY_ENUM.ACCESS)) {
   } else {
     items = [
       {
-        label: "مدیریت تسک ها",
+        label: "مدیریت وظایف",
         key: ROUTES_ENUM._TASKS_,
         icon: <CodepenOutlined style={{ fontSize: "1.5rem" }} />,
         children: [
           {
             className: "slider-submenu-item-task-todo-list",
-            label: "تسک های نقش من",
+            label: "وظایف کنونی نقش کاربر",
             key: ROUTES_ENUM.TASKS_TODO_ROLE_LIST,
+          },
+          {
+            className: "slider-submenu-item-task-done-by-me-list",
+            label: "وظایف انجام شده کاربر",
+            key: ROUTES_ENUM.TASKS_DONE_BY_ME_LIST,
           },
         ],
       },

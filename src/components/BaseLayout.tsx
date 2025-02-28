@@ -75,10 +75,13 @@ const BaseLayout: React.FC = () => {
       //
       //
       //
-      // PERMISSIONS
+      // TASKS
       //
       case ROUTES_ENUM.TASKS_TODO_ROLE_LIST:
         navigator(ROUTES_ENUM.TASKS_TODO_ROLE_LIST);
+        break;
+      case ROUTES_ENUM.TASKS_DONE_BY_ME_LIST:
+        navigator(ROUTES_ENUM.TASKS_DONE_BY_ME_LIST);
         break;
     }
   };

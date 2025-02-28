@@ -47,6 +47,7 @@ interface IBackendRoutes {
   };
   task: {
     todoRoleList: IRoute;
+    doneByMyUserList: IRoute;
     done: IRoute;
   };
 }
@@ -102,6 +103,10 @@ export const BACKEND_ROUTES: IBackendRoutes = {
     done: {
       method: "post",
       url: "/taskManagement/done",
+    },
+    doneByMyUserList: {
+      method: "get",
+      url: "/taskManagement/userDonedTasks",
     },
   },
 };

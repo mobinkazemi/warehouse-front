@@ -5,11 +5,14 @@ import { ROUTES_ENUM } from "../../shared/enums/routes.enum";
 import { LogoutOutlined } from "@ant-design/icons";
 import { TOKEN_KEY_ENUM } from "../../shared/enums/token.enum";
 import { Tooltip } from "antd";
+import { ROLE_LOCAL_STORAGE_ENUM } from "../../shared/enums/localStorageRoleKey.enum";
 
 const TopNavigation: React.FC = () => {
   const navigator = useNavigate();
   const logout = () => {
     localStorage.removeItem(TOKEN_KEY_ENUM.ACCESS);
+    localStorage.removeItem(ROLE_LOCAL_STORAGE_ENUM.ROLE);
+
     navigator(ROUTES_ENUM.LOGIN);
   };
   return (
