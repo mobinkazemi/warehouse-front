@@ -3,8 +3,9 @@ import { v4 } from "uuid";
 import { TOKEN_KEY_ENUM } from "../shared/enums/token.enum";
 import { ROUTES_ENUM } from "../shared/enums/routes.enum";
 
+export const BASE_BACKEND_URL = "http://localhost:8000";
 const apiClient = axios.create({
-  baseURL: "http://localhost:8000",
+  baseURL: BASE_BACKEND_URL,
   headers: {
     "Content-Type": "application/json",
     clientId: v4(),

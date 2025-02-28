@@ -6,6 +6,7 @@ import { IBaseBackendResponse } from "../../../../shared/interfaces/base-backend
 import { AxiosResponse } from "axios";
 import { AcceptButton } from "./parts/AcceptButton";
 import { RejectButton } from "./parts/rejectButton";
+import { ViewDetailsButton } from "./parts/ViewDetailsButton";
 
 interface DataType {
   id: React.Key;
@@ -17,8 +18,10 @@ interface DataType {
   description: string;
 
   product: string;
+  productId?: string;
 
   project: string;
+  projectId?: string;
 
   createdAt: string;
 }
@@ -102,6 +105,10 @@ const ToDoRoleList: React.FC = () => {
               setDoneTask={setDoneTask}
               doneTask={doneTask}
             ></RejectButton>{" "}
+            <ViewDetailsButton
+              projectId={record.projectId as string}
+              productId={record.productId as string}
+            ></ViewDetailsButton>
           </Space>
         );
       },
@@ -117,6 +124,8 @@ const ToDoRoleList: React.FC = () => {
               assignerRole: item.assignerRole.name,
               assigneeRole: item.assigneeRole.name,
               description: item.description,
+              productId: item.products[0] ? item.products[0].id : undefined,
+              projectId: item.project ? item.project.id : undefined,
               product: item.products[0]
                 ? item.products[0].type + " - " + item.products[0].brand
                 : "",

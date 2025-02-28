@@ -47,6 +47,14 @@ td {
   font-family: "iranSans-ultraLight";
 }
 
+strong {
+  font-family: "iranSans-bold";
+}
+
+.ant-modal-title {
+  font-family: "iranSans-bold";
+}
+
 .ant-form-item-explain-error {
   font-family: "iranSans-ultraLight";
   margin-top: 5px;

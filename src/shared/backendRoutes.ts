@@ -50,6 +50,9 @@ interface IBackendRoutes {
     doneByMyUserList: IRoute;
     done: IRoute;
   };
+  file: {
+    download: IRoute;
+  };
 }
 
 export const BACKEND_ROUTES: IBackendRoutes = {
@@ -107,6 +110,12 @@ export const BACKEND_ROUTES: IBackendRoutes = {
     doneByMyUserList: {
       method: "get",
       url: "/taskManagement/userDonedTasks",
+    },
+  },
+  file: {
+    download: {
+      method: "get",
+      url: "/files/byId/:id",
     },
   },
 };
