@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { CodepenOutlined, RadiusSettingOutlined } from "@ant-design/icons";
+import { CodepenOutlined } from "@ant-design/icons";
 import type { MenuProps } from "antd";
 import { Menu } from "antd";
 import { ROUTES_ENUM } from "../../shared/enums/routes.enum";
@@ -77,6 +77,24 @@ if (localStorage.getItem(TOKEN_KEY_ENUM.ACCESS)) {
             className: "slider-submenu-item-product-list",
             label: "لیست نقش ها",
             key: ROUTES_ENUM.ROLE_LIST,
+          },
+        ],
+      },
+    ];
+  } else if (
+    localStorage.getItem(ROLE_LOCAL_STORAGE_ENUM.ROLE) ===
+    ProjectRole.Technical_Manager
+  ) {
+    items = [
+      {
+        label: "مدیریت تسک ها",
+        key: ROUTES_ENUM._TASKS_,
+        icon: <CodepenOutlined style={{ fontSize: "1.5rem" }} />,
+        children: [
+          {
+            className: "slider-submenu-item-task-todo-list",
+            label: "تسک های نقش من",
+            key: ROUTES_ENUM.TASKS_TODO_ROLE_LIST,
           },
         ],
       },

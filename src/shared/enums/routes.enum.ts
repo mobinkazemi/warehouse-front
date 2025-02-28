@@ -49,4 +49,12 @@ export enum ROUTES_ENUM {
   //          permission
   _PERMISSION_ = "/permission",
   ROLE_LIST = "/role/list",
+
+  //
+  //
+  //
+  // ####################################
+  //          tasks
+  _TASKS_ = "/tasks",
+  TASKS_TODO_ROLE_LIST = "/tasks/todo",
 }

@@ -70,6 +70,16 @@ const BaseLayout: React.FC = () => {
       case ROUTES_ENUM.ROLE_LIST:
         navigator(ROUTES_ENUM.ROLE_LIST);
         break;
+
+      //
+      //
+      //
+      //
+      // PERMISSIONS
+      //
+      case ROUTES_ENUM.TASKS_TODO_ROLE_LIST:
+        navigator(ROUTES_ENUM.TASKS_TODO_ROLE_LIST);
+        break;
     }
   };
   return (

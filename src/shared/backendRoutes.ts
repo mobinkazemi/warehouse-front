@@ -45,6 +45,10 @@ interface IBackendRoutes {
     addRoleToPermission: IRoute;
     removeRoleFromPermission: IRoute;
   };
+  task: {
+    todoRoleList: IRoute;
+    done: IRoute;
+  };
 }
 
 export const BACKEND_ROUTES: IBackendRoutes = {
@@ -91,6 +95,13 @@ export const BACKEND_ROUTES: IBackendRoutes = {
     removeRoleFromPermission: {
       method: "delete",
       url: "/permissions/removeRole",
+    },
+  },
+  task: {
+    todoRoleList: { method: "get", url: "/taskManagement/todo" },
+    done: {
+      method: "post",
+      url: "/taskManagement/done",
     },
   },
 };
