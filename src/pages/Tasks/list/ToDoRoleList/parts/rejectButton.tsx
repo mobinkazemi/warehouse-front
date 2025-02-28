@@ -1,5 +1,5 @@
 import { Button, Flex, Modal, Tooltip } from "antd";
-import { CheckOutlined } from "@ant-design/icons";
+import { CloseOutlined } from "@ant-design/icons";
 import { BACKEND_ROUTES } from "../../../../../shared/backendRoutes";
 import apiClient from "../../../../../configs/axios.config";
 interface IProps {
@@ -9,21 +9,21 @@ interface IProps {
 }
 const { method, url } = BACKEND_ROUTES.task.done;
 
-export const AcceptButton: React.FC<IProps> = ({
+export const RejectButton: React.FC<IProps> = ({
   taskId,
   setDoneTask,
   doneTask,
 }: IProps): React.ReactElement => {
-  const showAcceptanceConfirmModal = () => {
+  const showRejectConfirmModal = () => {
     Modal.confirm({
-      title: "تسک انجام شده است؟",
+      title: "تسک رد شده است؟",
       content: "امکان بازگشت به حالت فعلی وجود ندارد",
-      okText: "بله، انجام شده",
+      okText: "بله، رد شود",
       okType: "danger",
       cancelText: "خیر، منصرف شدم",
       onOk: async () => {
         setDoneTask([...doneTask, taskId]);
-        await apiClient[method](url, { taskId, taskCheck: "verify" });
+        await apiClient[method](url, { taskId, taskCheck: "reject" });
       },
       onCancel() {
         console.log("task done rejected");
@@ -33,11 +33,12 @@ export const AcceptButton: React.FC<IProps> = ({
 
   return (
     <Flex wrap gap="small">
-      <Tooltip title="تسک انجام شود">
+      <Tooltip title="تسک رد شود">
         <Button
-          onClick={showAcceptanceConfirmModal}
+          onClick={showRejectConfirmModal}
           type="primary"
-          icon={<CheckOutlined />}
+          danger
+          icon={<CloseOutlined />}
         ></Button>
       </Tooltip>
     </Flex>

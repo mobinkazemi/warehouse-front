@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { Space, Table } from "antd";
-import { EditButton } from "./parts/EditButton";
 import { BACKEND_ROUTES } from "../../../../shared/backendRoutes";
 import apiClient from "../../../../configs/axios.config";
 import { IBaseBackendResponse } from "../../../../shared/interfaces/base-backend-response.interface";
 import { AxiosResponse } from "axios";
 import { AcceptButton } from "./parts/AcceptButton";
+import { RejectButton } from "./parts/rejectButton";
 
 interface DataType {
   id: React.Key;
@@ -97,7 +97,11 @@ const ToDoRoleList: React.FC = () => {
               setDoneTask={setDoneTask}
               doneTask={doneTask}
             ></AcceptButton>
-            <EditButton projectId={record.id as string} />
+            <RejectButton
+              taskId={record.id as string}
+              setDoneTask={setDoneTask}
+              doneTask={doneTask}
+            ></RejectButton>{" "}
           </Space>
         );
       },
@@ -126,7 +130,13 @@ const ToDoRoleList: React.FC = () => {
 
   return (
     <>
-      <Table columns={columns} dataSource={taskListData} rowKey="id" />
+      <Table
+        columns={columns}
+        dataSource={taskListData.filter(
+          (item) => doneTask.indexOf(item.id as string) === -1
+        )}
+        rowKey="id"
+      />
     </>
   );
 };
