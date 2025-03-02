@@ -53,6 +53,9 @@ interface IBackendRoutes {
   file: {
     download: IRoute;
   };
+  unit: {
+    list: IRoute;
+  };
 }
 
 export const BACKEND_ROUTES: IBackendRoutes = {
@@ -117,5 +120,8 @@ export const BACKEND_ROUTES: IBackendRoutes = {
       method: "get",
       url: "/files/byId/:id",
     },
+  },
+  unit: {
+    list: { method: "get", url: "/unit/list" },
   },
 };

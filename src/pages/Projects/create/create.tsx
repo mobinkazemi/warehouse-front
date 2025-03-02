@@ -260,7 +260,7 @@
 // };
 
 // export default ProjectCreationPage;
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import type { FormProps } from "antd";
 import {
   Button,
@@ -274,6 +274,7 @@ import {
   Image,
   Row,
   Col,
+  Select,
 } from "antd";
 import { useNavigate } from "react-router-dom";
 import { ROUTES_ENUM } from "../../../shared/enums/routes.enum";
@@ -285,12 +286,13 @@ import {
   FileOutlined,
 } from "@ant-design/icons";
 import apiClient from "../../../configs/axios.config"; // Your Axios instance
-
+import { BACKEND_ROUTES } from "../../../shared/backendRoutes";
 type FieldType = {
   name: string;
   description: string;
   code: string;
   files: string[]; // Array to store uploaded file IDs
+  unitId: string;
 };
 
 interface UploadedFile {
@@ -299,8 +301,26 @@ interface UploadedFile {
   name: string;
 }
 
+interface IUnit {
+  id: string;
+  name: string;
+}
+
+const { url: listUrl, method: listMethod } = BACKEND_ROUTES.unit.list;
 const ProjectCreationPage: React.FC = () => {
   const [uploadedFiles, setUploadedFiles] = useState<UploadedFile[]>([]);
+  const [units, setUnits] = useState<IUnit[]>([]);
+
+  useEffect(() => {
+    apiClient[listMethod](listUrl)
+      .then((item) => {
+        setUnits(item.data.data);
+      })
+      .catch(() => {
+        message.error("لیست واحد ها دریافت نشد");
+      });
+  }, []);
+
   const navigator = useNavigate();
 
   // Handle file upload
@@ -421,6 +441,30 @@ const ProjectCreationPage: React.FC = () => {
                 rules={[{ required: true, message: "کد پروژه را وارد نمایید" }]}
               >
                 <Input />
+              </Form.Item>
+            </Col>
+          </Row>
+
+          <Row gutter={[16, 16]}>
+            <Col span={5} style={{ textAlign: "right" }}>
+              <label>{"واحد"}:</label>
+            </Col>
+            <Col span={19}>
+              <Form.Item<FieldType>
+                name="unitId"
+                rules={[
+                  {
+                    required: true,
+                    message: "واحد پروژه را انتخاب نمایید",
+                  },
+                ]}
+              >
+                <Select
+                  options={units.map((item) => ({
+                    label: item.name,
+                    value: item.id,
+                  }))}
+                />
               </Form.Item>
             </Col>
           </Row>
