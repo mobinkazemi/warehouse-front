@@ -272,6 +272,8 @@ import {
   Upload,
   List,
   Image,
+  Row,
+  Col,
 } from "antd";
 import { useNavigate } from "react-router-dom";
 import { ROUTES_ENUM } from "../../../shared/enums/routes.enum";
@@ -373,69 +375,103 @@ const ProjectCreationPage: React.FC = () => {
           onFinish={onFinish}
           autoComplete="off"
         >
-          <Form.Item<FieldType>
-            label="نام"
-            name="name"
-            rules={[{ required: true, message: "نام پروژه را وارد نمایید" }]}
-          >
-            <Input />
-          </Form.Item>
+          <Row gutter={[16, 16]}>
+            <Col span={5} style={{ textAlign: "right" }}>
+              <label>{"نام کارفرما"}:</label>
+            </Col>
+            <Col span={19}>
+              {" "}
+              <Form.Item<FieldType>
+                name="name"
+                rules={[
+                  {
+                    required: true,
+                    message: "نام کارفرمای پروژه را وارد نمایید",
+                  },
+                ]}
+              >
+                <Input />
+              </Form.Item>
+            </Col>
+          </Row>
 
-          <Form.Item<FieldType>
-            label="توضیحات"
-            name="description"
-            rules={[
-              { required: true, message: "توضیحات پروژه را وارد نمایید" },
-            ]}
-          >
-            <Input />
-          </Form.Item>
+          <Row gutter={[16, 16]}>
+            <Col span={5} style={{ textAlign: "right" }}>
+              <label>{"عنوان پروژه"}:</label>
+            </Col>
+            <Col span={19}>
+              <Form.Item<FieldType>
+                name="description"
+                rules={[
+                  { required: true, message: "عنوان پروژه را وارد نمایید" },
+                ]}
+              >
+                <Input />
+              </Form.Item>
+            </Col>
+          </Row>
 
-          <Form.Item<FieldType>
-            label="کد"
-            name="code"
-            rules={[{ required: true, message: "کد پروژه را وارد نمایید" }]}
-          >
-            <Input />
-          </Form.Item>
+          <Row gutter={[16, 16]}>
+            <Col span={5} style={{ textAlign: "right" }}>
+              <label>{"کد پروژه"}:</label>
+            </Col>
+            <Col span={19}>
+              <Form.Item<FieldType>
+                name="code"
+                rules={[{ required: true, message: "کد پروژه را وارد نمایید" }]}
+              >
+                <Input />
+              </Form.Item>
+            </Col>
+          </Row>
 
           {/* File Upload Section */}
-          <Form.Item label="بارگذاری فایل‌ها">
-            <Upload
-              customRequest={({ file }) => handleUpload(file as File)}
-              showUploadList={false}
-            >
-              <Button icon={<UploadOutlined />}>آپلود فایل</Button>
-            </Upload>
 
-            {/* Show uploaded file previews */}
-            <List
-              dataSource={uploadedFiles}
-              renderItem={(file) => (
-                <List.Item
-                  actions={[
-                    <Button
-                      danger
-                      icon={<DeleteOutlined />}
-                      onClick={() => handleRemoveFile(file.id)}
-                    />,
-                  ]}
+          <Row gutter={[16, 16]}>
+            <Col span={5} style={{ textAlign: "right" }}>
+              <label>{"بارگذاری فایل‌ها"}:</label>
+            </Col>
+            <Col span={19}>
+              <Form.Item>
+                <Upload
+                  customRequest={({ file }) => handleUpload(file as File)}
+                  showUploadList={false}
                 >
-                  {file.url.match(/\.(jpeg|jpg|png|gif)$/i) ? (
-                    <Image
-                      width={50}
-                      height={50}
-                      src={file.url}
-                      alt="Uploaded file"
-                    />
-                  ) : (
-                    <FileOutlined style={{ fontSize: "30px", color: "#aaa" }} />
+                  <Button icon={<UploadOutlined />}>آپلود فایل</Button>
+                </Upload>
+
+                {/* Show uploaded file previews */}
+                <List
+                  dataSource={uploadedFiles}
+                  renderItem={(file) => (
+                    <List.Item
+                      actions={[
+                        <Button
+                          danger
+                          icon={<DeleteOutlined />}
+                          onClick={() => handleRemoveFile(file.id)}
+                        />,
+                      ]}
+                    >
+                      {file.url.match(/\.(jpeg|jpg|png|gif)$/i) ? (
+                        <Image
+                          width={50}
+                          height={50}
+                          src={file.url}
+                          alt="Uploaded file"
+                        />
+                      ) : (
+                        <FileOutlined
+                          style={{ fontSize: "30px", color: "#aaa" }}
+                        />
+                      )}
+                      <span style={{ marginLeft: "10px" }}>{file.name}</span>
+                    </List.Item>
                   )}
-                  <span style={{ marginLeft: "10px" }}>{file.name}</span>
-                </List.Item>
-              )}
-            />
-          </Form.Item>
+                />
+              </Form.Item>
+            </Col>
+          </Row>
 
           <Form.Item style={{ textAlign: "center" }}>
             <Button

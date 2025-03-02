@@ -19,7 +19,7 @@ const ProjectsListPage: React.FC = () => {
 
   const columns = [
     {
-      title: "نام",
+      title: "نام کارفرما",
       dataIndex: "name",
     },
     {

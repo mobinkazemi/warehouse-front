@@ -29,7 +29,6 @@ interface IProps {
 const UpdateForm: React.FC<IProps> = (data: IProps) => {
   const [initialData, setInitialData] = useState<any>();
   const [form] = Form.useForm();
-  console.log(setId({ id: data.id as string, url: data.infoAPI.url }));
   useEffect(() => {
     apiClient[data.infoAPI.method](
       setId({ id: data.id as string, url: data.infoAPI.url })
