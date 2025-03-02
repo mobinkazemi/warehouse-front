@@ -1,6 +1,16 @@
 import React, { useEffect, useState } from "react";
 import type { FormProps } from "antd";
-import { Button, Card, Form, Input, message, Flex, Select } from "antd";
+import {
+  Button,
+  Card,
+  Form,
+  Input,
+  message,
+  Flex,
+  Select,
+  Row,
+  Col,
+} from "antd";
 import { useNavigate } from "react-router-dom";
 import { ROUTES_ENUM } from "../../../shared/enums/routes.enum";
 import { ColorPalletEnum } from "../../../shared/enums/colorPallet.enum";
@@ -80,84 +90,155 @@ const ProductCreationPage: React.FC = () => {
           onFinish={onFinish}
           autoComplete="off"
         >
-          <Form.Item<FieldType>
-            label="نام"
-            name="name"
-            rules={[{ required: true, message: "نام محصول را وارد نمایید" }]}
-          >
-            <Input />
-          </Form.Item>
+          <Row gutter={[16, 16]}>
+            <Col span={5} style={{ textAlign: "right" }}>
+              <label>{"نام"}:</label>
+            </Col>
+            <Col span={19}>
+              <Form.Item<FieldType>
+                name="name"
+                rules={[
+                  { required: true, message: "نام محصول را وارد نمایید" },
+                ]}
+              >
+                <Input />
+              </Form.Item>
+            </Col>
+          </Row>
 
-          <Form.Item<FieldType>
-            label="برند"
-            name="brand"
-            rules={[{ required: true, message: "برند محصول را وارد نمایید" }]}
-          >
-            <Input />
-          </Form.Item>
+          <Row gutter={[16, 16]}>
+            <Col span={5} style={{ textAlign: "right" }}>
+              <label>{"برند"}:</label>
+            </Col>
+            <Col span={19}>
+              <Form.Item<FieldType>
+                name="brand"
+                rules={[
+                  { required: true, message: "برند محصول را وارد نمایید" },
+                ]}
+              >
+                <Input />
+              </Form.Item>
+            </Col>
+          </Row>
 
-          <Form.Item<FieldType>
-            label="پارت نامبر"
-            name="partNumber"
-            rules={[
-              { required: true, message: "پارت نامبر محصول را وارد نمایید" },
-            ]}
-          >
-            <Input />
-          </Form.Item>
+          <Row gutter={[16, 16]}>
+            <Col span={5} style={{ textAlign: "right" }}>
+              <label>{"پارت نامبر"}:</label>
+            </Col>
+            <Col span={19}>
+              <Form.Item<FieldType>
+                name="partNumber"
+                rules={[
+                  {
+                    required: true,
+                    message: "پارت نامبر محصول را وارد نمایید",
+                  },
+                ]}
+              >
+                <Input />
+              </Form.Item>
+            </Col>
+          </Row>
 
-          <Form.Item<FieldType>
-            label="سریال نامبر"
-            name="serialNumber"
-            // rules={[
-            //   { required: true, message: "سریال نامبر محصول را وارد نمایید" },
-            // ]}
-          >
-            <Input />
-          </Form.Item>
+          <Row gutter={[16, 16]}>
+            <Col span={5} style={{ textAlign: "right" }}>
+              <label>{"سریال نامبر"}:</label>
+            </Col>
+            <Col span={19}>
+              <Form.Item<FieldType>
+                name="serialNumber"
+                rules={[
+                  {
+                    required: true,
+                    message: "سریال نامبر محصول را وارد نمایید",
+                  },
+                ]}
+              >
+                <Input />
+              </Form.Item>
+            </Col>
+          </Row>
 
-          <Form.Item<FieldType>
-            label="توضیحات"
-            name="description"
-            // rules={[
-            //   { required: true, message: "توضیحات محصول را وارد نمایید" },
-            // ]}
-          >
-            <Input />
-          </Form.Item>
+          <Row gutter={[16, 16]}>
+            <Col span={5} style={{ textAlign: "right" }}>
+              <label>{"توضیحات"}:</label>
+            </Col>
+            <Col span={19}>
+              <Form.Item<FieldType>
+                name="description"
+                rules={[
+                  {
+                    required: true,
+                    message: "توضیحات محصول را وارد نمایید",
+                  },
+                ]}
+              >
+                <Input />
+              </Form.Item>
+            </Col>
+          </Row>
 
-          <Form.Item
-            label="نوع"
-            name="type"
-            rules={[{ required: true, message: "نوع محصول را وارد نمایید" }]}
-            style={{ marginBottom: "16px" }}
-          >
-            {
-              <Select
-                options={productTypesList.map((el) => {
-                  return { label: el, value: el };
-                })}
-              />
-            }
-          </Form.Item>
+          <Row gutter={[16, 16]}>
+            <Col span={5} style={{ textAlign: "right" }}>
+              <label>{"نوع"}:</label>
+            </Col>
+            <Col span={19}>
+              <Form.Item
+                name="type"
+                rules={[
+                  { required: true, message: "نوع محصول را وارد نمایید" },
+                ]}
+                style={{ marginBottom: "16px" }}
+              >
+                {
+                  <Select
+                    showSearch
+                    filterOption={(input, option) =>
+                      (option?.label ?? "")
+                        .toLowerCase()
+                        .includes(input.toLowerCase())
+                    }
+                    options={productTypesList.map((el) => {
+                      return { label: el, value: el };
+                    })}
+                  />
+                }
+              </Form.Item>
+            </Col>
+          </Row>
 
-          <Form.Item
-            label="پروژه"
-            name="code"
-            rules={[{ required: true, message: "نوع محصول را وارد نمایید" }]}
-            style={{ marginBottom: "16px" }}
-          >
-            {
-              <Select
-                options={(projects || []).map((el) => {
-                  return {
-                    label: `${el.name} با کد ${el.code}`,
-                    value: el.code,
-                  };
-                })}
-              />
-            }
-          </Form.Item>
+          <Row gutter={[16, 16]}>
+            <Col span={5} style={{ textAlign: "right" }}>
+              <label>{"پروژه"}:</label>
+            </Col>
+            <Col span={19}>
+              <Form.Item
+                name="code"
+                rules={[
+                  { required: true, message: "نوع محصول را وارد نمایید" },
+                ]}
+                style={{ marginBottom: "16px" }}
+              >
+                {
+                  <Select
+                    showSearch
+                    filterOption={(input, option) =>
+                      (option?.label ?? "")
+                        .toLowerCase()
+                        .includes(input.toLowerCase())
+                    }
+                    options={(projects || []).map((el) => {
+                      return {
+                        label: `${el.name} با کد ${el.code}`,
+                        value: el.code,
+                      };
+                    })}
+                  />
+                }
+              </Form.Item>
+            </Col>
+          </Row>
 
           <Form.Item style={{ textAlign: "center" }}>
             <Button
