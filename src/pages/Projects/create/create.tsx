@@ -292,7 +292,7 @@ type FieldType = {
   description: string;
   code: string;
   files: string[]; // Array to store uploaded file IDs
-  unitId: string;
+  unit: string;
 };
 
 interface UploadedFile {
@@ -451,7 +451,7 @@ const ProjectCreationPage: React.FC = () => {
             </Col>
             <Col span={19}>
               <Form.Item<FieldType>
-                name="unitId"
+                name="unit"
                 rules={[
                   {
                     required: true,

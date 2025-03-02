@@ -21,7 +21,7 @@ interface IProps {
   title: string;
   items: IItem[];
   dropdownItems?: IItem[];
-  dropdownData?: DefaultOptionType[] | undefined;
+  dropdownData?: DefaultOptionType[][] | undefined;
   buttonTitle: string;
   onFinish: (values: any) => void;
 }
@@ -112,31 +112,33 @@ const UpdateForm: React.FC<IProps> = (data: IProps) => {
 
             {/*  */}
             {data.dropdownItems && data.dropdownData
-              ? data.dropdownItems.map((item, index) => (
-                  <Row key={index} gutter={[16, 16]}>
-                    <Col span={5} style={{ textAlign: "right" }}>
-                      <label>{item.label}:</label>
-                    </Col>
-                    <Col span={19}>
-                      <Form.Item
-                        name={item.name}
-                        rules={item.rules}
-                        style={{ marginBottom: "16px" }}
-                      >
-                        {
-                          <Select
-                            options={data.dropdownData}
-                            defaultValue={
-                              initialData && item?.name
-                                ? initialData[item.name]
-                                : null
-                            }
-                          />
-                        }
-                      </Form.Item>
-                    </Col>
-                  </Row>
-                ))
+              ? data.dropdownItems.map((item, index) => {
+                  return (
+                    <Row key={index} gutter={[16, 16]}>
+                      <Col span={5} style={{ textAlign: "right" }}>
+                        <label>{item.label}:</label>
+                      </Col>
+                      <Col span={19}>
+                        <Form.Item
+                          name={item.name}
+                          rules={item.rules}
+                          style={{ marginBottom: "16px" }}
+                        >
+                          {
+                            <Select
+                              options={(data.dropdownData as any)[index]}
+                              defaultValue={
+                                initialData && item?.name
+                                  ? initialData[item.name]
+                                  : null
+                              }
+                            />
+                          }
+                        </Form.Item>
+                      </Col>
+                    </Row>
+                  );
+                })
               : null}
             {/*  */}
 
