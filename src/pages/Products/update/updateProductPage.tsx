@@ -56,10 +56,12 @@ const UpdateProductPage: React.FC = () => {
           label: "نوع",
         },
       ]}
-      dropdownData={productTypesList.map((item) => ({
-        label: item,
-        value: item,
-      }))}
+      dropdownData={[
+        productTypesList.map((item) => ({
+          label: item,
+          value: item,
+        })),
+      ]}
       buttonTitle={"ویرایش محصول"}
       infoAPI={BACKEND_ROUTES.product.info}
     />

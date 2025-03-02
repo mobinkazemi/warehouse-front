@@ -18,10 +18,10 @@ const ProductsListPage: React.FC = () => {
   const [deletedProduct, setDeletedProduct] = useState<number[]>([]);
 
   const columns = [
-    {
-      title: "شناسه محصول",
-      dataIndex: "id",
-    },
+    // {
+    //   title: "شناسه محصول",
+    //   dataIndex: "id",
+    // },
     {
       title: "نام",
       dataIndex: "name",
@@ -30,7 +30,10 @@ const ProductsListPage: React.FC = () => {
       title: "نوع",
       dataIndex: "type",
     },
-
+    {
+      title: "توضیحات",
+      dataIndex: "description",
+    },
     {
       title: "برند",
       dataIndex: "brand",
