@@ -250,27 +250,12 @@ const ProjectCreationPage: React.FC = () => {
                     style={{ display: "flex", marginBottom: 8 }}
                     align="baseline"
                   >
-                    <Form.Item
-                      {...restField}
-                      name={[name, "name"]}
-                      rules={[
-                        { required: false, message: "نام سررسید را وارد کنید" },
-                      ]}
-                    >
-                      <Input placeholder="نام سررسید (اختیاری)" />
+                    <Form.Item {...restField} name={[name, "name"]}>
+                      <Input placeholder="نام فاز" />
                     </Form.Item>
 
-                    <Form.Item
-                      {...restField}
-                      name={[name, "description"]}
-                      rules={[
-                        {
-                          required: false,
-                          message: "توضیحات سررسید را وارد کنید",
-                        },
-                      ]}
-                    >
-                      <Input placeholder="توضیحات سررسید (اختیاری)" />
+                    <Form.Item {...restField} name={[name, "description"]}>
+                      <Input placeholder="توضیحات فاز" />
                     </Form.Item>
 
                     <Form.Item
@@ -309,7 +294,7 @@ const ProjectCreationPage: React.FC = () => {
                     block
                     icon={<PlusOutlined />}
                   >
-                    افزودن سررسید جدید
+                    افزودن فاز های پروژه
                   </Button>
                 </Form.Item>
               </>
