@@ -87,42 +87,44 @@ const UpdateUserPage: React.FC = () => {
         },
       ]}
       dropdownData={[
-        {
-          label: "Technical Manager",
-          title: "Technical Manager",
-          options: roles
-            ?.filter((item) => item.name == ProjectRole.Technical_Manager)
-            .map((item) => {
-              return { label: item.name, value: item.id };
-            }),
-        },
-        {
-          label: "Buyers",
-          title: "Buyers",
-          options: roles
-            ?.filter((item) => item.name.includes("خرید"))
-            .map((item) => {
-              return { label: item.name, value: item.id };
-            }),
-        },
-        {
-          label: "Sellers",
-          title: "Sellers",
-          options: roles
-            ?.filter((item) => item.name.includes("فروش"))
-            .map((item) => {
-              return { label: item.name, value: item.id };
-            }),
-        },
-        {
-          label: "Store",
-          title: "Store",
-          options: roles
-            ?.filter((item) => item.name == ProjectRole.Warehouse_Manager)
-            .map((item) => {
-              return { label: item.name, value: item.id };
-            }),
-        },
+        [
+          {
+            label: "Technical Manager",
+            title: "Technical Manager",
+            options: roles
+              ?.filter((item) => item.name == ProjectRole.Technical_Manager)
+              .map((item) => {
+                return { label: item.name, value: item.id };
+              }),
+          },
+          {
+            label: "Buyers",
+            title: "Buyers",
+            options: roles
+              ?.filter((item) => item.name.includes("خرید"))
+              .map((item) => {
+                return { label: item.name, value: item.id };
+              }),
+          },
+          {
+            label: "Sellers",
+            title: "Sellers",
+            options: roles
+              ?.filter((item) => item.name.includes("فروش"))
+              .map((item) => {
+                return { label: item.name, value: item.id };
+              }),
+          },
+          {
+            label: "Store",
+            title: "Store",
+            options: roles
+              ?.filter((item) => item.name == ProjectRole.Warehouse_Manager)
+              .map((item) => {
+                return { label: item.name, value: item.id };
+              }),
+          },
+        ],
       ]}
       buttonTitle={"ویرایش کاربر"}
       infoAPI={BACKEND_ROUTES.user.info}
