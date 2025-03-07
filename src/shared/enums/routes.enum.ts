@@ -58,4 +58,12 @@ export enum ROUTES_ENUM {
   _TASKS_ = "/tasks",
   TASKS_TODO_ROLE_LIST = "/tasks/todo",
   TASKS_DONE_BY_ME_LIST = "/tasks/doneByMe",
+
+  //
+  //
+  //
+  // ####################################
+  //          workflow
+  _WORKFLOW_ = "/workflow",
+  WORKFLOW_LIST = "/workflow/list",
 }

@@ -19,6 +19,7 @@ import UpdateProductPage from "./pages/Products/update/updateProductPage";
 import RolesListPage from "./pages/Roles/list/list.roles";
 import ToDoRoleList from "./pages/Tasks/list/ToDoRoleList/todoRoleList";
 import DoneByMyUserList from "./pages/Tasks/list/DoneUserList/DoneTasksByUser";
+import WorkflowListPage from "./pages/Workflow/list/list.projects";
 
 const router = createBrowserRouter([
   {
@@ -117,6 +118,13 @@ const router = createBrowserRouter([
       },
       //
       //
+      //
+      //
+      // WORKFLOW
+      {
+        path: ROUTES_ENUM.WORKFLOW_LIST,
+        element: <WorkflowListPage></WorkflowListPage>,
+      },
       //
       //
       // NOT FOUND

@@ -80,6 +80,18 @@ if (localStorage.getItem(TOKEN_KEY_ENUM.ACCESS)) {
           },
         ],
       },
+      {
+        label: "مدیریت فرایند ها",
+        key: ROUTES_ENUM._WORKFLOW_,
+        icon: <CodepenOutlined style={{ fontSize: "1.5rem" }} />,
+        children: [
+          {
+            className: "slider-submenu-item-workflow-list",
+            label: "لیست فرایند ها",
+            key: ROUTES_ENUM.WORKFLOW_LIST,
+          },
+        ],
+      },
     ];
   } else if (
     localStorage.getItem(ROLE_LOCAL_STORAGE_ENUM.ROLE) ===

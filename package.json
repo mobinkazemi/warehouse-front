@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@ant-design/charts": "^2.2.1",
+    "@ant-design/graphs": "^2.0.4",
     "antd": "^5.20.1",
     "axios": "^1.7.2",
     "jalali-moment": "^3.3.11",

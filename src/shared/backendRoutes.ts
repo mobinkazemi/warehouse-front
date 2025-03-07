@@ -56,6 +56,9 @@ interface IBackendRoutes {
   unit: {
     list: IRoute;
   };
+  workflow: {
+    list: IRoute;
+  };
 }
 
 export const BACKEND_ROUTES: IBackendRoutes = {
@@ -123,5 +126,8 @@ export const BACKEND_ROUTES: IBackendRoutes = {
   },
   unit: {
     list: { method: "get", url: "/unit/list" },
+  },
+  workflow: {
+    list: { method: "get", url: "/workflows/list" },
   },
 };

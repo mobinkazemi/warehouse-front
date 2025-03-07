@@ -83,6 +83,15 @@ const BaseLayout: React.FC = () => {
       case ROUTES_ENUM.TASKS_DONE_BY_ME_LIST:
         navigator(ROUTES_ENUM.TASKS_DONE_BY_ME_LIST);
         break;
+
+      //
+      //
+      //
+      //
+      // WORKFLOW
+      //
+      case ROUTES_ENUM.WORKFLOW_LIST:
+        navigator(ROUTES_ENUM.WORKFLOW_LIST);
     }
   };
   return (
