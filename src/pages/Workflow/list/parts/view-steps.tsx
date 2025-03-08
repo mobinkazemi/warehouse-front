@@ -1,15 +1,9 @@
 import { Button, Modal, Tooltip } from "antd";
 import { EyeOutlined } from "@ant-design/icons";
-import { useNavigate } from "react-router-dom";
-import {
-  IWorkflow,
-  IWorkflowStep,
-  Workflow_Step_Type_Enum,
-} from "../../workflow.interface";
+import { IWorkflow, IWorkflowStep } from "../../workflow.interface";
 import { useEffect, useState, useCallback } from "react";
 import { Dendrogram, G6 } from "@ant-design/graphs";
 import React from "react";
-import { v4 } from "uuid";
 
 interface IProps {
   steps: IWorkflowStep[];
@@ -81,8 +75,6 @@ function convertToAntDesignChart(workflow: IWorkflow) {
   return buildStepTree(rootStep);
 }
 export const ViewStepsButton: React.FC<IProps> = ({ steps }: IProps) => {
-  const navigator = useNavigate();
-
   const [visible, setVisible] = useState(false);
   const [data, setData] = useState<IChartData | undefined>(undefined);
   const [isDataReady, setIsDataReady] = useState(false);
