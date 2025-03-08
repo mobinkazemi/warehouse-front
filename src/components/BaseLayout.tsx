@@ -92,6 +92,10 @@ const BaseLayout: React.FC = () => {
       //
       case ROUTES_ENUM.WORKFLOW_LIST:
         navigator(ROUTES_ENUM.WORKFLOW_LIST);
+        break;
+      case ROUTES_ENUM.WORKFLOW_CREATE:
+        navigator(ROUTES_ENUM.WORKFLOW_CREATE);
+        break;
     }
   };
   return (

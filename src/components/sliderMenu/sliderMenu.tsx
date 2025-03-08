@@ -90,6 +90,11 @@ if (localStorage.getItem(TOKEN_KEY_ENUM.ACCESS)) {
             label: "لیست فرایند ها",
             key: ROUTES_ENUM.WORKFLOW_LIST,
           },
+          {
+            className: "slider-submenu-item-workflow-create",
+            label: "ایجاد فرایند",
+            key: ROUTES_ENUM.WORKFLOW_CREATE,
+          },
         ],
       },
     ];

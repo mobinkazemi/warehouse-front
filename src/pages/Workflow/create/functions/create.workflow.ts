@@ -5,8 +5,8 @@ interface IResponse {
   result: boolean;
   message: string;
 }
-const { method, url } = BACKEND_ROUTES.project.create;
-export const createProject = async (values: any): Promise<IResponse> => {
+const { method, url } = BACKEND_ROUTES.workflow.create;
+export const createWorkflow = async (values: any): Promise<IResponse> => {
   let res;
   try {
     res = await apiClient[method](url, values);
