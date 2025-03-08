@@ -1,14 +1,4 @@
-import {
-  Card,
-  Form,
-  Input,
-  Row,
-  Col,
-  Button,
-  Flex,
-  Select,
-  message,
-} from "antd";
+import { Card, Form, Row, Col, Button, Flex, Select, message } from "antd";
 import { ColorPalletEnum } from "../../../../shared/enums/colorPallet.enum";
 import { useEffect, useState } from "react";
 import { IWorkflowStep } from "../../workflow.interface";
