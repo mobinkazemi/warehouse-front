@@ -5,11 +5,7 @@ import {
   Row,
   Col,
   Button,
-  Space,
   Flex,
-  List,
-  Upload,
-  Image,
   message,
   Select,
 } from "antd";

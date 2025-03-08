@@ -69,7 +69,7 @@ function convertToAntDesignChart(workflow: IWorkflow) {
 
   const rootStep = workflow.steps.find((step) => step.type === "START");
   if (!rootStep) {
-    throw new Error("No START step found in the workflow");
+    return;
   }
 
   return buildStepTree(rootStep);
