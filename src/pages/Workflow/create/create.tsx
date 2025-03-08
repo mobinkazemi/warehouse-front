@@ -53,13 +53,29 @@ const WorkflowCreationPage: React.FC = () => {
       message.error(response.message);
     }
   };
+  const onContinueSecondStep: FormProps<FieldType>["onFinish"] = async (
+    values
+  ) => {
+    const response = await createWorkflowStep({ ...values, workflowId });
+
+    if (response.result) {
+      message.success(response.message);
+    } else {
+      message.error(response.message);
+    }
+  };
 
   if (showFirstStep) {
     return <ShowFirstCreationStep onFinish={onFinishFirstStep} />;
   }
 
   if (showSecondStep) {
-    return <ShowSecondCreationStep onFinish={onFinishSecondStep} />;
+    return (
+      <ShowSecondCreationStep
+        onContinue={onContinueSecondStep}
+        onFinish={onFinishSecondStep}
+      />
+    );
   }
 };
 
