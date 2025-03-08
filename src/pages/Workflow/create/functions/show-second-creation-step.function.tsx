@@ -21,7 +21,7 @@ export enum Workflow_Step_Type_Enum {
 
 export const ShowSecondCreationStep: React.FC<IProps> = ({ onFinish }) => {
   const [form] = Form.useForm();
-  const [types, setTypes] = useState<{ label: string; value: string }[]>([
+  const [types, _] = useState<{ label: string; value: string }[]>([
     { label: "شروع", value: Workflow_Step_Type_Enum.START },
     { label: "پایان", value: Workflow_Step_Type_Enum.END },
     { label: "وظیفه", value: Workflow_Step_Type_Enum.TODO },
