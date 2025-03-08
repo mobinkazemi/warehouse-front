@@ -60,6 +60,7 @@ interface IBackendRoutes {
     list: IRoute;
     create: IRoute;
     delete: IRoute;
+    info: IRoute;
     steps: {
       create: IRoute;
       delete: IRoute;
@@ -141,6 +142,7 @@ export const BACKEND_ROUTES: IBackendRoutes = {
     list: { method: "get", url: "/workflows/list" },
     create: { method: "post", url: "/workflows/create" },
     delete: { method: "delete", url: "/workflows/delete/:id" },
+    info: { method: "get", url: "/workflows/byId/:id" },
     steps: {
       create: { method: "post", url: "/workflows/create-step" },
       delete: { method: "delete", url: "/workflows/delete-step" },
