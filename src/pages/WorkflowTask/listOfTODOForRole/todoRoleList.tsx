@@ -6,8 +6,8 @@ import { RejectButton } from "./parts/rejectButton";
 import { BACKEND_ROUTES } from "../../../shared/backendRoutes";
 import apiClient from "../../../configs/axios.config";
 import { IBaseBackendResponse } from "../../../shared/interfaces/base-backend-response.interface";
-import moment from "jalali-moment";
 import { timestampToJalali } from "../../../shared/functions/timestamp-to-jalali.function";
+import { ViewDetailsButton } from "./parts/ViewDetailsButton";
 
 interface DataType {
   id: React.Key;
@@ -16,6 +16,10 @@ interface DataType {
   status: string;
   workflowName: string;
   createdAt: string;
+  perviousTask: {
+    doneBy: { username: string };
+    textMessage?: string;
+  };
 }
 
 interface APIData {
@@ -25,6 +29,10 @@ interface APIData {
   status: string;
   workflowId: { id: string; name: string };
   createdAt: number;
+  perviousTask: {
+    doneBy: { username: string };
+    textMessage?: string;
+  };
 }
 
 const { url: todoListUrl, method: todoListMethod } =
@@ -54,6 +62,19 @@ export const ListOfToDoTasksForRole: React.FC = () => {
     {
       title: "تاریخ ایجاد",
       dataIndex: "createdAt",
+    },
+    {
+      title: "اطلاعات مرحله قبل",
+      key: "action",
+      render: (_: any, record: DataType) => {
+        return (
+          <Space>
+            <ViewDetailsButton
+              perviousTask={record.perviousTask || {}}
+            ></ViewDetailsButton>
+          </Space>
+        );
+      },
     },
     {
       title: "اقدامات",
@@ -93,6 +114,7 @@ export const ListOfToDoTasksForRole: React.FC = () => {
               stepName: item.stepName,
               workflowName: item.workflowId.name,
               stepType: item.stepType,
+              perviousTask: item.perviousTask,
             };
           })
         );
