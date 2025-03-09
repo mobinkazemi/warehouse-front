@@ -7,8 +7,8 @@ export const technicalManagerMenuItems = [
     icon: <CodepenOutlined style={{ fontSize: "1.5rem" }} />,
     children: [
       {
-        className: "slider-submenu-item-task-todo-list",
-        label: "وظایف کنونی نقش کاربر",
+        className: "slider-submenu-item-workflow-todo-role-list",
+        label: "تسک های فعلی",
         key: ROUTES_ENUM.TASKS_TODO_ROLE_LIST,
       },
       {

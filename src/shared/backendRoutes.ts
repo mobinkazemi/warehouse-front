@@ -64,6 +64,9 @@ interface IBackendRoutes {
     listOfAvailableWorkflowsToStart: IRoute;
     engine: {
       startWorkflow: IRoute;
+      listOfAvailableWorkflowTasksForRole: IRoute;
+      doneAndApproveWorkflowTask: IRoute;
+      doneAndRejectWorkflowTask: IRoute;
     };
     steps: {
       create: IRoute;
@@ -151,6 +154,18 @@ export const BACKEND_ROUTES: IBackendRoutes = {
       startWorkflow: {
         method: "post",
         url: "/workflow-engine/start-workflow/:id",
+      },
+      listOfAvailableWorkflowTasksForRole: {
+        method: "get",
+        url: "/workflow-engine/list-of-available-task",
+      },
+      doneAndApproveWorkflowTask: {
+        method: "post",
+        url: "/workflow-engine/approve-task/:id",
+      },
+      doneAndRejectWorkflowTask: {
+        method: "post",
+        url: "/workflow-engine/reject-task/:id",
       },
     },
     listOfAvailableWorkflowsToStart: {
