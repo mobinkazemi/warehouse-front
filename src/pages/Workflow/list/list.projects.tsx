@@ -50,7 +50,7 @@ const WorkflowListPage: React.FC = () => {
               setDeletedProject={setDeletedProject}
               deletedProject={deletedProject}
             />
-            <EditButton projectId={record.id as string} />
+            {/* <EditButton projectId={record.id as string} /> */}
           </Space>
         );
       },

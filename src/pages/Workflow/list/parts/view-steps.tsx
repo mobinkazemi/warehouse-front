@@ -4,6 +4,7 @@ import { IWorkflow, IWorkflowStep } from "../../workflow.interface";
 import { useEffect, useState, useCallback } from "react";
 import { Dendrogram, G6 } from "@ant-design/graphs";
 import React from "react";
+import { v4 } from "uuid";
 
 interface IProps {
   steps: IWorkflowStep[];
@@ -16,42 +17,25 @@ interface IChartData {
 
 const { treeToGraphData } = G6;
 
-// function convertToAntDesignChart(workflow: IWorkflow) {
-//   const stepMap = new Map();
-//   workflow.steps.forEach((step) => stepMap.set(step.order, step));
-
-//   function generateUniqueId(name: string) {
-//     const spaces = " ".repeat(Math.floor(Math.random() * 3) + 1); // Add 1 to 3 spaces
-//     return name + spaces;
-//   }
-
-//   function buildStepTree(step: IWorkflowStep): any {
-//     return {
-//       id: generateUniqueId(step.name),
-//       children: (step.next?.conditions || [])
-//         .map((condition) => stepMap.get(condition.forStepNumber))
-//         .filter((childStep) => childStep)
-//         .map(buildStepTree),
-//     };
-//   }
-
-//   const rootStep = workflow.steps.find((step) => step.type === "START");
-//   if (!rootStep) {
-//     throw new Error("No START step found in the workflow");
-//   }
-
-//   return buildStepTree(rootStep);
-// }
 function convertToAntDesignChart(workflow: IWorkflow) {
   const stepMap = new Map();
   workflow.steps.forEach((step) => stepMap.set(step.order, step));
 
   function generateUniqueId(name: string, status: string) {
-    const spaces = " ".repeat(Math.floor(Math.random() * 3) + 1); // Add 1 to 3 spaces
+    const spaces = v4().slice(0, 3);
     return `${name} (${status})${spaces}`;
   }
 
-  function buildStepTree(step: IWorkflowStep): any {
+  function buildStepTree(
+    step: IWorkflowStep,
+    visited = new Set<number>()
+  ): any {
+    if (visited.has(step.order)) {
+      return null; // Stop recursion if this step is already visited
+    }
+
+    visited.add(step.order); // Mark this step as visited
+
     return {
       id: step.next?.conditions?.length
         ? step.next.conditions
@@ -63,7 +47,8 @@ function convertToAntDesignChart(workflow: IWorkflow) {
       children: (step.next?.conditions || [])
         .map((condition) => stepMap.get(condition.forStepNumber))
         .filter((childStep) => childStep)
-        .map(buildStepTree),
+        .map((childStep) => buildStepTree(childStep, new Set(visited))) // Pass a copy of the visited set
+        .filter(Boolean), // Remove null values
     };
   }
 
