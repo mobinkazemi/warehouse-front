@@ -65,6 +65,7 @@ interface IBackendRoutes {
     engine: {
       startWorkflow: IRoute;
       listOfAvailableWorkflowTasksForRole: IRoute;
+      listOfUserDonedTasks: IRoute;
       doneAndApproveWorkflowTask: IRoute;
       doneAndRejectWorkflowTask: IRoute;
     };
@@ -154,6 +155,10 @@ export const BACKEND_ROUTES: IBackendRoutes = {
       startWorkflow: {
         method: "post",
         url: "/workflow-engine/start-workflow/:id",
+      },
+      listOfUserDonedTasks: {
+        method: "get",
+        url: "/workflow-engine/list-of-user-doned-tasks",
       },
       listOfAvailableWorkflowTasksForRole: {
         method: "get",

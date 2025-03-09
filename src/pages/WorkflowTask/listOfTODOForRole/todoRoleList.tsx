@@ -7,6 +7,7 @@ import { BACKEND_ROUTES } from "../../../shared/backendRoutes";
 import apiClient from "../../../configs/axios.config";
 import { IBaseBackendResponse } from "../../../shared/interfaces/base-backend-response.interface";
 import moment from "jalali-moment";
+import { timestampToJalali } from "../../../shared/functions/timestamp-to-jalali.function";
 
 interface DataType {
   id: React.Key;
@@ -87,9 +88,7 @@ export const ListOfToDoTasksForRole: React.FC = () => {
           (data.data.data || []).map((item) => {
             return {
               id: item.id,
-              createdAt: moment(item.createdAt)
-                .locale("fa")
-                .format("YYYY/MM/DD-HH:mm"),
+              createdAt: timestampToJalali(item.createdAt),
               status: item.status,
               stepName: item.stepName,
               workflowName: item.workflowId.name,

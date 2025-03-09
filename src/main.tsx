@@ -18,11 +18,11 @@ import ProductsListPage from "./pages/Products/list/list.product";
 import UpdateProductPage from "./pages/Products/update/updateProductPage";
 import RolesListPage from "./pages/Roles/list/list.roles";
 import ToDoRoleList from "./pages/Tasks/list/ToDoRoleList/todoRoleList";
-import DoneByMyUserList from "./pages/Tasks/list/DoneUserList/DoneTasksByUser";
 import WorkflowListPage from "./pages/Workflow/list/list.projects";
 import WorkflowCreationPage from "./pages/Workflow/create/create";
 import ListOfAvailableWorkflowsToStartPage from "./pages/Workflow/listOfAvailableToStart/listOfAvailableWorkflowsToStart";
 import { ListOfToDoTasksForRole } from "./pages/WorkflowTask/listOfTODOForRole/todoRoleList";
+import DoneByMyUserList from "./pages/WorkflowTask/listOfDoneByUser/DoneTasksByUser";
 const router = createBrowserRouter([
   {
     path: ROUTES_ENUM.HOME, // Base path
