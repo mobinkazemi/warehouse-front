@@ -67,4 +67,5 @@ export enum ROUTES_ENUM {
   _WORKFLOW_ = "/workflow",
   WORKFLOW_LIST = "/workflow/list",
   WORKFLOW_CREATE = "/workflow/create",
+  WORKFLOW_START_ROLE_LIST = "/workflow/start/list",
 }

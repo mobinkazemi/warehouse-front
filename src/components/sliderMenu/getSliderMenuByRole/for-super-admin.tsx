@@ -80,6 +80,11 @@ export const superAdminMenuItems = [
         label: "ایجاد فرایند",
         key: ROUTES_ENUM.WORKFLOW_CREATE,
       },
+      {
+        className: "slider-submenu-item-workflow-start-role-list",
+        label: "شروع فرایند",
+        key: ROUTES_ENUM.WORKFLOW_START_ROLE_LIST,
+      },
     ],
   },
 ];
