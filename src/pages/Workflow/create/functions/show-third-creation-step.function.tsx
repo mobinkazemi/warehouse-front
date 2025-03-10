@@ -88,7 +88,14 @@ export const ShowThirdCreationStep: React.FC<IProps> = ({
           form={form}
           name="create-workflow-step-condition"
           style={{ maxWidth: 500, width: "100%" }}
-          onFinish={isContinue ? onContinue : onFinish}
+          onFinish={(values: any) => {
+            if (isContinue) {
+              form.resetFields();
+              onContinue(values);
+            } else {
+              onFinish(values);
+            }
+          }}
           autoComplete="off"
         >
           <Row gutter={[16, 16]}>
