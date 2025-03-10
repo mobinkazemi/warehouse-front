@@ -4,11 +4,14 @@ import { DeleteButton } from "./parts/DeleteButton";
 import { EditButton } from "./parts/EditButton";
 import apiClient from "../../../configs/axios.config";
 import { BACKEND_ROUTES } from "../../../shared/backendRoutes";
+import { timestampToJalali } from "../../../shared/functions/timestamp-to-jalali.function";
 
 interface DataType {
   id: React.Key;
   username: string;
+  fullName: string;
   role: string;
+  createdAt: number;
 }
 
 const { url: listUrl, method: listMethod } = BACKEND_ROUTES.user.list;
@@ -18,16 +21,20 @@ const UsersListPage: React.FC = () => {
 
   const columns = [
     {
-      title: "آی‌دی",
-      dataIndex: "id",
+      title: "نام و نام خانوادگی",
+      dataIndex: "fullName",
     },
     {
-      title: "نام",
+      title: "نام کاربری",
       dataIndex: "username",
     },
     {
       title: "نقش",
       dataIndex: "role",
+    },
+    {
+      title: "تاریخ ثبت نام",
+      dataIndex: "createdAt",
     },
     {
       title: "اقدامات",
@@ -52,6 +59,7 @@ const UsersListPage: React.FC = () => {
         data.data.map((sw: any) => ({
           ...sw,
           role: sw.roles[0]?.name || "ندارد",
+          createdAt: timestampToJalali(sw.createdAt),
         }))
       );
     });

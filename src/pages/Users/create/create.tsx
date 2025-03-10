@@ -7,7 +7,7 @@ import { ColorPalletEnum } from "../../../shared/enums/colorPallet.enum";
 import { createUser } from "./functions/create.user.function";
 
 type FieldType = {
-  name: string;
+  fullName: string;
   username: string;
   password: string;
   confirmPassword: string;
@@ -76,9 +76,14 @@ const UserCreationPage: React.FC = () => {
           >
             <Form.Item<FieldType>
               label="نام"
-              name="name"
+              name="fullName"
               wrapperCol={{ offset: 4, span: 20 }}
-              rules={[{ required: true, message: "نام خود را وارد نمایید" }]}
+              rules={[
+                {
+                  required: true,
+                  message: "نام و نام خانوادگی خود را وارد نمایید",
+                },
+              ]}
             >
               <Input />
             </Form.Item>
