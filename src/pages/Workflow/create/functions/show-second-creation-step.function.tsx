@@ -60,7 +60,7 @@ export const ShowSecondCreationStep: React.FC<IProps> = ({
           })
         );
       })
-      .catch((err) => {
+      .catch((_) => {
         message.error("لیست فرم ها دریافت نشد");
       });
   }, []);
