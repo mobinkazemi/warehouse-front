@@ -24,6 +24,7 @@ export const ViewDetailsButton: React.FC<IProps> = ({ perviousTask }) => {
         <Button type="default" icon={<EyeOutlined />} onClick={showModal} />
       </Tooltip>
       <Modal
+        style={{ direction: "rtl" }}
         title="جزئیات مرحله قبل"
         open={visible}
         onCancel={() => setVisible(false)}
