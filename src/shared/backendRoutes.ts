@@ -78,6 +78,9 @@ interface IBackendRoutes {
       };
     };
   };
+  forms: {
+    list: IRoute;
+  };
 }
 
 export const BACKEND_ROUTES: IBackendRoutes = {
@@ -185,5 +188,8 @@ export const BACKEND_ROUTES: IBackendRoutes = {
         delete: { method: "delete", url: "/workflows/delete-step-condition" },
       },
     },
+  },
+  forms: {
+    list: { method: "get", url: "/forms/list" },
   },
 };
