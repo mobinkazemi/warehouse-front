@@ -1,18 +1,7 @@
 import React, { useEffect, useState } from "react";
-import {
-  Button,
-  Modal,
-  Descriptions,
-  Typography,
-  Card,
-  Tooltip,
-  Form,
-  Input,
-} from "antd";
-import { EyeOutlined, FormOutlined } from "@ant-design/icons";
+import { Button, Modal, Typography, Tooltip, Form, Input } from "antd";
+import { FormOutlined } from "@ant-design/icons";
 import { IForm } from "../../../Workflow/create/functions/form-fields-modal.function";
-
-const { Text } = Typography;
 
 interface IProps {
   id: IForm;
