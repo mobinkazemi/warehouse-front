@@ -21,6 +21,7 @@ export interface IForm {
   type: "create" | "update";
   fields: {
     label: string;
+    name: string;
     type: FormFieldTypeEnum;
     required: boolean;
     // relatedForms: [];
