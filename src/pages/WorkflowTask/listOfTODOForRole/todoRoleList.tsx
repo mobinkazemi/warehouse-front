@@ -8,6 +8,8 @@ import apiClient from "../../../configs/axios.config";
 import { IBaseBackendResponse } from "../../../shared/interfaces/base-backend-response.interface";
 import { timestampToJalali } from "../../../shared/functions/timestamp-to-jalali.function";
 import { ViewDetailsButton } from "./parts/ViewDetailsButton";
+import { FormModalButton } from "./parts/formModalButton";
+import { IForm } from "../../Workflow/create/functions/form-fields-modal.function";
 
 interface DataType {
   id: React.Key;
@@ -19,6 +21,10 @@ interface DataType {
   perviousTask: {
     doneBy: { username: string };
     textMessage?: string;
+  };
+  relatedForm: {
+    id: IForm;
+    fields: { id: string; required: boolean }[];
   };
 }
 
@@ -32,6 +38,10 @@ interface APIData {
   perviousTask: {
     doneBy: { username: string };
     textMessage?: string;
+  };
+  relatedForm: {
+    id: IForm;
+    fields: { id: string; required: boolean }[];
   };
 }
 
@@ -64,7 +74,7 @@ export const ListOfToDoTasksForRole: React.FC = () => {
       dataIndex: "createdAt",
     },
     {
-      title: "اطلاعات مرحله قبل",
+      title: "مرحله قبل",
       key: "action",
       render: (_: any, record: DataType) => {
         return (
@@ -72,6 +82,21 @@ export const ListOfToDoTasksForRole: React.FC = () => {
             <ViewDetailsButton
               perviousTask={record.perviousTask || {}}
             ></ViewDetailsButton>
+          </Space>
+        );
+      },
+    },
+    {
+      title: "فرم مربوطه",
+      key: "action",
+      render: (_: any, record: DataType) => {
+        console.log(record.relatedForm);
+        return (
+          <Space>
+            <FormModalButton
+              id={record.relatedForm.id}
+              fields={record.relatedForm.fields}
+            ></FormModalButton>
           </Space>
         );
       },
@@ -115,6 +140,7 @@ export const ListOfToDoTasksForRole: React.FC = () => {
               workflowName: item.workflowId.name,
               stepType: item.stepType,
               perviousTask: item.perviousTask,
+              relatedForm: item.relatedForm,
             };
           })
         );

@@ -16,6 +16,9 @@ export enum FormFieldTypeEnum {
 }
 export interface IForm {
   id: string;
+  name: string;
+  refrence: string;
+  type: "create" | "update";
   fields: {
     label: string;
     type: FormFieldTypeEnum;
