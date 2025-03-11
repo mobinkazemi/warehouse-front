@@ -13,6 +13,8 @@ import { ColorPalletEnum } from "../../../../shared/enums/colorPallet.enum";
 import { useEffect, useState } from "react";
 import { BACKEND_ROUTES } from "../../../../shared/backendRoutes";
 import apiClient from "../../../../configs/axios.config";
+import FormFieldModal, { IForm } from "./form-fields-modal.function";
+import { SettingOutlined } from "@ant-design/icons";
 
 interface IProps {
   onFinish: (values: any) => void;
@@ -44,6 +46,13 @@ export const ShowSecondCreationStep: React.FC<IProps> = ({
   const [forms, setForms] = useState<
     { label: string; value: string | undefined }[]
   >([]);
+  const [dbForms, setDbForms] = useState<IForm[]>([]);
+  const [selectedForm, setSelectedForm] = useState<IForm | undefined>(
+    undefined
+  );
+  const [modalVisible, setModalVisible] = useState(false);
+  const [selectedFields, setSelectedFields] = useState<any[]>([]);
+
   const [types, _] = useState<{ label: string; value: string }[]>([
     { label: "شروع", value: Workflow_Step_Type_Enum.START },
     { label: "پایان", value: Workflow_Step_Type_Enum.END },
@@ -54,6 +63,7 @@ export const ShowSecondCreationStep: React.FC<IProps> = ({
   useEffect(() => {
     apiClient[formListMethod](formListUrl)
       .then(({ data }) => {
+        setDbForms(data.data);
         setForms(
           data.data.map((form: any) => {
             return { label: form.name, value: form.id };
@@ -82,7 +92,7 @@ export const ShowSecondCreationStep: React.FC<IProps> = ({
         }
         bordered={false}
         style={{
-          width: 450,
+          width: 550,
           borderRadius: "10px",
           boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
         }}
@@ -92,11 +102,19 @@ export const ShowSecondCreationStep: React.FC<IProps> = ({
           name="create-workflow-step"
           style={{ maxWidth: 500, width: "100%" }}
           onFinish={(values: any) => {
+            setSelectedForm(undefined);
+            setSelectedFields([]);
             if (isContinue) {
               form.resetFields();
-              onContinue(values);
+              onContinue({
+                ...values,
+                relatedForm: { id: selectedForm?.id, fields: selectedFields },
+              });
             } else {
-              onFinish(values);
+              onFinish({
+                ...values,
+                relatedForm: { id: selectedForm?.id, fields: selectedFields },
+              });
             }
           }}
           autoComplete="off"
@@ -123,7 +141,7 @@ export const ShowSecondCreationStep: React.FC<IProps> = ({
 
           <Row gutter={[16, 16]}>
             <Col span={5} style={{ textAlign: "right" }}>
-              <label>{"توضیحات مرحله"}:</label>
+              <label>{"توضیحات"}:</label>
             </Col>
             <Col span={19}>
               {" "}
@@ -158,16 +176,44 @@ export const ShowSecondCreationStep: React.FC<IProps> = ({
 
           <Row gutter={[16, 16]}>
             <Col span={5} style={{ textAlign: "right" }}>
-              <label>{"فرم"}:</label>
+              <label>{"فرم (اختیاری)"}:</label>
             </Col>
             <Col span={19}>
-              <Form.Item<IFieldType> name="relatedForm">
-                <Select
-                  style={{ width: "100%" }}
-                  placeholder="فرم را انتخاب کنید"
-                  options={forms}
-                />
-              </Form.Item>
+              <Row gutter={[2, 1]}>
+                <Col span={22}>
+                  <Form.Item<IFieldType> name="relatedForm">
+                    <Select
+                      style={{ width: "100%" }}
+                      placeholder="فرم را انتخاب کنید"
+                      options={forms}
+                      onChange={(value) => {
+                        setSelectedForm(
+                          dbForms.find((form) => form.id === value)
+                        );
+                        setTimeout(() => {
+                          setModalVisible(true);
+                        }, 1000);
+                      }}
+                    />
+                  </Form.Item>
+                </Col>
+                <Col span={2}>
+                  {selectedForm && (
+                    <Button
+                      icon={<SettingOutlined />}
+                      onClick={() => setModalVisible(true)}
+                    />
+                  )}
+                  <FormFieldModal
+                    visible={modalVisible}
+                    form={selectedForm as IForm}
+                    onClose={() => setModalVisible(false)}
+                    onSave={(fields) => {
+                      setSelectedFields(fields);
+                    }}
+                  />
+                </Col>
+              </Row>
             </Col>
           </Row>
 
