@@ -108,12 +108,18 @@ export const ShowSecondCreationStep: React.FC<IProps> = ({
               form.resetFields();
               onContinue({
                 ...values,
-                relatedForm: { id: selectedForm?.id, fields: selectedFields },
+                relatedForm:
+                  selectedForm?.id && selectedFields?.length
+                    ? { id: selectedForm?.id, fields: selectedFields }
+                    : undefined,
               });
             } else {
               onFinish({
                 ...values,
-                relatedForm: { id: selectedForm?.id, fields: selectedFields },
+                relatedForm:
+                  selectedForm?.id && selectedFields?.length
+                    ? { id: selectedForm?.id, fields: selectedFields }
+                    : undefined,
               });
             }
           }}

@@ -31,21 +31,21 @@ interface IProps {
   onSave: (updatedFields: any) => void;
 }
 
+type FieldType = {
+  id: string;
+  label: string;
+  required: boolean;
+  selected: boolean;
+  originalRequired: boolean;
+};
+
 const FormFieldModal: React.FC<IProps> = ({
   visible,
   form,
   onClose,
   onSave,
 }) => {
-  const [fields, setFields] = useState<
-    {
-      id: string;
-      label: string;
-      required: boolean;
-      selected: boolean;
-      originalRequired: boolean;
-    }[]
-  >([]);
+  const [fields, setFields] = useState<FieldType[] | undefined>(undefined);
 
   useEffect(() => {
     if (form) {
@@ -61,9 +61,9 @@ const FormFieldModal: React.FC<IProps> = ({
 
   const handleSave = () => {
     onSave(
-      fields
-        .filter((field) => field.selected) // Keep selected fields
-        .map(({ id, required }) => ({ id, required }))
+      (fields as FieldType[])
+        ?.filter((field) => field.selected) // Keep selected fields
+        ?.map(({ id, required }) => ({ id, required }))
     );
     onClose();
   };
@@ -100,7 +100,7 @@ const FormFieldModal: React.FC<IProps> = ({
               checked={field.selected}
               onChange={(e) => {
                 setFields((prev) =>
-                  prev.map((f) =>
+                  prev?.map((f) =>
                     f.id === field.id ? { ...f, selected: e.target.checked } : f
                   )
                 );
@@ -115,7 +115,7 @@ const FormFieldModal: React.FC<IProps> = ({
                 checked={field.required}
                 onChange={(e) => {
                   setFields((prev) =>
-                    prev.map((f) =>
+                    prev?.map((f) =>
                       f.id === field.id
                         ? { ...f, required: e.target.checked }
                         : f
