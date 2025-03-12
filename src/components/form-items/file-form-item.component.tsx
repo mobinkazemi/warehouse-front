@@ -1,55 +1,19 @@
-import {
-  Form,
-  Input,
-  Space,
-  DatePicker,
-  FormInstance,
-  Upload,
-  message,
-  List,
-  Image,
-} from "antd";
+import { Form, Upload, message, List, Image } from "antd";
 import {
   DeleteOutlined,
   FileOutlined,
-  MinusCircleOutlined,
-  PlusOutlined,
   UploadOutlined,
 } from "@ant-design/icons";
 import { Button } from "antd";
 import apiClient from "../../configs/axios.config";
 import { useState } from "react";
 
-interface IProps {
-  //   form: FormInstance;
-  //   key: string;
-  //   componentName: string;
-  //   componentLabel: string;
-  //   namePlaceholder?: string;
-  //   descriptionPlaceholder?: string;
-  //   nameName?: string;
-  //   descriptionName?: string;
-  //   buttonLabel?: string;
-}
-
-const defaultValues: Omit<IProps, "form" | "key"> = {
-  //   componentName: "dates",
-  //   componentLabel: "فاز ها",
-  //   namePlaceholder: "نام فاز",
-  //   descriptionPlaceholder: "توضیحات فاز",
-  //   nameName: "name",
-  //   descriptionName: "description",
-  //   buttonLabel: "افزودن فاز های پروژه",
-};
-
 interface UploadedFile {
   id: string;
   url: string;
   name: string;
 }
-export const FormGeneratorFileListFormItem: React.FC<IProps> = (
-  data: IProps
-) => {
+export const FormGeneratorFileListFormItem: React.FC = () => {
   const [uploadedFiles, setUploadedFiles] = useState<UploadedFile[]>([]);
   const handleRemoveFile = (fileId: string) => {
     setUploadedFiles((prev: any) =>
