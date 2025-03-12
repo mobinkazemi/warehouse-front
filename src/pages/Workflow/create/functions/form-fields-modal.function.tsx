@@ -14,19 +14,25 @@ export enum FormFieldTypeEnum {
   FILE = "file",
   FORM = "form",
 }
+
+export interface IFormField {
+  label: string;
+  name: string;
+  type: FormFieldTypeEnum;
+  required: boolean;
+  // relatedForms: [];
+  relatedInstanceApi?: {
+    method: "get";
+    url: string;
+  };
+  id: string;
+}
 export interface IForm {
   id: string;
   name: string;
   refrence: string;
   type: "create" | "update";
-  fields: {
-    label: string;
-    name: string;
-    type: FormFieldTypeEnum;
-    required: boolean;
-    // relatedForms: [];
-    id: string;
-  }[];
+  fields: IFormField[];
 }
 interface IProps {
   visible: boolean;

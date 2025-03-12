@@ -21,6 +21,7 @@ import apiClient from "../../../../configs/axios.config";
 import { ColorPalletEnum } from "../../../../shared/enums/colorPallet.enum";
 import { FormGeneratorDateListFormItem } from "../../../../components/form-items/dates-list-form-item.component";
 import { FormGeneratorFileListFormItem } from "../../../../components/form-items/file-form-item.component";
+import { FormGeneratorDropdownWithApiFormItem } from "../../../../components/form-items/dropdown-with-api-form-item.component";
 
 interface IProps {
   id: IForm;
@@ -134,6 +135,10 @@ export const FormModalButton: React.FC<IProps> = (data: IProps) => {
                           <FormGeneratorFileListFormItem
                             key={f.id}
                           ></FormGeneratorFileListFormItem>
+                        ) : f.relatedInstanceApi ? (
+                          <FormGeneratorDropdownWithApiFormItem
+                            {...f}
+                          ></FormGeneratorDropdownWithApiFormItem>
                         ) : (
                           <Form.Item<any> name={f.name} key={f.id}>
                             <Input />
