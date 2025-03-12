@@ -20,6 +20,7 @@ import {
 import apiClient from "../../../../configs/axios.config";
 import { ColorPalletEnum } from "../../../../shared/enums/colorPallet.enum";
 import { FormGeneratorDateListFormItem } from "../../../../components/form-items/dates-list-form-item.component";
+import { FormGeneratorFileListFormItem } from "../../../../components/form-items/file-form-item.component";
 
 interface IProps {
   id: IForm;
@@ -129,6 +130,10 @@ export const FormModalButton: React.FC<IProps> = (data: IProps) => {
                             componentName={f.name}
                             componentLabel={f.label}
                           ></FormGeneratorDateListFormItem>
+                        ) : f.type === FormFieldTypeEnum.FILE ? (
+                          <FormGeneratorFileListFormItem
+                            key={f.id}
+                          ></FormGeneratorFileListFormItem>
                         ) : (
                           <Form.Item<any> name={f.name} key={f.id}>
                             <Input />
@@ -138,7 +143,6 @@ export const FormModalButton: React.FC<IProps> = (data: IProps) => {
                     </Row>
                   );
                 })}
-
               <Form.Item style={{ textAlign: "center" }}>
                 <Button
                   size="large"
