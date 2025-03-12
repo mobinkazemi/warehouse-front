@@ -178,14 +178,14 @@ export const BACKEND_ROUTES: IBackendRoutes = {
     },
     listOfAvailableWorkflowsToStart: {
       method: "get",
-      url: "/workflows/list-of-available-workflows",
+      url: "/workflow/list-of-available-workflows",
     },
     steps: {
-      create: { method: "post", url: "/workflows/create-step" },
-      delete: { method: "delete", url: "/workflows/delete-step" },
+      create: { method: "post", url: "/workflow/create-step" },
+      delete: { method: "delete", url: "/workflow/delete-step" },
       conditions: {
-        create: { method: "post", url: "/workflows/create-step-conditions" },
-        delete: { method: "delete", url: "/workflows/delete-step-condition" },
+        create: { method: "post", url: "/workflow/create-step-conditions" },
+        delete: { method: "delete", url: "/workflow/delete-step-condition" },
       },
     },
   },

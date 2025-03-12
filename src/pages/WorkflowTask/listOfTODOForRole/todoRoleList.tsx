@@ -90,7 +90,9 @@ export const ListOfToDoTasksForRole: React.FC = () => {
       title: "فرم مربوطه",
       key: "action",
       render: (_: any, record: DataType) => {
-        console.log(record.relatedForm);
+        if (!record.relatedForm) return null;
+        if (!record.relatedForm.id) return null;
+        if (!record.relatedForm.fields) return null;
         return (
           <Space>
             <FormModalButton

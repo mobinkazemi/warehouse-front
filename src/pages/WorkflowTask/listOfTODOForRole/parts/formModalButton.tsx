@@ -13,9 +13,13 @@ import {
   Col,
 } from "antd";
 import { FormOutlined } from "@ant-design/icons";
-import { IForm } from "../../../Workflow/create/functions/form-fields-modal.function";
+import {
+  FormFieldTypeEnum,
+  IForm,
+} from "../../../Workflow/create/functions/form-fields-modal.function";
 import apiClient from "../../../../configs/axios.config";
 import { ColorPalletEnum } from "../../../../shared/enums/colorPallet.enum";
+import { FormGeneratorDateListFormItem } from "../../../../components/form-items/dates-list-form-item.component";
 
 interface IProps {
   id: IForm;
@@ -106,20 +110,30 @@ export const FormModalButton: React.FC<IProps> = (data: IProps) => {
             >
               {data?.id?.fields
                 .filter((f) => {
-                  console.log(f.id, selectedFields?.has(f.id), f.label);
                   return selectedFields?.has(f.id);
                 })
                 .map((f) => {
+                  if (f.type === FormFieldTypeEnum.FILE) {
+                    console.log(f);
+                  }
                   return (
                     <Row gutter={[16, 16]}>
                       <Col span={5} style={{ textAlign: "right" }}>
                         <label>{f.label}:</label>
                       </Col>
                       <Col span={19}>
-                        {" "}
-                        <Form.Item<any> name={f.name}>
-                          <Input />
-                        </Form.Item>
+                        {f.type === FormFieldTypeEnum.DATE ? (
+                          <FormGeneratorDateListFormItem
+                            key={f.id}
+                            form={form}
+                            componentName={f.name}
+                            componentLabel={f.label}
+                          ></FormGeneratorDateListFormItem>
+                        ) : (
+                          <Form.Item<any> name={f.name} key={f.id}>
+                            <Input />
+                          </Form.Item>
+                        )}
                       </Col>
                     </Row>
                   );
