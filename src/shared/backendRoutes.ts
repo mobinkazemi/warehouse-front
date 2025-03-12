@@ -95,38 +95,38 @@ export const BACKEND_ROUTES: IBackendRoutes = {
     },
   },
   user: {
-    myself: { method: "get", url: "/users/myself" },
-    list: { method: "get", url: "/users/list" },
-    delete: { method: "delete", url: "/users/delete" },
-    info: { method: "get", url: "/users/byId/:id" },
-    update: { method: "patch", url: "/users/update/:id" },
+    myself: { method: "get", url: "/user/myself" },
+    list: { method: "get", url: "/user/list" },
+    delete: { method: "delete", url: "/user/delete" },
+    info: { method: "get", url: "/user/byId/:id" },
+    update: { method: "patch", url: "/user/update/:id" },
   },
   role: {
-    list: { method: "get", url: "/roles/list" },
-    getCurrentPermissions: { method: "get", url: "/roles/get-permissions/:id" },
+    list: { method: "get", url: "/role/list" },
+    getCurrentPermissions: { method: "get", url: "/role/get-permissions/:id" },
   },
   project: {
-    create: { method: "post", url: "/projects/create" },
-    update: { method: "patch", url: "/projects/update/:id" },
-    list: { method: "get", url: "/projects/list" },
-    info: { method: "get", url: "/projects/byId/:id" },
-    delete: { method: "delete", url: "/projects/delete/:id" },
+    create: { method: "post", url: "/project/create" },
+    update: { method: "patch", url: "/project/update/:id" },
+    list: { method: "get", url: "/project/list" },
+    info: { method: "get", url: "/project/byId/:id" },
+    delete: { method: "delete", url: "/project/delete/:id" },
   },
   product: {
-    create: { method: "post", url: "/products/create" },
-    update: { method: "patch", url: "/products/update/:id" },
-    list: { method: "get", url: "/products/list" },
-    info: { method: "get", url: "/products/byId/:id" },
-    delete: { method: "delete", url: "/products/delete/:id" },
+    create: { method: "post", url: "/product/create" },
+    update: { method: "patch", url: "/product/update/:id" },
+    list: { method: "get", url: "/product/list" },
+    info: { method: "get", url: "/product/byId/:id" },
+    delete: { method: "delete", url: "/product/delete/:id" },
   },
   permission: {
-    update: { method: "patch", url: "/permissions/update/:id" },
-    list: { method: "get", url: "/permissions/list" },
-    info: { method: "get", url: "/permissions/byId/:id" },
-    addRoleToPermission: { method: "post", url: "/permissions/addRole" },
+    update: { method: "patch", url: "/permission/update/:id" },
+    list: { method: "get", url: "/permission/list" },
+    info: { method: "get", url: "/permission/byId/:id" },
+    addRoleToPermission: { method: "post", url: "/permission/addRole" },
     removeRoleFromPermission: {
       method: "delete",
-      url: "/permissions/removeRole",
+      url: "/permission/removeRole",
     },
   },
   task: {
@@ -143,17 +143,17 @@ export const BACKEND_ROUTES: IBackendRoutes = {
   file: {
     download: {
       method: "get",
-      url: "/files/byId/:id",
+      url: "/file/byId/:id",
     },
   },
   unit: {
     list: { method: "get", url: "/unit/list" },
   },
   workflow: {
-    list: { method: "get", url: "/workflows/list" },
-    create: { method: "post", url: "/workflows/create" },
-    delete: { method: "delete", url: "/workflows/delete/:id" },
-    info: { method: "get", url: "/workflows/byId/:id" },
+    list: { method: "get", url: "/workflow/list" },
+    create: { method: "post", url: "/workflow/create" },
+    delete: { method: "delete", url: "/workflow/delete/:id" },
+    info: { method: "get", url: "/workflow/byId/:id" },
     engine: {
       startWorkflow: {
         method: "post",
@@ -190,6 +190,6 @@ export const BACKEND_ROUTES: IBackendRoutes = {
     },
   },
   forms: {
-    list: { method: "get", url: "/forms/list" },
+    list: { method: "get", url: "/form/list" },
   },
 };
