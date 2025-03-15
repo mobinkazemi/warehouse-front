@@ -33,6 +33,7 @@ export interface IForm {
   refrence: string;
   type: "create" | "update";
   fields: IFormField[];
+  api: { method: "patch" | "post"; url: string };
 }
 interface IProps {
   visible: boolean;

@@ -1,4 +1,4 @@
-import { Form, Upload, message, List, Image } from "antd";
+import { Form, Upload, message, List, Image, FormInstance } from "antd";
 import {
   DeleteOutlined,
   FileOutlined,
@@ -13,13 +13,23 @@ interface UploadedFile {
   url: string;
   name: string;
 }
-export const FormGeneratorFileListFormItem: React.FC = () => {
+
+interface IProps {
+  form: FormInstance;
+  name: string;
+}
+
+export const FormGeneratorFileListFormItem: React.FC<IProps> = (
+  props: IProps
+) => {
   const [uploadedFiles, setUploadedFiles] = useState<UploadedFile[]>([]);
   const handleRemoveFile = (fileId: string) => {
     setUploadedFiles((prev: any) =>
       prev.filter((file: any) => file.id !== fileId)
     );
+    props.form.setFieldsValue({ [props.name]: [] });
   };
+
   const handleUpload = async (file: File) => {
     const formData = new FormData();
     formData.append("files", file);
@@ -35,7 +45,12 @@ export const FormGeneratorFileListFormItem: React.FC = () => {
           url: URL.createObjectURL(file), // Temporary preview
           name: file.name,
         };
+        const newFiles = [...uploadedFiles, newFile];
         setUploadedFiles((prev: any) => [...prev, newFile]);
+        props.form.setFieldsValue({
+          [props.name]: newFiles.map((f: any) => f.id),
+        });
+
         message.success(`فایل بارگزاری شد: ${file.name}`);
       }
     } catch (error) {
@@ -43,7 +58,7 @@ export const FormGeneratorFileListFormItem: React.FC = () => {
     }
   };
   return (
-    <Form.Item>
+    <>
       <Upload
         customRequest={({ file }) => handleUpload(file as File)}
         showUploadList={false}
@@ -78,6 +93,6 @@ export const FormGeneratorFileListFormItem: React.FC = () => {
           </List.Item>
         )}
       />
-    </Form.Item>
+    </>
   );
 };

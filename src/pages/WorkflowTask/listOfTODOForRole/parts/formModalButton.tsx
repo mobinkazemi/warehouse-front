@@ -16,6 +16,7 @@ import { FormOutlined } from "@ant-design/icons";
 import {
   FormFieldTypeEnum,
   IForm,
+  IFormField,
 } from "../../../Workflow/create/functions/form-fields-modal.function";
 import apiClient from "../../../../configs/axios.config";
 import { ColorPalletEnum } from "../../../../shared/enums/colorPallet.enum";
@@ -32,18 +33,18 @@ interface IProps {
 }
 
 export const FormModalButton: React.FC<IProps> = (data: IProps) => {
+  const [disableFormButtonAfterSubmit, setDisableFormButtonAfterSubmit] =
+    useState(false);
   const [form] = Form.useForm();
   const [formApiMethod, setFormApiMethod] = useState<
     "patch" | "post" | undefined
   >(undefined);
   const [formApiUrl, setFormApiUrl] = useState<string>("");
-  const [formType, setFormType] = useState<"create" | "update" | undefined>(
-    undefined
-  );
+
   const [visible, setVisible] = useState(false);
-  const [selectedFields, setSelectedFields] = useState<
-    Map<string, true> | undefined
-  >(undefined);
+  const [selectedFields, setSelectedFields] = useState<Map<string, true>>(
+    new Map()
+  );
 
   const showModal = () => {
     setVisible(true);
@@ -52,6 +53,8 @@ export const FormModalButton: React.FC<IProps> = (data: IProps) => {
   useEffect(() => {
     if (data?.fields) {
       setSelectedFields(new Map(data.fields.map((f) => [f.id, true])));
+      setFormApiMethod(data.id.api.method.toLowerCase() as "post");
+      setFormApiUrl(data.id.api.url.toLowerCase());
     }
   }, [data]);
 
@@ -59,10 +62,12 @@ export const FormModalButton: React.FC<IProps> = (data: IProps) => {
     apiClient[formApiMethod as "post"](formApiUrl, values)
       .then((res: any) => {
         message.success(res.data.message);
+        setDisableFormButtonAfterSubmit(true);
 
-        if (formType === "create") {
+        setTimeout(() => {
           setVisible(false);
-        }
+          form.resetFields();
+        }, 500);
       })
       .catch((err) => {
         message.error(err.response.data.message);
@@ -72,7 +77,12 @@ export const FormModalButton: React.FC<IProps> = (data: IProps) => {
   return (
     <>
       <Tooltip title="فرم مربوطه">
-        <Button type="default" icon={<FormOutlined />} onClick={showModal} />
+        <Button
+          disabled={disableFormButtonAfterSubmit}
+          type="default"
+          icon={<FormOutlined />}
+          onClick={showModal}
+        />
       </Tooltip>
       <Modal
         style={{ direction: "rtl" }}
@@ -115,30 +125,37 @@ export const FormModalButton: React.FC<IProps> = (data: IProps) => {
                   return selectedFields?.has(f.id);
                 })
                 .map((f) => {
-                  if (f.type === FormFieldTypeEnum.FILE) {
-                    console.log(f);
-                  }
+                  console.log(f.name);
+
                   return (
-                    <Row gutter={[16, 16]}>
+                    <Row gutter={[16, 16]} key={f.id}>
                       <Col span={5} style={{ textAlign: "right" }}>
                         <label>{f.label}:</label>
                       </Col>
                       <Col span={19}>
                         {f.type === FormFieldTypeEnum.DATE ? (
-                          <FormGeneratorDateListFormItem
-                            key={f.id}
-                            form={form}
-                            componentName={f.name}
-                            componentLabel={f.label}
-                          ></FormGeneratorDateListFormItem>
+                          <Form.Item name={f.name} key={f.id}>
+                            <FormGeneratorDateListFormItem
+                              key={f.id}
+                              form={form}
+                              componentName={f.name}
+                              componentLabel={f.label}
+                            ></FormGeneratorDateListFormItem>{" "}
+                          </Form.Item>
                         ) : f.type === FormFieldTypeEnum.FILE ? (
-                          <FormGeneratorFileListFormItem
-                            key={f.id}
-                          ></FormGeneratorFileListFormItem>
+                          <Form.Item name={f.name} key={f.id}>
+                            <FormGeneratorFileListFormItem
+                              form={form}
+                              name={f.name}
+                            ></FormGeneratorFileListFormItem>
+                          </Form.Item>
                         ) : f.relatedInstanceApi ? (
-                          <FormGeneratorDropdownWithApiFormItem
-                            {...f}
-                          ></FormGeneratorDropdownWithApiFormItem>
+                          <Form.Item name={f.name} key={f.id}>
+                            <FormGeneratorDropdownWithApiFormItem
+                              data={f}
+                              key={f.id}
+                            ></FormGeneratorDropdownWithApiFormItem>
+                          </Form.Item>
                         ) : (
                           <Form.Item<any> name={f.name} key={f.id}>
                             <Input />
