@@ -81,6 +81,9 @@ interface IBackendRoutes {
   forms: {
     list: IRoute;
   };
+  workflowTask: {
+    createFormData: IRoute;
+  };
 }
 
 export const BACKEND_ROUTES: IBackendRoutes = {
@@ -191,5 +194,11 @@ export const BACKEND_ROUTES: IBackendRoutes = {
   },
   forms: {
     list: { method: "get", url: "/form/list" },
+  },
+  workflowTask: {
+    createFormData: {
+      method: "post",
+      url: "/workflow-task/create-formData",
+    },
   },
 };

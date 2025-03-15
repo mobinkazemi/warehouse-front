@@ -23,6 +23,7 @@ import { ColorPalletEnum } from "../../../../shared/enums/colorPallet.enum";
 import { FormGeneratorDateListFormItem } from "../../../../components/form-items/dates-list-form-item.component";
 import { FormGeneratorFileListFormItem } from "../../../../components/form-items/file-form-item.component";
 import { FormGeneratorDropdownWithApiFormItem } from "../../../../components/form-items/dropdown-with-api-form-item.component";
+import { BACKEND_ROUTES } from "../../../../shared/backendRoutes";
 
 interface IProps {
   id: IForm;
@@ -30,8 +31,10 @@ interface IProps {
     id: string;
     required: boolean;
   }[];
+  taskId: string;
 }
-
+const { url: createFormDataUrl, method: createFormDataMethod } =
+  BACKEND_ROUTES.workflowTask.createFormData;
 export const FormModalButton: React.FC<IProps> = (data: IProps) => {
   const [disableFormButtonAfterSubmit, setDisableFormButtonAfterSubmit] =
     useState(false);
@@ -63,10 +66,20 @@ export const FormModalButton: React.FC<IProps> = (data: IProps) => {
       .then((res: any) => {
         message.success(res.data.message);
         setDisableFormButtonAfterSubmit(true);
+        apiClient[createFormDataMethod as "post"](createFormDataUrl, {
+          id: data.taskId,
+          data: res.data.data,
+        })
+          .then((res: any) => {
+            message.success(res.data.message);
+          })
+          .catch((err) => {
+            message.error(err.response.data.message);
+          });
 
         setTimeout(() => {
           setVisible(false);
-          form.resetFields();
+          setDisableFormButtonAfterSubmit(true);
         }, 500);
       })
       .catch((err) => {
