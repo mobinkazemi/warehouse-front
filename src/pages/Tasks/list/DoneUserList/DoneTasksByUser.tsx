@@ -38,7 +38,7 @@ interface APIData {
       partNumber: string;
       description: string;
       serialNumber: string;
-      code: string;
+      project: { id: string; name: string; code: string };
       id: string;
     }
   ];

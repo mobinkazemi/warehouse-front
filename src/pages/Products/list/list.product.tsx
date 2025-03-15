@@ -8,7 +8,7 @@ import { BACKEND_ROUTES } from "../../../shared/backendRoutes";
 interface DataType {
   id: React.Key;
   name: string;
-  code: string;
+  project: { id: string; name: string; code: string };
   status: "active" | "inactive";
 }
 
@@ -73,6 +73,7 @@ const ProductsListPage: React.FC = () => {
       setProductesListData(
         data.data.map((sw: any) => ({
           ...sw,
+          code: sw.project.code,
         }))
       );
     });

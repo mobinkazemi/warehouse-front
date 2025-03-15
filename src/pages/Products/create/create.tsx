@@ -26,6 +26,7 @@ type FieldType = {
   partNumber?: string;
   description?: string;
   serialNumber?: string;
+  project: string;
 };
 
 interface IProject {
@@ -214,9 +215,9 @@ const ProductCreationPage: React.FC = () => {
             </Col>
             <Col span={19}>
               <Form.Item
-                name="code"
+                name="project"
                 rules={[
-                  { required: true, message: "نوع محصول را وارد نمایید" },
+                  { required: true, message: "پروژه محصول را انتخاب کنید" },
                 ]}
                 style={{ marginBottom: "16px" }}
               >
@@ -231,7 +232,7 @@ const ProductCreationPage: React.FC = () => {
                     options={(projects || []).map((el) => {
                       return {
                         label: `${el.name} با کد ${el.code}`,
-                        value: el.code,
+                        value: el.id,
                       };
                     })}
                   />
