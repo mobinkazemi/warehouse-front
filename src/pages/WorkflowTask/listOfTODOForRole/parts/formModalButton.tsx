@@ -153,6 +153,7 @@ export const FormModalButton: React.FC<IProps> = (data: IProps) => {
                   return selectedFields?.has(f.id);
                 })
                 .map((f) => {
+                  console.log(f.name);
                   return (
                     <Row gutter={[16, 16]} key={f.id}>
                       <Col span={5} style={{ textAlign: "right" }}>
