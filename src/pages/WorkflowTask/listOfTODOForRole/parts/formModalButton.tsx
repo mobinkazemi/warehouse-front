@@ -59,6 +59,12 @@ export const FormModalButton: React.FC<IProps> = (data: IProps) => {
   };
 
   useEffect(() => {
+    if (data.wholeTask.formData) {
+      setViewData(data.wholeTask.formData);
+      form.setFieldsValue(data.wholeTask.formData);
+    }
+  }, []);
+  useEffect(() => {
     if (data?.fields) {
       setSelectedFields(new Map(data.fields.map((f) => [f.id, true])));
       setFormApiMethod(data.id.api.method.toLowerCase() as "post");
@@ -199,7 +205,9 @@ export const FormModalButton: React.FC<IProps> = (data: IProps) => {
                   htmlType="submit"
                   style={{
                     width: "30%",
-                    backgroundColor: ColorPalletEnum.Primary,
+                    backgroundColor: showViewOnly
+                      ? ColorPalletEnum.WhiteBackground
+                      : ColorPalletEnum.Primary,
                   }}
                 >
                   ثبت
