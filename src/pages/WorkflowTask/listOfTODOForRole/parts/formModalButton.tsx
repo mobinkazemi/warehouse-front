@@ -32,12 +32,16 @@ interface IProps {
     required: boolean;
   }[];
   taskId: string;
+  wholeTask: {
+    id: string;
+    formData: any;
+  };
 }
 const { url: createFormDataUrl, method: createFormDataMethod } =
   BACKEND_ROUTES.workflowTask.createFormData;
 export const FormModalButton: React.FC<IProps> = (data: IProps) => {
   const [disableFormButtonAfterSubmit, setDisableFormButtonAfterSubmit] =
-    useState(false);
+    useState(!!data.wholeTask.formData);
   const [form] = Form.useForm();
   const [formApiMethod, setFormApiMethod] = useState<
     "patch" | "post" | undefined
@@ -54,6 +58,7 @@ export const FormModalButton: React.FC<IProps> = (data: IProps) => {
   };
 
   useEffect(() => {
+    console.log(data.wholeTask);
     if (data?.fields) {
       setSelectedFields(new Map(data.fields.map((f) => [f.id, true])));
       setFormApiMethod(data.id.api.method.toLowerCase() as "post");
