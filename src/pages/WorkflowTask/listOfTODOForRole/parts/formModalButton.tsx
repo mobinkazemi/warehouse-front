@@ -12,7 +12,7 @@ import {
   Row,
   Col,
 } from "antd";
-import { FormOutlined } from "@ant-design/icons";
+import { FormOutlined, EyeOutlined } from "@ant-design/icons";
 import {
   FormFieldTypeEnum,
   IForm,
@@ -24,6 +24,7 @@ import { FormGeneratorDateListFormItem } from "../../../../components/form-items
 import { FormGeneratorFileListFormItem } from "../../../../components/form-items/file-form-item.component";
 import { FormGeneratorDropdownWithApiFormItem } from "../../../../components/form-items/dropdown-with-api-form-item.component";
 import { BACKEND_ROUTES } from "../../../../shared/backendRoutes";
+import { Store } from "antd/es/form/interface";
 
 interface IProps {
   id: IForm;
@@ -40,8 +41,8 @@ interface IProps {
 const { url: createFormDataUrl, method: createFormDataMethod } =
   BACKEND_ROUTES.workflowTask.createFormData;
 export const FormModalButton: React.FC<IProps> = (data: IProps) => {
-  const [disableFormButtonAfterSubmit, setDisableFormButtonAfterSubmit] =
-    useState(!!data.wholeTask.formData);
+  const [showViewOnly, setShowViewOnly] = useState(!!data.wholeTask.formData);
+  const [viewData, setViewData] = useState<object>();
   const [form] = Form.useForm();
   const [formApiMethod, setFormApiMethod] = useState<
     "patch" | "post" | undefined
@@ -58,7 +59,6 @@ export const FormModalButton: React.FC<IProps> = (data: IProps) => {
   };
 
   useEffect(() => {
-    console.log(data.wholeTask);
     if (data?.fields) {
       setSelectedFields(new Map(data.fields.map((f) => [f.id, true])));
       setFormApiMethod(data.id.api.method.toLowerCase() as "post");
@@ -70,13 +70,24 @@ export const FormModalButton: React.FC<IProps> = (data: IProps) => {
     apiClient[formApiMethod as "post"](formApiUrl, values)
       .then((res: any) => {
         message.success(res.data.message);
-        setDisableFormButtonAfterSubmit(true);
+        setShowViewOnly(true);
         apiClient[createFormDataMethod as "post"](createFormDataUrl, {
           id: data.taskId,
           data: res.data.data,
         })
           .then((res: any) => {
             message.success(res.data.message);
+            setViewData(res.data.data);
+
+            const fieldValues: { name: string; value: string }[] = [];
+
+            if (res?.data?.data) {
+              for (let key in res.data.data) {
+                fieldValues.push({ name: key, value: res.data.data[key] });
+              }
+
+              form.setFieldsValue(res.data.data);
+            }
           })
           .catch((err) => {
             message.error(err.response.data.message);
@@ -84,7 +95,7 @@ export const FormModalButton: React.FC<IProps> = (data: IProps) => {
 
         setTimeout(() => {
           setVisible(false);
-          setDisableFormButtonAfterSubmit(true);
+          setShowViewOnly(true);
         }, 500);
       })
       .catch((err) => {
@@ -96,9 +107,8 @@ export const FormModalButton: React.FC<IProps> = (data: IProps) => {
     <>
       <Tooltip title="فرم مربوطه">
         <Button
-          disabled={disableFormButtonAfterSubmit}
           type="default"
-          icon={<FormOutlined />}
+          icon={showViewOnly ? <EyeOutlined /> : <FormOutlined />}
           onClick={showModal}
         />
       </Tooltip>
@@ -143,8 +153,6 @@ export const FormModalButton: React.FC<IProps> = (data: IProps) => {
                   return selectedFields?.has(f.id);
                 })
                 .map((f) => {
-                  console.log(f.name);
-
                   return (
                     <Row gutter={[16, 16]} key={f.id}>
                       <Col span={5} style={{ textAlign: "right" }}>
@@ -185,6 +193,7 @@ export const FormModalButton: React.FC<IProps> = (data: IProps) => {
                 })}
               <Form.Item style={{ textAlign: "center" }}>
                 <Button
+                  disabled={showViewOnly}
                   size="large"
                   type="primary"
                   htmlType="submit"
