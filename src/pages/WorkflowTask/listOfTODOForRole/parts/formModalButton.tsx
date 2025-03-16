@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import {
   Button,
   Modal,
-  Typography,
   Tooltip,
   Form,
   Input,
@@ -16,7 +15,6 @@ import { FormOutlined, EyeOutlined } from "@ant-design/icons";
 import {
   FormFieldTypeEnum,
   IForm,
-  IFormField,
 } from "../../../Workflow/create/functions/form-fields-modal.function";
 import apiClient from "../../../../configs/axios.config";
 import { ColorPalletEnum } from "../../../../shared/enums/colorPallet.enum";
@@ -24,7 +22,6 @@ import { FormGeneratorDateListFormItem } from "../../../../components/form-items
 import { FormGeneratorFileListFormItem } from "../../../../components/form-items/file-form-item.component";
 import { FormGeneratorDropdownWithApiFormItem } from "../../../../components/form-items/dropdown-with-api-form-item.component";
 import { BACKEND_ROUTES } from "../../../../shared/backendRoutes";
-import { Store } from "antd/es/form/interface";
 
 interface IProps {
   id: IForm;
@@ -42,7 +39,6 @@ const { url: createFormDataUrl, method: createFormDataMethod } =
   BACKEND_ROUTES.workflowTask.createFormData;
 export const FormModalButton: React.FC<IProps> = (data: IProps) => {
   const [showViewOnly, setShowViewOnly] = useState(!!data.wholeTask.formData);
-  const [viewData, setViewData] = useState<object>();
   const [form] = Form.useForm();
   const [formApiMethod, setFormApiMethod] = useState<
     "patch" | "post" | undefined
@@ -60,7 +56,6 @@ export const FormModalButton: React.FC<IProps> = (data: IProps) => {
 
   useEffect(() => {
     if (data.wholeTask.formData) {
-      setViewData(data.wholeTask.formData);
       form.setFieldsValue(data.wholeTask.formData);
     }
   }, []);
@@ -83,7 +78,6 @@ export const FormModalButton: React.FC<IProps> = (data: IProps) => {
         })
           .then((res: any) => {
             message.success(res.data.message);
-            setViewData(res.data.data);
 
             const fieldValues: { name: string; value: string }[] = [];
 
