@@ -26,7 +26,7 @@ interface IFieldType {
   starterRoles: string[];
 }
 
-const { url: roleListUrl, method: roleListMethod } = BACKEND_ROUTES.role.list;
+const { url: roleListUrl, method: roleListMethod } = BACKEND_ROUTES.role.list; 
 
 export const ShowFirstCreationStep: React.FC<IProps> = ({ onFinish }) => {
   const [form] = Form.useForm();

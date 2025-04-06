@@ -15,6 +15,7 @@ interface DataType {
 }
 
 const { url: listUrl, method: listMethod } = BACKEND_ROUTES.workflow.list;
+
 const WorkflowListPage: React.FC = () => {
   const [projectesListData, setProjectesListData] = useState<DataType[]>([]);
   const [deletedProject, setDeletedProject] = useState<number[]>([]);
@@ -57,7 +58,7 @@ const WorkflowListPage: React.FC = () => {
     },
   ];
 
-  useEffect(() => {
+  useEffect(() => { 
     apiClient[listMethod](listUrl).then(({ data }) => {
       setProjectesListData(
         data.data.map((sw: any) => ({

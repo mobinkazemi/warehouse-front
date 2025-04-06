@@ -19,10 +19,11 @@ const LoginPage: React.FC = () => {
   const navigator = useNavigate();
 
   const onFinish: FormProps<FieldType>["onFinish"] = async (values: any) => {
+    console.log(values)
     const response = await loginUser(values);
     console.log(response);
     if (response.result) {
-      localStorage.setItem(TOKEN_KEY_ENUM.ACCESS, response.token as string);
+      localStorage.setItem(TOKEN_KEY_ENUM.ACCESS, response.token as string); 
 
       const thisRole = await getMyRole();
       localStorage.setItem(ROLE_LOCAL_STORAGE_ENUM.ROLE, thisRole.role);

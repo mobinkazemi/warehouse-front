@@ -6,7 +6,7 @@ export const setId = ({ id, url }: { id: string | number; url: string }) => {
 export interface IRoute {
   method: methods;
   url: string;
-}
+} 
 
 interface IBackendRoutes {
   auth: {

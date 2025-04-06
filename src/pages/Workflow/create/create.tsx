@@ -102,6 +102,7 @@ const WorkflowCreationPage: React.FC = () => {
       message.error(response.message);
     }
   };
+
   if (showFirstStep) {
     return <ShowFirstCreationStep onFinish={onFinishFirstStep} />;
   }

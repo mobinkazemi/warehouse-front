@@ -28,7 +28,7 @@ interface IFieldType {
   relatedForm: string;
 }
 
-export enum Workflow_Step_Type_Enum {
+export enum Workflow_Step_Type_Enum { 
   START = "START",
   END = "END",
   TODO = "TODO",
@@ -61,7 +61,7 @@ export const ShowSecondCreationStep: React.FC<IProps> = ({
   ]);
 
   useEffect(() => {
-    apiClient[formListMethod](formListUrl)
+    apiClient[formListMethod](formListUrl) 
       .then(({ data }) => {
         setDbForms(data.data);
         setForms(
@@ -242,6 +242,7 @@ export const ShowSecondCreationStep: React.FC<IProps> = ({
                   >
                     ثبت و پایان{" "}
                   </Button>
+
                   <Button
                     onClick={() => setIsContinue(true)}
                     size="large"

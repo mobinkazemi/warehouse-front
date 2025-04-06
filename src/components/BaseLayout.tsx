@@ -99,6 +99,9 @@ const BaseLayout: React.FC = () => {
       case ROUTES_ENUM.WORKFLOW_START_ROLE_LIST:
         navigator(ROUTES_ENUM.WORKFLOW_START_ROLE_LIST);
         break;
+      case ROUTES_ENUM.WORKFLOW_STEPS:
+        navigator(ROUTES_ENUM.WORKFLOW_STEPS);
+        break;
     }
   };
   return (

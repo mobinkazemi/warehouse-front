@@ -3,7 +3,7 @@ import { v4 } from "uuid";
 import { TOKEN_KEY_ENUM } from "../shared/enums/token.enum";
 import { ROUTES_ENUM } from "../shared/enums/routes.enum";
 
-export const BASE_BACKEND_URL = "http://localhost:8000";
+export const BASE_BACKEND_URL = "http://172.17.17.234:8000";
 const apiClient = axios.create({
   baseURL: BASE_BACKEND_URL,
   headers: {

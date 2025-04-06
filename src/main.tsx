@@ -22,6 +22,7 @@ import WorkflowCreationPage from "./pages/Workflow/create/create";
 import ListOfAvailableWorkflowsToStartPage from "./pages/Workflow/listOfAvailableToStart/listOfAvailableWorkflowsToStart";
 import { ListOfToDoTasksForRole } from "./pages/WorkflowTask/listOfTODOForRole/todoRoleList";
 import DoneByMyUserList from "./pages/WorkflowTask/listOfDoneByUser/DoneTasksByUser";
+import StepsPage from "./pages/Workflow/steps-page";
 const router = createBrowserRouter([
   {
     path: ROUTES_ENUM.HOME, // Base path
@@ -134,6 +135,12 @@ const router = createBrowserRouter([
         path: ROUTES_ENUM.WORKFLOW_START_ROLE_LIST,
         element: (
           <ListOfAvailableWorkflowsToStartPage></ListOfAvailableWorkflowsToStartPage>
+        ),
+      },
+      {
+        path: ROUTES_ENUM.WORKFLOW_STEPS,
+        element: (
+          <StepsPage />
         ),
       },
       //

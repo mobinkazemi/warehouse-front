@@ -59,6 +59,7 @@ function convertToAntDesignChart(workflow: IWorkflow) {
 
   return buildStepTree(rootStep);
 }
+
 export const ViewStepsButton: React.FC<IProps> = ({ steps }: IProps) => {
   const [visible, setVisible] = useState(false);
   const [data, setData] = useState<IChartData | undefined>(undefined);
