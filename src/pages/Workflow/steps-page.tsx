@@ -1,132 +1,445 @@
-import { useCallback, useEffect, useState } from "react";
-
-import {
-  Background,
-  Controls,
-  Handle,
-  ReactFlow,
-  addEdge,
-  useEdgesState,
-  useNodesState,
-} from "@xyflow/react";
-import "@xyflow/react/dist/style.css";
 import { TOKEN_KEY_ENUM } from "../../shared/enums/token.enum";
 
-// import { edgesMocks, nodeMocks } from "./service";
+import { useCallback, useEffect, useState } from "react";
 
-const TodoNode = ({ data }) => {
-  return (
-    <div
-      style={{
-        padding: 10,
-        border: "2px solid #ff0072",
-        borderRadius: 5,
-        background: "#fff",
-        minWidth: 150,
-        textAlign: "center",
-      }}
-    >
-      <Handle type="target" position="top" style={{ background: "#555" }} />
+import dagre from "@dagrejs/dagre";
+import {
+  Background,
+  Panel,
+  ReactFlow,
+  addEdge,
+  applyEdgeChanges,
+  applyNodeChanges,
+} from "@xyflow/react";
+import "@xyflow/react/dist/style.css";
+import { Plus } from "lucide-react";
 
-      <strong>{data.label}</strong>
+import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
+import {
+  Dialog,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { useParams } from "react-router-dom";
 
-      {data.formFields && (
-        <div style={{ marginTop: 5 }}>
-          <p>Form Fields:</p>
-          <ul style={{ listStyle: "none", padding: 0 }}>
-            {data.formFields.map((field, index) => (
-              <li key={index}>
-                {field.id} ({field.required ? "Required" : "Optional"})
-              </li>
-            ))}
-          </ul>
-        </div>
-      )}
+function Dashboard() {
+  const [nodes, setNodes] = useState([]);
+  const [edges, setEdges] = useState([]);
+  const [showModal, setShowModal] = useState(false);
+  const [showEdgeModal, setShowEdgeModal] = useState(false);
+  const [pendingEdge, setPendingEdge] = useState(null);
 
-      <Handle type="source" position="bottom" style={{ background: "#555" }} />
-    </div>
-  );
-};
+  const [stepName, setStepName] = useState("");
+  const [stepType, setStepType] = useState("");
+  const [roles, setRoles] = useState([]);
+  const [selectedRoleId, setSelectedRoleId] = useState("");
+  const [forms, setForms] = useState([]);
+  const [selectedFormId, setSelectedFormId] = useState("");
+  const [availableFields, setAvailableFields] = useState([]);
+  const [selectedFields, setSelectedFields] = useState({});
+  const [edgeMode, setEdgeMode] = useState("any");
 
-const nodeTypes = {
-  todo: TodoNode,
-};
+  const { workflowId } = useParams();
 
-const Workflow = () => {
-  const [elements, setElements] = useState({ nodes: [], edges: [] });
+  const token = localStorage.getItem("access_token");
 
-  // تابع برای گرفتن داده‌ها از API
-  const fetchWorkflowData = async () => {
-    const token = localStorage.getItem(TOKEN_KEY_ENUM.ACCESS);
-    try {
-      const response = await fetch(
-        "http://172.17.17.234:8000/workflow/byId/67f27c22e22df7b61c320206",
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      ); // آدرس API خودت
-      const data = await response.json(); // فرضاً آرایه‌ای از نودها
-      const nodes = [];
-      const edges = [];
+  const nodeWidth = 172;
+  const nodeHeight = 36;
 
-      // تبدیل دیتا به نودها و لبه‌ها
-      data.data.steps.forEach((item, index) => {
-        // ساخت نود
-        nodes.push({
-          id: item.order.toString(),
-          type: item.type.toLowerCase() === "todo" ? "todo" : "default", // نوع نود
-          data: {
-            label: `${item.name} (${item.type})`,
-            formFields: item.relatedForm?.fields?.map((field) => ({
-              id: field.id.$oid,
-              required: field.required,
-            })),
-          },
-          position: { x: index * 200, y: 100 }, // فاصله بیشتر برای نودهای بزرگ‌تر
-        });
+  const getLayoutedElements = (nodes, edges, direction = "LR") => {
+    const dagreGraph = new dagre.graphlib.Graph();
+    dagreGraph.setDefaultEdgeLabel(() => ({}));
 
-        // ساخت لبه‌ها بر اساس next
-        if (item.next && item.next.conditions) {
-          item.next.conditions.forEach((condition) => {
-            edges.push({
-              id: `e${item.order}-${condition.forStepNumber}`,
-              source: item.order.toString(),
-              target: condition.forStepNumber.toString(),
-              label: condition.forStatus, // مثلاً "approve"
-            });
-          });
-        }
-      });
+    const isHorizontal = direction === "LR";
+    dagreGraph.setGraph({ rankdir: direction });
 
-      setElements({ nodes, edges });
-    } catch (error) {
-      console.error("خطا در گرفتن داده‌ها:", error);
-    }
+    nodes.forEach((node) => {
+      dagreGraph.setNode(node.id, { width: nodeWidth, height: nodeHeight });
+    });
+
+    edges.forEach((edge) => {
+      dagreGraph.setEdge(edge.source, edge.target);
+    });
+
+    dagre.layout(dagreGraph);
+
+    const layoutedNodes = nodes.map((node) => {
+      const nodeWithPosition = dagreGraph.node(node.id);
+      node.targetPosition = isHorizontal ? "left" : "top";
+      node.sourcePosition = isHorizontal ? "right" : "bottom";
+
+      return {
+        ...node,
+        position: {
+          x: nodeWithPosition.x - nodeWidth / 2,
+          y: nodeWithPosition.y - nodeHeight / 2,
+        },
+      };
+    });
+
+    return { nodes: layoutedNodes, edges };
   };
 
   useEffect(() => {
-    fetchWorkflowData();
+    fetch("http://192.168.11.14:8000/form/list", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => setForms(data.data));
+
+    fetch("http://192.168.11.14:8000/role/list", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then((res) => res.json())
+      .then((data) => setRoles(data.data));
+
+    fetch(`http://192.168.11.14:8000/workflow/byId/${workflowId}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        const loadedNodes = data.data.steps.map((step) => ({
+          id: `${step.order}`,
+          data: { label: step.name },
+          position: { x: 0, y: 0 },
+          stepData: step,
+        }));
+
+        const loadedEdges = [];
+        data.data.steps.forEach((step) => {
+          step.next?.conditions?.forEach((cond) => {
+            if (cond.forStepNumber) {
+              loadedEdges.push({
+                id: `${step.order}-${cond.forStepNumber}-${cond.forStatus}`,
+                source: `${step.order}`,
+                target: `${cond.forStepNumber}`,
+                label: cond.forStatus || "any",
+                data: {
+                  roleId: cond.forRole,
+                },
+              });
+            }
+          });
+        });
+
+        const { nodes: layoutedNodes, edges: layoutedEdges } =
+          getLayoutedElements(loadedNodes, loadedEdges);
+        setNodes(layoutedNodes);
+        setEdges(layoutedEdges);
+      });
   }, []);
 
+  const handleFormChange = (value) => {
+    setSelectedFormId(value);
+
+    const form = forms.find((form) => form.id === value);
+
+    setAvailableFields(form.fields);
+
+    const defaults = {};
+
+    form.fields.forEach((field) => {
+      if (field.required)
+        defaults[field.id] = { required: true, disabled: true };
+    });
+
+    setSelectedFields(defaults);
+  };
+
+  const handleFieldToggle = (fieldId) => {
+    setSelectedFields((prev) => {
+      const updated = { ...prev };
+
+      if (updated[fieldId]) {
+        delete updated[fieldId];
+      } else {
+        updated[fieldId] = { required: false };
+      }
+
+      return updated;
+    });
+  };
+
+  const handleFieldRequiredChange = (fieldId, value) => {
+    setSelectedFields((prev) => ({
+      ...prev,
+      [fieldId]: { ...prev[fieldId], required: value === "true" },
+    }));
+  };
+
+  const handleAddStep = async () => {
+    const relatedForm = {
+      id: selectedFormId,
+      fields: Object.entries(selectedFields).map(([id, config]) => ({
+        id,
+        required: config.required,
+      })),
+    };
+
+    const newStep = {
+      workflowId,
+      order: nodes.length + 1,
+      name: stepName,
+      type: stepType,
+      relatedForm,
+      // next: { conditions: [] },
+    };
+
+    // Send to server
+    await fetch("http://192.168.11.14:8000/workflow/create-step", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(newStep),
+    });
+
+    const newNode = {
+      id: `${newStep.order}`,
+      data: { label: newStep.name },
+      position: { x: Math.random() * 400, y: Math.random() * 400 },
+    };
+
+    setNodes((nds) => [...nds, newNode]);
+    setShowModal(false);
+    setStepName("");
+  };
+
+  const onConnect = useCallback((params) => {
+    setPendingEdge(params);
+    setShowEdgeModal(true);
+  }, []);
+
+  const confirmEdge = async () => {
+    const sourceNode = nodes.find((n) => n.id === pendingEdge.source);
+    const sourceStep = sourceNode.stepData;
+
+    const newCondition = {
+      forStatus: edgeMode,
+      forStepNumber: parseInt(pendingEdge.target),
+      forRole: selectedRoleId,
+    };
+
+    const updatedStep = {
+      workflowId,
+      ...sourceStep,
+      stepNumber: sourceStep.order,
+      next: {
+        ...sourceStep.next,
+        conditions: [...(sourceStep.next?.conditions || []), newCondition],
+      },
+    };
+
+    await fetch(`http://192.168.11.14:8000/workflow/create-step-conditions`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(updatedStep),
+    });
+
+    setEdges((eds) => addEdge({ ...pendingEdge, label: edgeMode }, eds));
+
+    setNodes((nds) =>
+      nds.map((n) =>
+        n.id === sourceNode.id ? { ...n, stepData: updatedStep } : n
+      )
+    );
+
+    setPendingEdge(null);
+    setShowEdgeModal(false);
+  };
+
   return (
-    <div style={{ height: "100vh" }}>
+    <div className="h-full">
       <ReactFlow
-        nodes={elements.nodes}
-        edges={elements.edges}
-        nodeTypes={nodeTypes}
         fitView
+        nodes={nodes}
+        edges={edges}
+        onNodesChange={(changes) =>
+          setNodes((nds) => applyNodeChanges(changes, nds))
+        }
+        onEdgesChange={(changes) =>
+          setEdges((eds) => applyEdgeChanges(changes, eds))
+        }
+        onConnect={onConnect}
       >
         <Background />
-        <Controls />
+
+        <Panel position="bottom-left">
+          <Button size="icon" onClick={() => setShowModal(true)}>
+            <Plus />
+          </Button>
+        </Panel>
       </ReactFlow>
+
+      <Dialog open={showModal} onOpenChange={setShowModal}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>افزودن مرحله جدید</DialogTitle>
+          </DialogHeader>
+
+          <div className="grid gap-4 py-4">
+            <div className="space-y-2">
+              <Label>نام مرحله</Label>
+
+              <Input
+                value={stepName}
+                onChange={(e) => setStepName(e.target.value)}
+              />
+            </div>
+
+            <div className="space-y-2">
+              <Label>نوع مرحله</Label>
+
+              <Select value={stepType} onValueChange={setStepType}>
+                <SelectTrigger className="w-full">
+                  <SelectValue placeholder="نوع" />
+                </SelectTrigger>
+
+                <SelectContent>
+                  <SelectItem value="START">شروع</SelectItem>
+                  <SelectItem value="TODO">وظیفه</SelectItem>
+                  <SelectItem value="END">پایان</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+
+            <div className="space-y-2">
+              <Label>فرم مرتبط</Label>
+
+              <Select value={selectedFormId} onValueChange={handleFormChange}>
+                <SelectTrigger className="w-full">
+                  <SelectValue placeholder="فرم مرتبط" />
+                </SelectTrigger>
+
+                <SelectContent>
+                  {forms.map((form) => (
+                    <SelectItem key={form.id} value={form.id}>
+                      {form.name}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+
+            {availableFields.length > 0 && (
+              <div className="space-y-2">
+                <Label>فیلدها</Label>
+
+                {availableFields.map((field) => (
+                  <div key={field.id} className="flex items-center gap-4">
+                    <Checkbox
+                      checked={!!selectedFields[field.id]}
+                      onCheckedChange={() => handleFieldToggle(field.id)}
+                      disabled={field.required}
+                    />
+
+                    <label>{field.label}</label>
+
+                    {selectedFields[field.id] && !field.required && (
+                      <Select
+                        value={
+                          selectedFields[field.id].required ? "true" : "false"
+                        }
+                        onValueChange={(val) =>
+                          handleFieldRequiredChange(field.id, val)
+                        }
+                      >
+                        <SelectTrigger>
+                          <SelectValue />
+                        </SelectTrigger>
+
+                        <SelectContent>
+                          <SelectItem value="false">اختیاری</SelectItem>
+                          <SelectItem value="true">اجباری</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    )}
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+
+          <DialogFooter>
+            <Button onClick={handleAddStep}>ذخیره مرحله</Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      <Dialog open={showEdgeModal} onOpenChange={setShowEdgeModal}>
+        <DialogContent className="max-w-md">
+          <DialogHeader>
+            <DialogTitle>تنظیم ارتباط</DialogTitle>
+          </DialogHeader>
+
+          <div className="space-y-4">
+            <div className="space-y-2">
+              <Label>وضعیت</Label>
+
+              <Select value={edgeMode} onValueChange={setEdgeMode}>
+                <SelectTrigger className="w-full">
+                  <SelectValue placeholder="وضعیت" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="any">Any</SelectItem>
+                  <SelectItem value="approve">Approve</SelectItem>
+                  <SelectItem value="reject">Reject</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+
+            <div className="space-y-2">
+              <Label>نقش</Label>
+
+              <Select value={selectedRoleId} onValueChange={setSelectedRoleId}>
+                <SelectTrigger className="w-full">
+                  <SelectValue placeholder="انتخاب نقش" />
+                </SelectTrigger>
+
+                <SelectContent>
+                  {roles.map((role) => (
+                    <SelectItem key={role.id} value={role.id}>
+                      {role.name}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+          </div>
+
+          <DialogFooter>
+            <Button onClick={confirmEdge}>ثبت ارتباط</Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
-};
+}
 
 function StepsPage() {
-  return <Workflow />;
+  return <Dashboard />;
 }
 
 export default StepsPage;

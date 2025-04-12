@@ -5,6 +5,7 @@ import { useEffect, useState, useCallback } from "react";
 import { Dendrogram, G6 } from "@ant-design/graphs";
 import React from "react";
 import { v4 } from "uuid";
+import { useNavigate } from "react-router-dom";
 
 interface IProps {
   steps: IWorkflowStep[];
@@ -65,6 +66,8 @@ export const ViewStepsButton: React.FC<IProps> = ({ steps }: IProps) => {
   const [data, setData] = useState<IChartData | undefined>(undefined);
   const [isDataReady, setIsDataReady] = useState(false);
 
+  const navigate = useNavigate()
+
   useEffect(() => {
     let workflow = {
       name: "workflow",
@@ -95,7 +98,7 @@ export const ViewStepsButton: React.FC<IProps> = ({ steps }: IProps) => {
   return (
     <>
       <Tooltip title="مشاهده روند ها">
-        <Button type="default" icon={<EyeOutlined />} onClick={showModal} />
+        <Button type="default" icon={<EyeOutlined />} onClick={() => navigate(``)} />
       </Tooltip>
       <Modal
         title="مشاهده روند ها"

@@ -1,11 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { Space, Table } from "antd";
 import { DeleteButton } from "./parts/DeleteButton";
-import { EditButton } from "./parts/EditButton";
+// import { EditButton } from "./parts/EditButton";
 import apiClient from "../../../configs/axios.config";
 import { BACKEND_ROUTES } from "../../../shared/backendRoutes";
 import { IWorkflowStep } from "../workflow.interface";
-import { ViewStepsButton } from "./parts/view-steps";
+// import { ViewStepsButton } from "./parts/view-steps";
+import { EyeOutlined } from "@ant-design/icons";
+import { Button } from "antd";
+import { useNavigate } from "react-router-dom";
+
 
 interface DataType {
   id: React.Key;
@@ -19,6 +23,8 @@ const { url: listUrl, method: listMethod } = BACKEND_ROUTES.workflow.list;
 const WorkflowListPage: React.FC = () => {
   const [projectesListData, setProjectesListData] = useState<DataType[]>([]);
   const [deletedProject, setDeletedProject] = useState<number[]>([]);
+
+  const navigate = useNavigate()
 
   const columns = [
     {
@@ -35,7 +41,9 @@ const WorkflowListPage: React.FC = () => {
       render: (_: any, record: DataType) => {
         return (
           <Space>
-            <ViewStepsButton steps={record.steps}></ViewStepsButton>
+            {/* <ViewStepsButton steps={record.steps}></ViewStepsButton> */}
+
+            <Button type="default" icon={<EyeOutlined />} onClick={() => navigate(`/workflow/steps/${record.id}`)} />
           </Space>
         );
       },
