@@ -12,7 +12,7 @@ import {
   applyNodeChanges,
 } from "@xyflow/react";
 import "@xyflow/react/dist/style.css";
-import { Plus } from "lucide-react";
+import { CloudCog, Plus } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -51,7 +51,10 @@ function Dashboard() {
   const [availableFields, setAvailableFields] = useState([]);
   const [selectedFields, setSelectedFields] = useState({});
   const [edgeMode, setEdgeMode] = useState("any");
-  
+
+  const [steps, setSteps] = useState([]);
+  const [selectedEditId, setSelectedEditId] = useState("");
+
   const { workflowId } = useParams();
 
   const token = localStorage.getItem("access_token");
@@ -117,6 +120,8 @@ function Dashboard() {
     })
       .then((res) => res.json())
       .then((data) => {
+        setSteps(data.data.steps);
+
         const loadedNodes = data.data.steps.map((step) => ({
           id: `${step.order}`,
           data: { label: step.name },
@@ -201,6 +206,7 @@ function Dashboard() {
       name: stepName,
       type: stepType,
       relatedForm,
+      stepOrderToFillFormWith: selectedEditId,
       // next: { conditions: [] },
     };
 
@@ -381,6 +387,27 @@ function Dashboard() {
                 ))}
               </div>
             )}
+
+            <div className="space-y-2">
+              <Label>ویرایش مرحله ی</Label>
+
+              <Select
+                value={selectedEditId}
+                onValueChange={(value) => setSelectedEditId(value)}
+              >
+                <SelectTrigger className="w-full">
+                  <SelectValue placeholder="ویرایش مرحله ی" />
+                </SelectTrigger>
+
+                <SelectContent>
+                  {steps.map((step) => (
+                    <SelectItem key={step.order} value={step.order}>
+                      {step.name}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
           </div>
 
           <DialogFooter>
