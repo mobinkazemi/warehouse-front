@@ -27,6 +27,7 @@ interface DataType {
     fields: { id: string; required: boolean }[];
   };
   formData?: any;
+  fillFormWith?: string;
 }
 
 interface APIData {
@@ -45,6 +46,7 @@ interface APIData {
     fields: { id: string; required: boolean }[];
   };
   formData: any;
+  fillFormWith?: string;
 }
 
 const { url: todoListUrl, method: todoListMethod } =
@@ -148,6 +150,7 @@ export const ListOfToDoTasksForRole: React.FC = () => {
               perviousTask: item.perviousTask,
               relatedForm: item.relatedForm,
               formData: item.formData,
+              fillFormWith: item.fillFormWith,
             };
           })
         );

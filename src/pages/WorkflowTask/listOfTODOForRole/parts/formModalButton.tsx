@@ -33,6 +33,7 @@ interface IProps {
   wholeTask: {
     id: string;
     formData: any;
+    fillFormWith?: string;
   };
 }
 const { url: createFormDataUrl, method: createFormDataMethod } =
@@ -55,15 +56,30 @@ export const FormModalButton: React.FC<IProps> = (data: IProps) => {
   };
 
   useEffect(() => {
+    if (data.id.readApi) {
+      apiClient
+        .get(data.id.readApi.url.replace(":id", data.wholeTask.fillFormWith))
+        .then((res) => form.setFieldsValue(res.data.data));
+
+      setFormApiUrl(
+        data.id.api.url
+          .toLowerCase()
+          .replace(":id", data.wholeTask.fillFormWith)
+      );
+    } else {
+      setFormApiUrl(data.id.api.url.toLowerCase());
+    }
+
     if (data.wholeTask.formData) {
       form.setFieldsValue(data.wholeTask.formData);
     }
   }, []);
+
   useEffect(() => {
     if (data?.fields) {
       setSelectedFields(new Map(data.fields.map((f) => [f.id, true])));
       setFormApiMethod(data.id.api.method.toLowerCase() as "post");
-      setFormApiUrl(data.id.api.url.toLowerCase());
+      // setFormApiUrl(data.id.api.url.toLowerCase());
     }
   }, [data]);
 

@@ -55,6 +55,8 @@ function Dashboard() {
   const [steps, setSteps] = useState([]);
   const [selectedEditId, setSelectedEditId] = useState("");
 
+  const [show, setShow] = useState(false);
+
   const { workflowId } = useParams();
 
   const token = localStorage.getItem("access_token");
@@ -158,6 +160,12 @@ function Dashboard() {
 
     const form = forms.find((form) => form.id === value);
 
+    if (form.type == "update") {
+      setShow(true);
+    } else {
+      setShow(false);
+    }
+
     setAvailableFields(form.fields);
 
     const defaults = {};
@@ -200,15 +208,28 @@ function Dashboard() {
       })),
     };
 
-    const newStep = {
-      workflowId,
-      order: nodes.length + 1,
-      name: stepName,
-      type: stepType,
-      relatedForm,
-      stepOrderToFillFormWith: selectedEditId,
-      // next: { conditions: [] },
-    };
+    let newStep;
+    if (+selectedEditId != 0) {
+      newStep = {
+        workflowId,
+        order: nodes.length + 1,
+        name: stepName,
+        type: stepType,
+        relatedForm,
+        stepOrderToFillFormWith: +selectedEditId,
+        // next: { conditions: [] },
+      };
+    } else {
+      newStep = {
+        workflowId,
+        order: nodes.length + 1,
+        name: stepName,
+        type: stepType,
+        relatedForm,
+        // stepOrderToFillFormWith: +selectedEditId,
+        // next: { conditions: [] },
+      };
+    }
 
     // Send to server
     await fetch(`${BASE_BACKEND_URL}/workflow/create-step`, {
@@ -388,26 +409,28 @@ function Dashboard() {
               </div>
             )}
 
-            <div className="space-y-2">
-              <Label>ویرایش مرحله ی</Label>
+            {show && (
+              <div className="space-y-2">
+                <Label>ویرایش مرحله ی</Label>
 
-              <Select
-                value={selectedEditId}
-                onValueChange={(value) => setSelectedEditId(value)}
-              >
-                <SelectTrigger className="w-full">
-                  <SelectValue placeholder="ویرایش مرحله ی" />
-                </SelectTrigger>
+                <Select
+                  value={selectedEditId}
+                  onValueChange={(value) => setSelectedEditId(value)}
+                >
+                  <SelectTrigger className="w-full">
+                    <SelectValue placeholder="ویرایش مرحله ی" />
+                  </SelectTrigger>
 
-                <SelectContent>
-                  {steps.map((step) => (
-                    <SelectItem key={step.order} value={step.order}>
-                      {step.name}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
+                  <SelectContent>
+                    {steps.map((step) => (
+                      <SelectItem key={step.order} value={step.order}>
+                        {step.name}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+            )}
           </div>
 
           <DialogFooter>
