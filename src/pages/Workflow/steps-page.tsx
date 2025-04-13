@@ -33,6 +33,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useParams } from "react-router-dom";
+import { BASE_BACKEND_URL } from "@/configs/axios.config";
 
 function Dashboard() {
   const [nodes, setNodes] = useState([]);
@@ -50,7 +51,7 @@ function Dashboard() {
   const [availableFields, setAvailableFields] = useState([]);
   const [selectedFields, setSelectedFields] = useState({});
   const [edgeMode, setEdgeMode] = useState("any");
-
+  
   const { workflowId } = useParams();
 
   const token = localStorage.getItem("access_token");
@@ -93,7 +94,7 @@ function Dashboard() {
   };
 
   useEffect(() => {
-    fetch("http://192.168.11.14:8000/form/list", {
+    fetch(`${BASE_BACKEND_URL}/form/list`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -101,7 +102,7 @@ function Dashboard() {
       .then((response) => response.json())
       .then((data) => setForms(data.data));
 
-    fetch("http://192.168.11.14:8000/role/list", {
+    fetch(`${BASE_BACKEND_URL}/role/list`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -109,7 +110,7 @@ function Dashboard() {
       .then((res) => res.json())
       .then((data) => setRoles(data.data));
 
-    fetch(`http://192.168.11.14:8000/workflow/byId/${workflowId}`, {
+    fetch(`${BASE_BACKEND_URL}/workflow/byId/${workflowId}`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -204,7 +205,7 @@ function Dashboard() {
     };
 
     // Send to server
-    await fetch("http://192.168.11.14:8000/workflow/create-step", {
+    await fetch(`${BASE_BACKEND_URL}/workflow/create-step`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -249,7 +250,7 @@ function Dashboard() {
       },
     };
 
-    await fetch(`http://192.168.11.14:8000/workflow/create-step-conditions`, {
+    await fetch(`${BASE_BACKEND_URL}/workflow/create-step-conditions`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
