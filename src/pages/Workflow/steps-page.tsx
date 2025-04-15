@@ -57,6 +57,14 @@ function Dashboard() {
 
   const [show, setShow] = useState(false);
 
+  const [selectedFieldId, setSelectedFieldId] = useState("");
+  const [conditionOperator, setConditionOperator] = useState("==");
+  const [conditionValue, setConditionValue] = useState("");
+
+  const [filteredFieldsForCondition, setFilteredFieldsForCondition] = useState(
+    []
+  );
+
   const { workflowId } = useParams();
 
   const token = localStorage.getItem("access_token");
@@ -154,6 +162,21 @@ function Dashboard() {
         setEdges(layoutedEdges);
       });
   }, []);
+
+  useEffect(() => {
+    if (pendingEdge) {
+      const sourceNode = nodes.find((n) => n.id === pendingEdge.source);
+      const selectedForm = sourceNode?.stepData?.relatedForm;
+      if (selectedForm && selectedForm.fields?.length > 0) {
+        const fieldIds = selectedForm.fields.map((f) => f.id);
+        const fullForm = forms.find((form) => form.id === selectedForm.id.id);
+        const filteredFields = fullForm?.fields?.filter((f) =>
+          fieldIds.includes(f.id)
+        );
+        setFilteredFieldsForCondition(filteredFields || []);
+      }
+    }
+  }, [pendingEdge]);
 
   const handleFormChange = (value) => {
     setSelectedFormId(value);
@@ -265,6 +288,13 @@ function Dashboard() {
       forStatus: edgeMode,
       forStepNumber: parseInt(pendingEdge.target),
       forRole: selectedRoleId,
+      ...(selectedFieldId &&
+        conditionOperator &&
+        conditionValue && {
+          forField: selectedFieldId,
+          comparisonOperator: conditionOperator,
+          value: conditionValue,
+        }),
     };
 
     const updatedStep = {
@@ -478,6 +508,49 @@ function Dashboard() {
                 </SelectContent>
               </Select>
             </div>
+
+            {filteredFieldsForCondition.length > 0 && (
+              <div className="space-y-2 border-t pt-4 mt-4">
+                <Label>شرط بر اساس فیلد</Label>
+
+                <Select
+                  value={selectedFieldId}
+                  onValueChange={setSelectedFieldId}
+                >
+                  <SelectTrigger className="w-full">
+                    <SelectValue placeholder="انتخاب فیلد" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {filteredFieldsForCondition.map((field) => (
+                      <SelectItem key={field.id} value={field.id}>
+                        {field.label}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+
+                <Select
+                  value={conditionOperator}
+                  onValueChange={setConditionOperator}
+                >
+                  <SelectTrigger className="w-full">
+                    <SelectValue placeholder="عملگر شرط" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="==">برابر</SelectItem>
+                    <SelectItem value="!=">مخالف</SelectItem>
+                    <SelectItem value=">">بزرگ‌تر</SelectItem>
+                    <SelectItem value="<">کوچک‌تر</SelectItem>
+                  </SelectContent>
+                </Select>
+
+                <Input
+                  value={conditionValue}
+                  onChange={(e) => setConditionValue(e.target.value)}
+                  placeholder="مقدار شرط"
+                />
+              </div>
+            )}
           </div>
 
           <DialogFooter>
