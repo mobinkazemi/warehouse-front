@@ -543,10 +543,10 @@ function Dashboard() {
                     <SelectValue placeholder="عملگر شرط" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="==">برابر</SelectItem>
-                    <SelectItem value="!=">مخالف</SelectItem>
-                    <SelectItem value=">">بزرگ‌تر</SelectItem>
-                    <SelectItem value="<">کوچک‌تر</SelectItem>
+                    <SelectItem value="equals">برابر</SelectItem>
+                    <SelectItem value="not_equals">مخالف</SelectItem>
+                    <SelectItem value="greater_than">بزرگ‌تر</SelectItem>
+                    <SelectItem value="less_than">کوچک‌تر</SelectItem>
                   </SelectContent>
                 </Select>
 
