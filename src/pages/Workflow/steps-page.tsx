@@ -303,7 +303,7 @@ function Dashboard() {
       stepNumber: sourceStep.order,
       next: {
         ...sourceStep.next,
-        conditions: [...(sourceStep.next?.conditions || []), newCondition],
+        conditions: [...[], newCondition],
       },
     };
 
@@ -326,6 +326,12 @@ function Dashboard() {
 
     setPendingEdge(null);
     setShowEdgeModal(false);
+    setEdgeMode("any");
+    setSelectedRoleId("");
+    setSelectedFieldId("");
+    setConditionOperator("");
+    setConditionValue("");
+    setFilteredFieldsForCondition([]);
   };
 
   return (
