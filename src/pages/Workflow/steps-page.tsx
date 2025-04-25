@@ -12,7 +12,7 @@ import {
   applyNodeChanges,
 } from "@xyflow/react";
 import "@xyflow/react/dist/style.css";
-import { CloudCog, Plus } from "lucide-react";
+import { Plus } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -34,6 +34,8 @@ import {
 } from "@/components/ui/select";
 import { useParams } from "react-router-dom";
 import { BASE_BACKEND_URL } from "@/configs/axios.config";
+
+import { Select as SelectAnt } from "antd";
 
 function Dashboard() {
   const [nodes, setNodes] = useState([]);
@@ -61,9 +63,14 @@ function Dashboard() {
   const [conditionOperator, setConditionOperator] = useState("==");
   const [conditionValue, setConditionValue] = useState("");
 
+  const [hour, setHour] = useState("");
+  const [day, setDay] = useState("");
+
   const [filteredFieldsForCondition, setFilteredFieldsForCondition] = useState(
     []
   );
+
+  const [formhayeNamayeshi, setFormhayeNamayeshi] = useState([]);
 
   const { workflowId } = useParams();
 
@@ -240,6 +247,9 @@ function Dashboard() {
         type: stepType,
         relatedForm,
         stepOrderToFillFormWith: +selectedEditId,
+        showFilledFormsFromSteps: formhayeNamayeshi,
+        estimateHour: +hour,
+        estimateDay: +day,
         // next: { conditions: [] },
       };
     } else {
@@ -249,6 +259,9 @@ function Dashboard() {
         name: stepName,
         type: stepType,
         relatedForm,
+        showFilledFormsFromSteps: formhayeNamayeshi,
+        estimateHour: +hour,
+        estimateDay: +day,
         // stepOrderToFillFormWith: +selectedEditId,
         // next: { conditions: [] },
       };
@@ -334,6 +347,14 @@ function Dashboard() {
     setFilteredFieldsForCondition([]);
   };
 
+  const options = [];
+  for (let i = 10; i < 36; i++) {
+    options.push({
+      label: i.toString(36) + i,
+      value: i.toString(36) + i,
+    });
+  }
+
   return (
     <div className="h-full">
       <ReactFlow
@@ -407,6 +428,24 @@ function Dashboard() {
               </Select>
             </div>
 
+            <div className="space-y-2">
+              <Label>پیشبینی زمان انجام</Label>
+
+              <div className="grid grid-cols-2 gap-x-4">
+                <Input
+                  value={hour}
+                  onChange={(e) => setHour(e.target.value)}
+                  placeholder="ساعت"
+                />
+
+                <Input
+                  value={day}
+                  onChange={(e) => setDay(e.target.value)}
+                  placeholder="روز"
+                />
+              </div>
+            </div>
+
             {availableFields.length > 0 && (
               <div className="space-y-2">
                 <Label>فیلدها</Label>
@@ -467,6 +506,31 @@ function Dashboard() {
                 </Select>
               </div>
             )}
+
+            <div className="space-y-2">
+              <Label>فرم های نمایشی</Label>
+
+              <select
+                value={formhayeNamayeshi}
+                onChange={(e) => {
+                  const options = [...e.target.selectedOptions];
+                  const values = options.map((option) => +option.value);
+                  setFormhayeNamayeshi(values);
+                }}
+                multiple
+              >
+                {steps.map((step) => {
+                  if (step.relatedForm) {
+                    return (
+                      <option
+                        key={step.order}
+                        value={step.order}
+                      >{`مرحله ${step.name} شامل ${step.relatedForm.id.name}`}</option>
+                    );
+                  }
+                })}
+              </select>
+            </div>
           </div>
 
           <DialogFooter>

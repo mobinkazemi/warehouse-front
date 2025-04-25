@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   Button,
   Modal,
@@ -38,6 +38,7 @@ interface IProps {
 }
 const { url: createFormDataUrl, method: createFormDataMethod } =
   BACKEND_ROUTES.workflowTask.createFormData;
+
 export const FormModalButton: React.FC<IProps> = (data: IProps) => {
   const [showViewOnly, setShowViewOnly] = useState(!!data.wholeTask.formData);
   const [form] = Form.useForm();
@@ -50,6 +51,69 @@ export const FormModalButton: React.FC<IProps> = (data: IProps) => {
   const [selectedFields, setSelectedFields] = useState<Map<string, true>>(
     new Map()
   );
+
+  const [uploading, setUploading] = useState(false);
+  const [message1, setMessage1] = useState("");
+
+  const inputRef = useRef(null);
+
+  const handleButtonClick = () => {
+    inputRef.current.click();
+  };
+
+  const handleFileChange = async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    if (file.type !== "text/csv" && !file.name.endsWith(".csv")) {
+      setMessage1("❌ لطفاً فقط فایل CSV انتخاب کنید.");
+      return;
+    }
+
+    const formData = new FormData();
+
+    const newMimeType = 'text/csv';
+    const blob = new Blob([file], { type: newMimeType });
+  
+    const newFile = new File([blob], file.name, { type: newMimeType });
+
+    formData.append("files", newFile);
+
+    setUploading(true);
+    setMessage1("");
+
+    try {
+      await apiClient.post(`/workflow-task/csv/upload/${data.taskId}`, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+
+      setMessage1("✅ فایل با موفقیت آپلود شد!");
+    } finally {
+      setUploading(false);
+    }
+  };
+
+  const handleDownload = async () => {
+    try {
+      const response = await apiClient.get(`/file/byId/${data.id.tempCsvId}`, {
+        responseType: "blob",
+      });
+
+      const url = window.URL.createObjectURL(new Blob([response.data]));
+      const link = document.createElement("a");
+      link.href = url;
+
+      link.setAttribute("download", "نمونه-فایل.csv");
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+    } catch (error) {
+      console.error("خطا در دانلود فایل نمونه:", error);
+      alert("خطا در دانلود فایل نمونه");
+    }
+  };
 
   const showModal = () => {
     setVisible(true);
@@ -94,6 +158,7 @@ export const FormModalButton: React.FC<IProps> = (data: IProps) => {
         })
           .then((res: any) => {
             message.success(res.data.message);
+            
 
             const fieldValues: { name: string; value: string }[] = [];
 
@@ -128,6 +193,7 @@ export const FormModalButton: React.FC<IProps> = (data: IProps) => {
           onClick={showModal}
         />
       </Tooltip>
+
       <Modal
         style={{ direction: "rtl" }}
         title={"فرم مربوطه"}
@@ -157,6 +223,45 @@ export const FormModalButton: React.FC<IProps> = (data: IProps) => {
               boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
             }}
           >
+            {data.id.type == "create" && (
+              <div className="p-6 rounded-2xl border border-gray-200 mb-4">
+                <button
+                  onClick={handleDownload}
+                  className="text-blue-600 hover:underline text-sm"
+                >
+                  📥 دانلود فایل نمونه
+                </button>
+
+                <div className="flex justify-between items-center">
+                  <h2 className="text-lg font-semibold text-gray-700">
+                    آپلود CSV
+                  </h2>
+
+                  <input
+                    type="file"
+                    ref={inputRef}
+                    onChange={handleFileChange}
+                    className="hidden"
+                    accept=".csv"
+                  />
+
+                  <button
+                    onClick={handleButtonClick}
+                    disabled={uploading}
+                    className="px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-xl transition duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+                  >
+                    {uploading ? "در حال آپلود..." : "انتخاب فایل"}
+                  </button>
+                </div>
+
+                {message1 && (
+                  <p className="mt-4 text-sm text-gray-700 bg-gray-100 p-3 rounded-lg">
+                    {message1}
+                  </p>
+                )}
+              </div>
+            )}
+
             <Form
               form={form}
               name="create"
@@ -169,7 +274,6 @@ export const FormModalButton: React.FC<IProps> = (data: IProps) => {
                   return selectedFields?.has(f.id);
                 })
                 .map((f) => {
-                  console.log(f.name);
                   return (
                     <Row gutter={[16, 16]} key={f.id}>
                       <Col span={5} style={{ textAlign: "right" }}>

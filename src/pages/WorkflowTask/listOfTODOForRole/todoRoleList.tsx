@@ -10,6 +10,7 @@ import { timestampToJalali } from "../../../shared/functions/timestamp-to-jalali
 import { ViewDetailsButton } from "./parts/ViewDetailsButton";
 import { FormModalButton } from "./parts/formModalButton";
 import { IForm } from "../../Workflow/create/functions/form-fields-modal.function";
+import { ViewFormsButton } from "./parts/ViewFormsButton";
 
 interface DataType {
   id: React.Key;
@@ -84,10 +85,25 @@ export const ListOfToDoTasksForRole: React.FC = () => {
         return (
           <Space>
             <ViewDetailsButton
-              perviousTask={record.perviousTask || {}}
+              perviousTask={record.perviousTask}
             ></ViewDetailsButton>
           </Space>
         );
+      },
+    },
+    {
+      title: "فرم های نمایشی",
+      key: "action",
+      render: (_: any, record: DataType) => {
+        if (record.hasShowFilledFormsFromSteps) {
+          return (
+            <Space>
+              <ViewFormsButton taskId={record}></ViewFormsButton>
+            </Space>
+          );
+        } else {
+          return null;
+        }
       },
     },
     {
@@ -151,6 +167,7 @@ export const ListOfToDoTasksForRole: React.FC = () => {
               relatedForm: item.relatedForm,
               formData: item.formData,
               fillFormWith: item.fillFormWith,
+              hasShowFilledFormsFromSteps: item.hasShowFilledFormsFromSteps,
             };
           })
         );
