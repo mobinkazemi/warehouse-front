@@ -71,6 +71,22 @@ export const ListOfToDoTasksForRole: React.FC = () => {
       dataIndex: "status",
     },
     {
+      title: "مهلت انجام",
+      key: "action",
+      render: (_: any, record: DataType) => {
+        const now = Date.now();
+        let diff = Math.abs(now - record.estimate); // تفاوت زمانی بر حسب میلی‌ثانیه
+
+        const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+        diff -= days * 1000 * 60 * 60 * 24;
+
+        const hours = Math.floor(diff / (1000 * 60 * 60));
+        return <Space>
+          {days} روز و {hours} ساعت
+        </Space>;
+      },
+    },
+    {
       title: "نام فرایند",
       dataIndex: "workflowName",
     },
@@ -154,6 +170,7 @@ export const ListOfToDoTasksForRole: React.FC = () => {
   useEffect(() => {
     apiClient[todoListMethod](todoListUrl).then(
       (data: AxiosResponse<IBaseBackendResponse<APIData[]>>) => {
+        console.log(data.data.data);
         setTasksListData(
           (data.data.data || []).map((item) => {
             return {
@@ -168,6 +185,7 @@ export const ListOfToDoTasksForRole: React.FC = () => {
               formData: item.formData,
               fillFormWith: item.fillFormWith,
               hasShowFilledFormsFromSteps: item.hasShowFilledFormsFromSteps,
+              estimate: item.estimate,
             };
           })
         );
