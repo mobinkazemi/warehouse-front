@@ -62,7 +62,13 @@ const RolesListPage: React.FC = () => {
   };
 
   return (
-    <div className="container mx-auto px-4 py-8 max-w-6xl">
+    <div className="container mx-auto px-4 py-8">
+      <div className="flex mb-8 items-center justify-between">
+        <div className="min-w-0 flex-1">
+          <h2 className="text-3xl">مدیریت دسترسی ها</h2>
+        </div>
+      </div>
+
       <motion.div
         className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
         variants={containerVariants}
@@ -98,7 +104,7 @@ const RolesListPage: React.FC = () => {
                 <div className="flex items-center text-gray-600 mb-2">
                   <User size={16} className="ml-2 text-orange-500" />
                   <span className="text-sm">
-                    شناسه: {role.id.substring(0, 8)}...
+                    شناسه: {role.id.substring(0, 16)}...
                   </span>
                 </div>
 

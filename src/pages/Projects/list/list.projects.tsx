@@ -143,8 +143,6 @@ const ProjectsListPage: React.FC = () => {
             <DialogHeader>
               <DialogTitle>ایجاد پروژه</DialogTitle>
             </DialogHeader>
-
-
           </DialogContent>
         </Dialog>
       </div>
