@@ -2,6 +2,7 @@ import { Button, Flex, message, Modal, Tooltip } from "antd";
 import { PlayCircleOutlined } from "@ant-design/icons";
 import apiClient from "../../../../configs/axios.config";
 import { BACKEND_ROUTES, setId } from "../../../../shared/backendRoutes";
+import { ArrowLeft, ArrowRight } from "lucide-react";
 
 interface IProps {
   workflowId: string;
@@ -33,13 +34,19 @@ export const StartButton: React.FC<IProps> = ({
   };
 
   return (
-    <Flex wrap gap="small">
+    <Flex
+      wrap
+      gap="small"
+      onClick={showStartConfirm}
+      className="cursor-pointer"
+    >
       <Tooltip title="شروع فرآیند">
-        <Button
-          onClick={showStartConfirm}
-          type="primary"
-          icon={<PlayCircleOutlined />}
-        ></Button>
+        <div
+          className="w-full flex items-center justify-center space-x-2 rtl:space-x-reverse !bg-orange-500 hover:bg-orange-600 !text-white py-3 px-4 rounded-lg transition-colors duration-300 font-medium"
+        >
+          <span>شروع فرایند</span>
+          <ArrowLeft />
+        </div>
       </Tooltip>
     </Flex>
   );
