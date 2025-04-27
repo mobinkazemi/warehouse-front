@@ -100,7 +100,7 @@ export const EditButton: React.FC<IProps> = ({ roleId }: IProps) => {
     <Flex wrap gap="small">
       <Tooltip title="ویرایش نقش">
         <Button
-          type="primary"
+          className="!bg-orange-500 !text-white"
           onClick={() => setIsModalOpen(true)}
           icon={<EditOutlined />}
         />
