@@ -1,105 +1,123 @@
 import React, { useEffect, useState } from "react";
-import { Space, Table } from "antd";
-import { EditButton } from "./parts/EditButton";
+import { motion } from "framer-motion";
+import { Edit, Calendar, User, Search } from "lucide-react";
 import apiClient from "../../../configs/axios.config";
 import { BACKEND_ROUTES } from "../../../shared/backendRoutes";
+import { EditButton } from "./parts/EditButton";
 
-interface DataType {
-  id: React.Key;
+interface RoleType {
+  id: string;
   name: string;
-  code: string;
-  status: "active" | "inactive";
+  createdAt: number;
 }
 
 const { url: listUrl, method: listMethod } = BACKEND_ROUTES.role.list;
-const RolesListPage: React.FC = () => {
-  const [roleesListData, setRoleesListData] = useState<DataType[]>([]);
 
-  const columns = [
-    {
-      title: "شناسه نقش",
-      dataIndex: "id",
-    },
-    {
-      title: "نام",
-      dataIndex: "name",
-    },
-    {
-      title: "اقدامات",
-      key: "action",
-      render: (_: any, record: DataType) => {
-        return (
-          <Space>
-            <EditButton roleId={record.id as string} />
-          </Space>
-        );
-      },
-    },
-  ];
+const formatDate = (timestamp: number) => {
+  const date = new Date(timestamp);
+  return new Intl.DateTimeFormat("fa-IR", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  }).format(date);
+};
+
+const RolesListPage: React.FC = () => {
+  const [rolesListData, setRolesListData] = useState<RoleType[]>([]);
+  const [searchQuery, setSearchQuery] = useState<string>("");
 
   useEffect(() => {
     apiClient[listMethod](listUrl).then(({ data }) => {
-      setRoleesListData(
-        data.data.map((sw: any) => ({
-          ...sw,
+      setRolesListData(
+        data.data.map((role: any) => ({
+          ...role,
         }))
       );
     });
   }, []);
 
+  const filteredRoles = rolesListData.filter((role) =>
+    role.name.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1,
+      },
+    },
+  };
+
+  const cardVariants = {
+    hidden: { y: 20, opacity: 0 },
+    visible: {
+      y: 0,
+      opacity: 1,
+      transition: {
+        duration: 0.4,
+      },
+    },
+  };
+
   return (
-    <>
-      <div className="flex flex-col">
-        <div className="-m-1.5 overflow-x-auto">
-          <div className="p-1.5 min-w-full inline-block align-middle">
-            <div className="overflow-hidden">
-              <table className="min-w-full divide-y divide-gray-200 border-collapse">
-                <thead>
-                  <tr>
-                    <th
-                      scope="col"
-                      className="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase"
-                    >
-                      نام
-                    </th>
+    <div className="container mx-auto px-4 py-8 max-w-6xl">
+      <motion.div
+        className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+        variants={containerVariants}
+        initial="hidden"
+        animate="visible"
+      >
+        {filteredRoles.length > 0 ? (
+          filteredRoles.map((role) => (
+            <motion.div
+              key={role.id}
+              className="bg-white rounded-xl shadow-md overflow-hidden border border-gray-100 hover:shadow-lg transition-shadow duration-300"
+              variants={cardVariants}
+              whileHover={{ y: -5 }}
+            >
+              <div className="p-1">
+                <div className="h-3 w-full bg-orange-500 rounded-t-lg"></div>
+              </div>
+              <div className="p-6">
+                <div className="flex justify-between items-start mb-4">
+                  <h3 className="text-xl font-semibold text-gray-800">
+                    {role.name}
+                  </h3>
+                  <motion.button
+                    className="text-orange-500 hover:text-orange-700 p-2 rounded-full hover:bg-orange-50 transition-colors"
+                    whileHover={{ scale: 1.1 }}
+                    whileTap={{ scale: 0.95 }}
+                    aria-label="ویرایش"
+                  >
+                    <EditButton roleId={role.id} />
+                  </motion.button>
+                </div>
 
-                    <th
-                      scope="col"
-                      className="px-6 py-3 text-end text-xs font-medium text-gray-500 uppercase"
-                    >
-                      اقدامات
-                    </th>
-                  </tr>
-                </thead>
+                <div className="flex items-center text-gray-600 mb-2">
+                  <User size={16} className="ml-2 text-orange-500" />
+                  <span className="text-sm">
+                    شناسه: {role.id.substring(0, 8)}...
+                  </span>
+                </div>
 
-                <tbody>
-                  {roleesListData.map((role) => (
-                    <tr className="bg-[rgba(254,126,5,80%)]">
-                      <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 border-y-8 border-white">
-                        {role.name}
-                      </td>
-
-                      <td className="px-6 py-4 whitespace-nowrap text-end text-sm font-medium border-y-8 border-white">
-                        <button
-                          type="button"
-                          className="inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent text-blue-600 hover:text-blue-800 focus:outline-hidden focus:text-blue-800 disabled:opacity-50 disabled:pointer-events-none"
-                        >
-                          <Space>
-                            <EditButton roleId={role.id as string} />
-                          </Space>
-                        </button>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
+                <div className="flex items-center text-gray-600">
+                  <Calendar size={16} className="ml-2 text-orange-500" />
+                  <span className="text-sm">
+                    تاریخ ایجاد: {formatDate(role.createdAt)}
+                  </span>
+                </div>
+              </div>
+            </motion.div>
+          ))
+        ) : (
+          <div className="col-span-full text-center py-12 text-gray-500">
+            نقشی با این مشخصات یافت نشد
           </div>
-        </div>
-      </div>
-
-      {/* <Table columns={columns} dataSource={roleesListData} rowKey="id" /> */}
-    </>
+        )}
+      </motion.div>
+    </div>
   );
 };
 

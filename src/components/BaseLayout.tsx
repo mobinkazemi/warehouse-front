@@ -17,6 +17,7 @@ const BaseLayout: React.FC = () => {
     setCurrent(key);
     navigator(key);
   };
+  
   return (
     <Layout style={{ minHeight: "100vh", direction: "rtl", display: "flex" }}>
       {/* Top Navigation */}

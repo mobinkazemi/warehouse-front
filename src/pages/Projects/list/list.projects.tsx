@@ -119,7 +119,7 @@ const ProjectsListPage: React.FC = () => {
       animate="show"
       className="p-4 rtl"
     >
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
         {filteredProjects.map((project) => {
           const statusInfo = getStatusInfo(project.status);
           const hasFiles = project.files && project.files.length > 0;

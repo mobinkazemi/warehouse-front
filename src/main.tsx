@@ -23,6 +23,7 @@ import ListOfAvailableWorkflowsToStartPage from "./pages/Workflow/listOfAvailabl
 import { ListOfToDoTasksForRole } from "./pages/WorkflowTask/listOfTODOForRole/todoRoleList";
 import DoneByMyUserList from "./pages/WorkflowTask/listOfDoneByUser/DoneTasksByUser";
 import StepsPage from "./pages/Workflow/steps-page";
+import { ConfigProvider } from "antd";
 const router = createBrowserRouter([
   {
     path: ROUTES_ENUM.HOME, // Base path
@@ -139,9 +140,7 @@ const router = createBrowserRouter([
       },
       {
         path: ROUTES_ENUM.WORKFLOW_STEPS,
-        element: (
-          <StepsPage />
-        ),
+        element: <StepsPage />,
       },
       //
       //
@@ -156,6 +155,8 @@ const router = createBrowserRouter([
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   // <React.StrictMode>
+  <ConfigProvider direction="rtl">
     <RouterProvider router={router} />
+  </ConfigProvider>
   // </React.StrictMode>
 );
