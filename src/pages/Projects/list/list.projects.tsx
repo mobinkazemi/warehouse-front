@@ -1,17 +1,19 @@
 import React, { useEffect, useState } from "react";
-import { Spin } from "antd";
+import { Spin, Tooltip } from "antd";
 import { DeleteButton } from "./parts/DeleteButton";
 import { EditButton } from "./parts/EditButton";
 import apiClient from "../../../configs/axios.config";
 import { BACKEND_ROUTES } from "../../../shared/backendRoutes";
 import { motion } from "framer-motion";
-import { Code, Activity, Briefcase, AlertCircle } from "lucide-react";
+import { Code, Activity, Briefcase, AlertCircle, Calendar, Download, FileText } from "lucide-react";
 
 interface DataType {
   id: React.Key;
   name: string;
   code: string;
   status: "active" | "inactive";
+  createdAt: number;
+  files?: string[];
 }
 
 const { url: listUrl, method: listMethod } = BACKEND_ROUTES.project.list;
@@ -36,12 +38,31 @@ const ProjectsListPage: React.FC = () => {
       });
   }, []);
 
-  // Filter out deleted projects
   const filteredProjects = projectsListData.filter(
     (item) => deletedProject.indexOf(item.id as number) === -1
   );
 
-  // Animation variants for cards
+
+
+  const handleDownloadFiles = (projectId: React.Key, files: string[] = []) => {
+    if (files.length === 0) {
+      return;
+    }
+
+    files.forEach(fileId => {
+      apiClient.get(`/file/byId/${fileId}`, { responseType: 'blob' })
+        .then(response => {
+          const url = window.URL.createObjectURL(new Blob([response.data]));
+          const link = document.createElement('a');
+          link.href = url;
+          link.setAttribute('download', `file-${fileId}.pdf`);
+          document.body.appendChild(link);
+          link.click();
+          link.remove();
+        });
+    });
+  };
+
   const container = {
     hidden: { opacity: 0 },
     show: {
@@ -57,7 +78,6 @@ const ProjectsListPage: React.FC = () => {
     show: { y: 0, opacity: 1, transition: { type: "spring", stiffness: 100 } }
   };
 
-  // Get status color and text
   const getStatusInfo = (status: string) => {
     if (status === "active") {
       return {
@@ -102,6 +122,7 @@ const ProjectsListPage: React.FC = () => {
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
         {filteredProjects.map((project) => {
           const statusInfo = getStatusInfo(project.status);
+          const hasFiles = project.files && project.files.length > 0;
           
           return (
             <motion.div 
@@ -114,15 +135,21 @@ const ProjectsListPage: React.FC = () => {
                 <div className="px-6 py-4 border-b border-gray-100 relative">
                   <div className="absolute -left-2 -top-2 w-16 h-16 bg-[#FE7E05]/10 rounded-full"></div>
                   <div className="relative">
-                    <h3 className="text-lg font-bold text-gray-800 truncate  mt-5">{project.name}</h3>
+                    <h3 className="text-lg font-bold text-gray-800 truncate pr-2 mt-5">{project.name}</h3>
                   </div>
                 </div>
                 
                 <div className="px-6 py-4">
-                  <div className="flex items-center mb-4 text-gray-700">
+                  <div className="flex items-center mb-3 text-gray-700">
                     <Code size={18} className="ml-2 text-[#FE7E05]" />
                     <span className="font-medium ml-1">کد پروژه:</span>
                     <span className="mr-1 font-light">{project.code}</span>
+                  </div>
+                  
+                  <div className="flex items-center mb-3 text-gray-700">
+                    <Calendar size={18} className="ml-2 text-[#FE7E05]" />
+                    <span className="font-medium ml-1">تاریخ ایجاد:</span>
+                    <span className="mr-1 font-light" dir="ltr">{new Date(project.createdAt).toLocaleString('fa-IR')}</span>
                   </div>
                   
                   <div className="flex items-center text-gray-700">
@@ -130,6 +157,30 @@ const ProjectsListPage: React.FC = () => {
                     <span className="font-medium ml-1">وضعیت:</span>
                     <span className="mr-1 font-light">{statusInfo.text}</span>
                   </div>
+                  
+                  {hasFiles && (
+                    <div className="mt-4 pt-3 border-t border-gray-100">
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center text-gray-700">
+                          <FileText size={18} className="ml-2 text-[#FE7E05]" />
+                          <span className="font-medium">فایل‌ها:</span>
+                          <span className="mr-2 text-xs bg-gray-100 px-2 py-0.5 rounded-full">
+                            {project.files?.length}
+                          </span>
+                        </div>
+                        <Tooltip title="دانلود فایل‌ها">
+                          <motion.button
+                            onClick={() => handleDownloadFiles(project.id, project.files)}
+                            whileHover={{ scale: 1.1 }}
+                            whileTap={{ scale: 0.9 }}
+                            className="flex cursor-pointer items-center justify-center p-1.5 rounded-lg bg-[#FE7E05]/10 text-[#FE7E05] hover:bg-[#FE7E05]/20 transition-colors duration-200 focus:outline-none"
+                          >
+                            <Download size={16} />
+                          </motion.button>
+                        </Tooltip>
+                      </div>
+                    </div>
+                  )}
                 </div>
                 
                 <div className="px-6 py-3 bg-gray-50 border-t border-gray-100 flex justify-end space-x-2 space-x-reverse">
