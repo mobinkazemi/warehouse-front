@@ -16,14 +16,9 @@ const TopNavigation: React.FC = () => {
     navigator(ROUTES_ENUM.LOGIN);
   };
   return (
-    <div className="top-navigation-root">
+    <div className="pt-4">
       <div className="top-navigation">
         <div className="top-navigation-home-section">
-          <img
-            className="top-navigation-home-section-icon"
-            src="/douranLogo.png"
-            onClick={() => navigator(ROUTES_ENUM.HOME)}
-          />
         </div>
         <div className="top-navigation-exit-button">
           {localStorage.getItem(TOKEN_KEY_ENUM.ACCESS) ? (

@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { Space, Table } from "antd";
+import { Spin } from "antd";
 import { DeleteButton } from "./parts/DeleteButton";
 import { EditButton } from "./parts/EditButton";
 import apiClient from "../../../configs/axios.config";
 import { BACKEND_ROUTES } from "../../../shared/backendRoutes";
+import { motion } from "framer-motion";
+import { Code, Activity, Briefcase, AlertCircle } from "lucide-react";
 
 interface DataType {
   id: React.Key;
@@ -13,61 +15,148 @@ interface DataType {
 }
 
 const { url: listUrl, method: listMethod } = BACKEND_ROUTES.project.list;
-const ProjectsListPage: React.FC = () => {
-  const [projectesListData, setProjectesListData] = useState<DataType[]>([]);
-  const [deletedProject, setDeletedProject] = useState<number[]>([]);
 
-  const columns = [
-    {
-      title: "نام کارفرما",
-      dataIndex: "name",
-    },
-    {
-      title: "کد",
-      dataIndex: "code",
-    },
-    {
-      title: "وضعیت",
-      dataIndex: "status",
-    },
-    {
-      title: "اقدامات",
-      key: "action",
-      render: (_: any, record: DataType) => {
-        return (
-          <Space>
-            <DeleteButton
-              projectId={record.id as string}
-              setDeletedProject={setDeletedProject}
-              deletedProject={deletedProject}
-            />
-            <EditButton projectId={record.id as string} />
-          </Space>
-        );
-      },
-    },
-  ];
+const ProjectsListPage: React.FC = () => {
+  const [projectsListData, setProjectsListData] = useState<DataType[]>([]);
+  const [deletedProject, setDeletedProject] = useState<number[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
-    apiClient[listMethod](listUrl).then(({ data }) => {
-      setProjectesListData(
-        data.data.map((sw: any) => ({
-          ...sw,
-        }))
-      );
-    });
+    setLoading(true);
+    apiClient[listMethod](listUrl)
+      .then(({ data }) => {
+        setProjectsListData(
+          data.data.map((sw: any) => ({
+            ...sw,
+          }))
+        );
+      })
+      .finally(() => {
+        setLoading(false);
+      });
   }, []);
 
+  // Filter out deleted projects
+  const filteredProjects = projectsListData.filter(
+    (item) => deletedProject.indexOf(item.id as number) === -1
+  );
+
+  // Animation variants for cards
+  const container = {
+    hidden: { opacity: 0 },
+    show: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1
+      }
+    }
+  };
+  
+  const item = {
+    hidden: { y: 20, opacity: 0 },
+    show: { y: 0, opacity: 1, transition: { type: "spring", stiffness: 100 } }
+  };
+
+  // Get status color and text
+  const getStatusInfo = (status: string) => {
+    if (status === "active") {
+      return {
+        color: "bg-green-100 text-green-800",
+        icon: <Activity size={16} className="ml-2" />,
+        text: "فعال"
+      };
+    } else {
+      return {
+        color: "bg-red-100 text-red-800",
+        icon: <AlertCircle size={16} className="ml-2" />,
+        text: "غیرفعال"
+      };
+    }
+  };
+
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center h-96">
+        <Spin size="large" tip="در حال بارگذاری..." />
+      </div>
+    );
+  }
+
+  if (filteredProjects.length === 0) {
+    return (
+      <div className="flex flex-col items-center justify-center h-96 text-gray-500">
+        <Briefcase className="h-16 w-16 mb-4 text-[#FE7E05]" />
+        <p className="text-lg font-medium">هیچ پروژه‌ای یافت نشد</p>
+        <p className="text-sm mt-2">لطفا پروژه جدیدی ایجاد کنید</p>
+      </div>
+    );
+  }
+
   return (
-    <>
-      <Table
-        columns={columns}
-        dataSource={projectesListData.filter(
-          (item) => deletedProject.indexOf(item.id as number) === -1
-        )}
-        rowKey="id"
-      />
-    </>
+    <motion.div
+      variants={container}
+      initial="hidden"
+      animate="show"
+      className="p-4 rtl"
+    >
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+        {filteredProjects.map((project) => {
+          const statusInfo = getStatusInfo(project.status);
+          
+          return (
+            <motion.div 
+              key={project.id} 
+              variants={item}
+              className="h-full"
+              whileHover={{ scale: 1.02 }}
+            >
+              <div className="bg-white rounded-xl shadow-md overflow-hidden h-full border border-gray-100 hover:shadow-lg transition-all duration-300">
+                <div className="px-6 py-4 border-b border-gray-100 relative">
+                  <div className="absolute -left-2 -top-2 w-16 h-16 bg-[#FE7E05]/10 rounded-full"></div>
+                  <div className="relative">
+                    <h3 className="text-lg font-bold text-gray-800 truncate  mt-5">{project.name}</h3>
+                  </div>
+                </div>
+                
+                <div className="px-6 py-4">
+                  <div className="flex items-center mb-4 text-gray-700">
+                    <Code size={18} className="ml-2 text-[#FE7E05]" />
+                    <span className="font-medium ml-1">کد پروژه:</span>
+                    <span className="mr-1 font-light">{project.code}</span>
+                  </div>
+                  
+                  <div className="flex items-center text-gray-700">
+                    {React.cloneElement(statusInfo.icon as React.ReactElement, { className: "ml-2 text-[#FE7E05]" })}
+                    <span className="font-medium ml-1">وضعیت:</span>
+                    <span className="mr-1 font-light">{statusInfo.text}</span>
+                  </div>
+                </div>
+                
+                <div className="px-6 py-3 bg-gray-50 border-t border-gray-100 flex justify-end space-x-2 space-x-reverse">
+                  <motion.div 
+                    className="ml-2"
+                    whileHover={{ scale: 1.1 }}
+                    whileTap={{ scale: 0.95 }}
+                  >
+                    <EditButton projectId={project.id as string} />
+                  </motion.div>
+                  <motion.div
+                    whileHover={{ scale: 1.1 }}
+                    whileTap={{ scale: 0.95 }}
+                  >
+                    <DeleteButton
+                      projectId={project.id as string}
+                      setDeletedProject={setDeletedProject}
+                      deletedProject={deletedProject}
+                    />
+                  </motion.div>
+                </div>
+              </div>
+            </motion.div>
+          );
+        })}
+      </div>
+    </motion.div>
   );
 };
 

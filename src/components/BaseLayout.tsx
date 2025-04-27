@@ -1,6 +1,6 @@
 import React from "react";
 import { Layout, MenuProps } from "antd";
-import { Outlet, useNavigate } from "react-router-dom";
+import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import { ROUTES_ENUM } from "../shared/enums/routes.enum";
 import TopNavigation from "./topNavigation/TopNavigation";
 import SliderMenu from "./sliderMenu/sliderMenu";
@@ -9,127 +9,38 @@ const { Header, Sider, Content, Footer } = Layout;
 
 const BaseLayout: React.FC = () => {
   const navigator = useNavigate();
-  const [_, setCurrent] = React.useState<string>(ROUTES_ENUM.HOME);
+  const { pathname } = useLocation();
+  const [current, setCurrent] = React.useState<string>(pathname);
 
-  const onClick: MenuProps["onClick"] = (e) => {
-    setCurrent(e.key);
-
-    switch (e.key) {
-      case ROUTES_ENUM.HOME:
-        navigator(ROUTES_ENUM.HOME);
-        break;
-
-      //
-      //
-      //
-      //
-      // USERS
-      //
-      case ROUTES_ENUM.USERS_LIST:
-        navigator(ROUTES_ENUM.USERS_LIST);
-        break;
-
-      case ROUTES_ENUM.USERS_CREATE:
-        navigator(ROUTES_ENUM.USERS_CREATE);
-        break;
-
-      //
-      //
-      //
-      //
-      // PROJECTS
-      //
-      case ROUTES_ENUM.PROJECTS_LIST:
-        navigator(ROUTES_ENUM.PROJECTS_LIST);
-        break;
-
-      case ROUTES_ENUM.PROJECTS_CREATE:
-        navigator(ROUTES_ENUM.PROJECTS_CREATE);
-        break;
-
-      //
-      //
-      //
-      //
-      // PROJECTS
-      //
-      case ROUTES_ENUM.PRODUCT_LIST:
-        navigator(ROUTES_ENUM.PRODUCT_LIST);
-        break;
-
-      case ROUTES_ENUM.PRODUCT_CREATE:
-        navigator(ROUTES_ENUM.PRODUCT_CREATE);
-        break;
-
-      //
-      //
-      //
-      //
-      // PERMISSIONS
-      //
-      case ROUTES_ENUM.ROLE_LIST:
-        navigator(ROUTES_ENUM.ROLE_LIST);
-        break;
-
-      //
-      //
-      //
-      //
-      // TASKS
-      //
-      case ROUTES_ENUM.TASKS_TODO_ROLE_LIST:
-        navigator(ROUTES_ENUM.TASKS_TODO_ROLE_LIST);
-        break;
-      case ROUTES_ENUM.TASKS_DONE_BY_ME_LIST:
-        navigator(ROUTES_ENUM.TASKS_DONE_BY_ME_LIST);
-        break;
-
-      //
-      //
-      //
-      //
-      // WORKFLOW
-      //
-      case ROUTES_ENUM.WORKFLOW_LIST:
-        navigator(ROUTES_ENUM.WORKFLOW_LIST);
-        break;
-      case ROUTES_ENUM.WORKFLOW_CREATE:
-        navigator(ROUTES_ENUM.WORKFLOW_CREATE);
-        break;
-      case ROUTES_ENUM.WORKFLOW_START_ROLE_LIST:
-        navigator(ROUTES_ENUM.WORKFLOW_START_ROLE_LIST);
-        break;
-      case ROUTES_ENUM.WORKFLOW_STEPS:
-        navigator(ROUTES_ENUM.WORKFLOW_STEPS);
-        break;
-    }
+  const onClick = (e: MouseEvent, key: string) => {
+    e?.stopPropagation();
+    setCurrent(key);
+    navigator(key);
   };
   return (
-    <Layout style={{ minHeight: "100vh", direction: "rtl" }}>
+    <Layout style={{ minHeight: "100vh", direction: "rtl", display: "flex" }}>
       {/* Top Navigation */}
-      <Header>
-        <TopNavigation />
-      </Header>
-
+      <Sider
+        style={{
+          background: ColorPalletEnum.WhiteBackground,
+          textAlign: "right",
+          position: "relative",
+        }}
+        width={256}
+      >
+        <SliderMenu onClick={onClick as any} current={current} />
+      </Sider>
       <Layout>
         {/* Right Sidebar */}
-        <Sider
-          style={{
-            background: ColorPalletEnum.WhiteBackground,
-            textAlign: "right",
-          }}
-          width={256}
-        >
-          <SliderMenu onClick={onClick as any} />
-        </Sider>
 
         {/* Content Area */}
         <Content
+          className="shadow-lg"
           style={{
             margin: "16px",
-            padding: "16px",
+            padding: "24px",
             background: ColorPalletEnum.WhiteContentBackground,
-            borderRadius: "10px",
+            borderRadius: "24px",
             borderBottom: `2px solid ${ColorPalletEnum.Border}`,
             overflow: "auto",
             maxHeight: "100vh",
@@ -140,7 +51,6 @@ const BaseLayout: React.FC = () => {
       </Layout>
 
       {/* Footer */}
-      <Footer style={{ textAlign: "center" }}>Netoran ©2025</Footer>
     </Layout>
   );
 };

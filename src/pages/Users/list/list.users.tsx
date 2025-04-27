@@ -146,7 +146,7 @@ const UsersListPage: React.FC = () => {
                       </td>
 
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-800 border-y-8 border-white">
-                        {user.roles[0].name ?? "--"}
+                        {user.roles[0]?.name ?? "--"}
                       </td>
 
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-800 border-y-8 border-white">

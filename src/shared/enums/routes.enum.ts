@@ -14,7 +14,7 @@ export enum ROUTES_ENUM {
   //
   // ####################################
   //          users
-  _USERS_ = "/users",
+  _USERS_ = "/users/list",
   USERS_LIST = "/users/list",
   USERS_UPDATE = "/users/update/:id",
   USERS_CREATE = "/users/create",
@@ -25,7 +25,7 @@ export enum ROUTES_ENUM {
   //
   // ####################################
   //          projects
-  _PROJECTS_ = "/projects",
+  _PROJECTS_ = "/projects/list",
   PROJECTS_LIST = "/projects/list",
   PROJECTS_UPDATE = "/projects/update/:id",
   PROJECTS_CREATE = "/projects/create",
@@ -36,7 +36,7 @@ export enum ROUTES_ENUM {
   //
   // ####################################
   //          product
-  _PRODUCT_ = "/product",
+  _PRODUCT_ = "/product/list",
   PRODUCT_LIST = "/product/list",
   PRODUCT_UPDATE = "/product/update/:id",
   PRODUCT_CREATE = "/product/create",
@@ -47,7 +47,7 @@ export enum ROUTES_ENUM {
   //
   // ####################################
   //          permission
-  _PERMISSION_ = "/permission",
+  _PERMISSION_ = "/role/list",
   ROLE_LIST = "/role/list",
 
   //

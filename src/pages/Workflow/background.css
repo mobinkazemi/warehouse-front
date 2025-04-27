@@ -6,3 +6,6 @@
     rgba(181, 242, 255, 1) 69%
   );
 }
+.ant-select-dropdown {
+  z-index: 9999 !important;
+}

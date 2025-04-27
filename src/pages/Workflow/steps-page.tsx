@@ -1,6 +1,7 @@
 import { TOKEN_KEY_ENUM } from "../../shared/enums/token.enum";
 
 import { useCallback, useEffect, useState } from "react";
+import { Select as MultiSelect } from "antd";
 
 import dagre from "@dagrejs/dagre";
 import {
@@ -55,7 +56,10 @@ function Dashboard() {
   const [edgeMode, setEdgeMode] = useState("any");
 
   const [steps, setSteps] = useState([]);
-  const [selectedEditId, setSelectedEditId] = useState("");
+  const [selectedEditId, setSelectedEditId] = useState([]);
+  const [canCreateCustomTaskFlag, setCanCreateCustomTaskFlag] = useState(false);
+
+  console.log(canCreateCustomTaskFlag);
 
   const [show, setShow] = useState(false);
 
@@ -71,6 +75,7 @@ function Dashboard() {
   );
 
   const [formhayeNamayeshi, setFormhayeNamayeshi] = useState([]);
+
 
   const { workflowId } = useParams();
 
@@ -248,6 +253,7 @@ function Dashboard() {
         relatedForm,
         stepOrderToFillFormWith: +selectedEditId,
         showFilledFormsFromSteps: formhayeNamayeshi,
+        canCreateCustomTaskFlag:canCreateCustomTaskFlag,
         estimateHour: +hour,
         estimateDay: +day,
         // next: { conditions: [] },
@@ -260,6 +266,7 @@ function Dashboard() {
         type: stepType,
         relatedForm,
         showFilledFormsFromSteps: formhayeNamayeshi,
+        canCreateCustomTaskFlag:canCreateCustomTaskFlag,
         estimateHour: +hour,
         estimateDay: +day,
         // stepOrderToFillFormWith: +selectedEditId,
@@ -378,10 +385,10 @@ function Dashboard() {
         </Panel>
       </ReactFlow>
 
-      <Dialog open={showModal} onOpenChange={setShowModal}>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>افزودن مرحله جدید</DialogTitle>
+      <Dialog open={showModal} onOpenChange={setShowModal} >
+        <DialogContent dir="rtl">
+          <DialogHeader dir="rtl">
+            <DialogTitle dir="rtl" className="text-start">افزودن مرحله جدید</DialogTitle>
           </DialogHeader>
 
           <div className="grid gap-4 py-4">
@@ -509,28 +516,29 @@ function Dashboard() {
 
             <div className="space-y-2">
               <Label>فرم های نمایشی</Label>
-
-              <select
-                multiple
+              <MultiSelect
+                className="w-full z-50"
+                mode="tags"
                 value={formhayeNamayeshi}
-                onChange={(e) => {
-                  const options = [...e.target.selectedOptions];
-                  const values = options.map((option) => +option.value);
-                  setFormhayeNamayeshi(values);
-                }}
-                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                onChange={setFormhayeNamayeshi}
+                placeholder="ویرایش مرحله ی"
+                getPopupContainer={(triggerNode) => triggerNode.parentNode}
+                dropdownStyle={{ zIndex: 9999 }}
               >
-                {steps.map((step) => {
-                  if (step.relatedForm) {
-                    return (
-                      <option
-                        key={step.order}
-                        value={step.order}
-                      >{`مرحله ${step.name} شامل ${step.relatedForm.id.name}`}</option>
-                    );
-                  }
-                })}
-              </select>
+                {steps.map((step) => (
+                  <MultiSelect.Option key={step.order} value={step.order}>
+                    {`مرحله ${step.name} شامل ${step?.relatedForm?.id?.name}`}{" "}
+                  </MultiSelect.Option>
+                ))}
+              </MultiSelect>
+            </div>
+
+            <div className="flex gap-2 items-center">
+              <Label>امکان ایجادوظیفه سفارشی</Label>
+              <Checkbox
+                value={canCreateCustomTaskFlag}
+                onClick={() => setCanCreateCustomTaskFlag((prev) => !prev)}
+              />
             </div>
           </div>
 

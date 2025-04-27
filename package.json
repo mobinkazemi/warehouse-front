@@ -24,6 +24,7 @@
     "axios": "^1.7.2",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
+    "framer-motion": "^12.9.2",
     "jalali-moment": "^3.3.11",
     "lodash": "^4.17.21",
     "lucide-react": "^0.487.0",
