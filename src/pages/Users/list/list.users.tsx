@@ -145,7 +145,7 @@ const UsersListPage: React.FC = () => {
 
           <DialogContent>
             <DialogHeader>
-              <DialogTitle>ایجاد کاربر</DialogTitle>
+              <DialogTitle >ایجاد کاربر</DialogTitle>
             </DialogHeader>
 
             <Form
