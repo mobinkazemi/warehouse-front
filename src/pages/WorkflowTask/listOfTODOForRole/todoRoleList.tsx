@@ -448,13 +448,13 @@ export const ListOfToDoTasksForRole: React.FC = () => {
         )}
       </div>
 
-      <Table
+      {/* <Table
         columns={columns}
         dataSource={taskListData.filter(
           (item) => doneTask.indexOf(item.id as string) === -1
         )}
         rowKey="id"
-      />
+      /> */}
     </>
   );
 };
