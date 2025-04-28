@@ -24,6 +24,7 @@ import {
   Calendar,
   Download,
   FileText,
+  Copy,
 } from "lucide-react";
 import {
   Dialog,
@@ -50,6 +51,14 @@ const ProjectsListPage: React.FC = () => {
   const [projectsListData, setProjectsListData] = useState<DataType[]>([]);
   const [deletedProject, setDeletedProject] = useState<number[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
+
+  const handleCopy = async (id) => {
+    try {
+      await navigator.clipboard.writeText(id);
+    } catch (err) {
+      console.error("Failed to copy: ", err);
+    }
+  };
 
   useEffect(() => {
     setLoading(true);
@@ -131,11 +140,35 @@ const ProjectsListPage: React.FC = () => {
 
   if (filteredProjects.length === 0) {
     return (
-      <div className="flex flex-col items-center justify-center h-96 text-gray-500">
-        <Briefcase className="h-16 w-16 mb-4 text-[#FE7E05]" />
-        <p className="text-lg font-medium">هیچ پروژه‌ای یافت نشد</p>
-        <p className="text-sm mt-2">لطفا پروژه جدیدی ایجاد کنید</p>
-      </div>
+      <>
+        <div className="flex mb-8 items-center justify-between">
+          <div className="min-w-0 flex-1">
+            <h2 className="text-3xl">مدیریت پروژه ها</h2>
+          </div>
+
+          <Dialog>
+            <DialogTrigger asChild>
+              <button className="inline-flex items-center rounded-md bg-[#FE7E05] px-3 py-2 text-sm text-white shadow-xs">
+                ایجاد پروژه
+              </button>
+            </DialogTrigger>
+
+            <DialogContent>
+              <DialogHeader>
+                <DialogTitle>ایجاد پروژه</DialogTitle>
+              </DialogHeader>
+
+              <ProjectCreationPage />
+            </DialogContent>
+          </Dialog>
+        </div>
+
+        <div className="flex flex-col items-center justify-center h-96 text-gray-500">
+          <Briefcase className="h-16 w-16 mb-4 text-[#FE7E05]" />
+          <p className="text-lg font-medium">هیچ پروژه‌ای یافت نشد</p>
+          <p className="text-sm mt-2">لطفا پروژه جدیدی ایجاد کنید</p>
+        </div>
+      </>
     );
   }
 
@@ -240,24 +273,37 @@ const ProjectsListPage: React.FC = () => {
                   )}
                 </div>
 
-                <div className="px-6 py-3 bg-gray-50 border-t border-gray-100 flex justify-end space-x-2 space-x-reverse">
-                  <motion.div
-                    className="ml-2"
-                    whileHover={{ scale: 1.1 }}
-                    whileTap={{ scale: 0.95 }}
-                  >
-                    <EditButton projectId={project.id as string} />
-                  </motion.div>
-                  <motion.div
-                    whileHover={{ scale: 1.1 }}
-                    whileTap={{ scale: 0.95 }}
-                  >
-                    <DeleteButton
-                      projectId={project.id as string}
-                      setDeletedProject={setDeletedProject}
-                      deletedProject={deletedProject}
-                    />
-                  </motion.div>
+                <div className="px-6 py-3 bg-gray-50 border-t border-gray-100 flex justify-between">
+                  <div className="flex items-center justify-center">
+                    <Tooltip title="کپی شناسه">
+                      <button
+                        onClick={() => handleCopy(project.id)}
+                        className="mr-2 hover:cursor-pointer"
+                      >
+                        <Copy size={18} />
+                      </button>
+                    </Tooltip>
+                  </div>
+
+                  <div className="flex items-center">
+                    <motion.div
+                      className="ml-2"
+                      whileHover={{ scale: 1.1 }}
+                      whileTap={{ scale: 0.95 }}
+                    >
+                      <EditButton projectId={project.id as string} />
+                    </motion.div>
+                    <motion.div
+                      whileHover={{ scale: 1.1 }}
+                      whileTap={{ scale: 0.95 }}
+                    >
+                      <DeleteButton
+                        projectId={project.id as string}
+                        setDeletedProject={setDeletedProject}
+                        deletedProject={deletedProject}
+                      />
+                    </motion.div>
+                  </div>
                 </div>
               </div>
             </motion.div>

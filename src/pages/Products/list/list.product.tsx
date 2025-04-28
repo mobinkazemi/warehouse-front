@@ -124,7 +124,7 @@ const ProductsListPage: React.FC = () => {
           <Dialog>
             <DialogTrigger asChild>
               <button className="inline-flex items-center rounded-md bg-[#FE7E05] px-3 py-2 text-sm text-white shadow-xs">
-                ایجاد پروژه
+                ایجاد محصول
               </button>
             </DialogTrigger>
 

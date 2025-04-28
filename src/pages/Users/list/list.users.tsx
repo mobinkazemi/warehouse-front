@@ -121,11 +121,122 @@ const UsersListPage: React.FC = () => {
 
   if (filteredUsers.length === 0) {
     return (
-      <div className="flex flex-col items-center justify-center h-96 text-gray-500">
-        <User className="h-16 w-16 mb-4 text-[#FE7E05]" />
-        <p className="text-lg font-medium">هیچ کاربری یافت نشد</p>
-        <p className="text-sm mt-2">لطفا کاربر جدیدی ایجاد کنید</p>
-      </div>
+      <>
+        <div className="flex mb-8 items-center justify-between">
+          <div className="min-w-0 flex-1">
+            <h2 className="text-3xl">مدیریت کاربران</h2>
+          </div>
+
+          <Dialog>
+            <DialogTrigger asChild>
+              <button className="inline-flex items-center rounded-md bg-[#FE7E05] px-3 py-2 text-sm text-white shadow-xs">
+                ایجاد کاربر
+              </button>
+            </DialogTrigger>
+
+            <DialogContent>
+              <DialogHeader>
+                <DialogTitle>ایجاد کاربر</DialogTitle>
+              </DialogHeader>
+
+              <Form
+                name="register"
+                labelCol={{}}
+                wrapperCol={{}}
+                style={{ maxWidth: 500, width: "100%" }}
+                initialValues={{ remember: true }}
+                onFinish={onFinish}
+                onFinishFailed={onFinishFailed}
+                autoComplete="off"
+              >
+                <Form.Item<FieldType>
+                  label="نام"
+                  name="fullName"
+                  // wrapperCol={{ offset: 4, span: 20 }}
+                  rules={[
+                    {
+                      required: true,
+                      message: "نام و نام خانوادگی خود را وارد نمایید",
+                    },
+                  ]}
+                >
+                  <Input />
+                </Form.Item>
+
+                <Form.Item<FieldType>
+                  label="نام کاربری"
+                  name="username"
+                  // wrapperCol={{ offset: 1, span: 23 }}
+                  rules={[
+                    {
+                      required: true,
+                      message: "نام کاربری خود را وارد نمایید",
+                    },
+                  ]}
+                >
+                  <Input />
+                </Form.Item>
+
+                <Form.Item<FieldType>
+                  label="گذرواژه"
+                  name="password"
+                  // wrapperCol={{ offset: 2, span: 22 }}
+                  rules={[
+                    { required: true, message: "گذرواژه خود را وارد نمایید" },
+                  ]}
+                >
+                  <Input.Password />
+                </Form.Item>
+
+                <Form.Item<FieldType>
+                  label="تکرار گذرواژه"
+                  name="confirmPassword"
+                  // wrapperCol={{ offset: 0, span: 24 }}
+                  dependencies={["password"]}
+                  rules={[
+                    {
+                      required: true,
+                      message: "گذرواژه خود را مجددا وارد نمایید",
+                    },
+                    ({ getFieldValue }) => ({
+                      validator(_, value) {
+                        if (!value || getFieldValue("password") === value) {
+                          return Promise.resolve();
+                        }
+                        return Promise.reject(
+                          new Error("گذرواژه و تکرار گذرواژه یکسان نیستند!")
+                        );
+                      },
+                    }),
+                  ]}
+                >
+                  <Input.Password />
+                </Form.Item>
+
+                <Form.Item style={{ textAlign: "center" }}>
+                  <ButtonAnt
+                    size="large"
+                    type="primary"
+                    htmlType="submit"
+                    style={{
+                      width: "30%",
+                      backgroundColor: ColorPalletEnum.Primary,
+                    }}
+                  >
+                    ثبت کاربر{" "}
+                  </ButtonAnt>
+                </Form.Item>
+              </Form>
+            </DialogContent>
+          </Dialog>
+        </div>
+
+        <div className="flex flex-col items-center justify-center h-96 text-gray-500">
+          <User className="h-16 w-16 mb-4 text-[#FE7E05]" />
+          <p className="text-lg font-medium">هیچ کاربری یافت نشد</p>
+          <p className="text-sm mt-2">لطفا کاربر جدیدی ایجاد کنید</p>
+        </div>
+      </>
     );
   }
 
@@ -145,7 +256,7 @@ const UsersListPage: React.FC = () => {
 
           <DialogContent>
             <DialogHeader>
-              <DialogTitle >ایجاد کاربر</DialogTitle>
+              <DialogTitle>ایجاد کاربر</DialogTitle>
             </DialogHeader>
 
             <Form
