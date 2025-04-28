@@ -6,7 +6,7 @@ export const setId = ({ id, url }: { id: string | number; url: string }) => {
 export interface IRoute {
   method: methods;
   url: string;
-} 
+}
 
 interface IBackendRoutes {
   auth: {
@@ -30,6 +30,13 @@ interface IBackendRoutes {
     update: IRoute;
     info: IRoute;
     delete: IRoute;
+  };
+  form: {
+    create: IRoute;
+    list: IRoute;
+    // update: IRoute;
+    // info: IRoute;
+    // delete: IRoute;
   };
   product: {
     create: IRoute;
@@ -107,6 +114,10 @@ export const BACKEND_ROUTES: IBackendRoutes = {
   role: {
     list: { method: "get", url: "/role/list" },
     getCurrentPermissions: { method: "get", url: "/role/get-permissions/:id" },
+  },
+  form: {
+    create: { method: "post", url: "/form/create" },
+    list: { method: "get", url: "/form/list" },
   },
   project: {
     create: { method: "post", url: "/project/create" },
