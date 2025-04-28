@@ -6,7 +6,7 @@ import { RejectButton } from "./parts/rejectButton";
 import { BACKEND_ROUTES } from "../../../shared/backendRoutes";
 import apiClient from "../../../configs/axios.config";
 import { IBaseBackendResponse } from "../../../shared/interfaces/base-backend-response.interface";
-import { timestampToJalali } from "../../../shared/functions/timestamp-to-jalali.function";
+import { timestampToJalali, timestampToJalaliWithMonth } from "../../../shared/functions/timestamp-to-jalali.function";
 import { ViewDetailsButton } from "./parts/ViewDetailsButton";
 import { FormModalButton } from "./parts/formModalButton";
 import { IForm } from "../../Workflow/create/functions/form-fields-modal.function";
@@ -175,11 +175,22 @@ export const ListOfToDoTasksForRole: React.FC = () => {
           (data.data.data || []).map((item) => {
             return {
               id: item.id,
-              createdAt: timestampToJalali(item.createdAt),
-              status: item.status,
+              createdAt: timestampToJalaliWithMonth(item.createdAt),
+              status:
+                item.status === "TODO"
+                  ? "جهت انجام"
+                  : item.status === "DONE-AND-REJECTED"
+                  ? "رد شده"
+                  : "نامشخص",
               stepName: item.stepName,
               workflowName: item.workflowId.name,
-              stepType: item.stepType,
+              // stepType: item.stepType,
+              stepType:
+                item.stepType === "TODO"
+                  ? "وظیفه"
+                  : item.stepType === "START"
+                  ? "شروع"
+                  : "نامشخص",
               perviousTask: item.perviousTask,
               relatedForm: item.relatedForm,
               formData: item.formData,
