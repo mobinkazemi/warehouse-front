@@ -10,8 +10,13 @@ import {
   message,
   Row,
   Col,
+  Select,
+  Checkbox,
+  DatePicker,
+  Radio,
+  Upload,
 } from "antd";
-import { FormOutlined, EyeOutlined } from "@ant-design/icons";
+import { FormOutlined, EyeOutlined, UploadOutlined } from "@ant-design/icons";
 import {
   FormFieldTypeEnum,
   IForm,
@@ -36,6 +41,7 @@ interface IProps {
     fillFormWith?: string;
   };
 }
+
 const { url: createFormDataUrl, method: createFormDataMethod } =
   BACKEND_ROUTES.workflowTask.createFormData;
 
@@ -147,7 +153,6 @@ export const FormModalButton: React.FC<IProps> = (data: IProps) => {
     if (data?.fields) {
       setSelectedFields(new Map(data.fields.map((f) => [f.id, true])));
       setFormApiMethod(data.id.api.method.toLowerCase() as "post");
-      // setFormApiUrl(data.id.api.url.toLowerCase());
     }
   }, [data]);
 
@@ -187,6 +192,202 @@ export const FormModalButton: React.FC<IProps> = (data: IProps) => {
       });
   };
 
+  // New function to render form fields dynamically based on type
+  const renderFormField = (field) => {
+    const { type, name, label, required, SelectItems = [] } = field;
+
+    // Handle existing special field types
+    if (type === FormFieldTypeEnum.DATE) {
+      return (
+        <Form.Item name={name} key={field.id}>
+          <FormGeneratorDateListFormItem
+            key={field.id}
+            form={form}
+            componentName={name}
+            componentLabel={label}
+          />
+        </Form.Item>
+      );
+    } else if (type === FormFieldTypeEnum.FILE) {
+      return (
+        <Form.Item name={name} key={field.id}>
+          <FormGeneratorFileListFormItem form={form} name={name} />
+        </Form.Item>
+      );
+    } else if (field.relatedInstanceApi) {
+      return (
+        <Form.Item name={name} key={field.id}>
+          <FormGeneratorDropdownWithApiFormItem data={field} key={field.id} />
+        </Form.Item>
+      );
+    }
+
+    // Handle new field types
+    switch (type) {
+      case "text":
+        return (
+          <Form.Item
+            name={name}
+            key={field.id}
+            rules={[
+              { required: !!required, message: `لطفا ${label} را وارد کنید` },
+            ]}
+          >
+            <Input
+              placeholder={`${label} را وارد کنید`}
+              disabled={showViewOnly}
+            />
+          </Form.Item>
+        );
+
+      case "password":
+        return (
+          <Form.Item
+            name={name}
+            key={field.id}
+            rules={[
+              { required: !!required, message: `لطفا ${label} را وارد کنید` },
+            ]}
+          >
+            <Input.Password
+              placeholder={`${label} را وارد کنید`}
+              disabled={showViewOnly}
+            />
+          </Form.Item>
+        );
+
+      case "email":
+        return (
+          <Form.Item
+            name={name}
+            key={field.id}
+            rules={[
+              { required: !!required, message: `لطفا ${label} را وارد کنید` },
+              { type: "email", message: "فرمت ایمیل صحیح نیست" },
+            ]}
+          >
+            <Input
+              type="email"
+              placeholder={`${label} را وارد کنید`}
+              disabled={showViewOnly}
+            />
+          </Form.Item>
+        );
+
+      case "number":
+        return (
+          <Form.Item
+            name={name}
+            key={field.id}
+            rules={[
+              { required: !!required, message: `لطفا ${label} را وارد کنید` },
+            ]}
+          >
+            <Input
+              type="number"
+              placeholder={`${label} را وارد کنید`}
+              disabled={showViewOnly}
+            />
+          </Form.Item>
+        );
+
+      case "select":
+        return (
+          <Form.Item
+            name={name}
+            key={field.id}
+            rules={[
+              { required: !!required, message: `لطفا ${label} را انتخاب کنید` },
+            ]}
+          >
+            <Select
+              placeholder={`${label} را انتخاب کنید`}
+              disabled={showViewOnly}
+            >
+              {SelectItems?.map((item, index) => (
+                <Select.Option key={`${name}-${index}`} value={item.label}>
+                  {item.label}
+                </Select.Option>
+              ))}
+            </Select>
+          </Form.Item>
+        );
+
+      case "select-multiple":
+        return (
+          <Form.Item
+            name={name}
+            key={field.id}
+            rules={[
+              { required: !!required, message: `لطفا ${label} را انتخاب کنید` },
+            ]}
+          >
+            <Select
+              mode="multiple"
+              placeholder={`${label} را انتخاب کنید`}
+              disabled={showViewOnly}
+            >
+              {SelectItems?.map((item, index) => (
+                <Select.Option key={`${name}-${index}`} value={item.label}>
+                  {item.label}
+                </Select.Option>
+              ))}
+            </Select>
+          </Form.Item>
+        );
+
+      case "checkBox":
+        return (
+          <Form.Item name={name} key={field.id} valuePropName="checked">
+            <Checkbox disabled={showViewOnly}>{label}</Checkbox>
+          </Form.Item>
+        );
+
+      case "date":
+        return (
+          <Form.Item
+            name={name}
+            key={field.id}
+            rules={[
+              { required: !!required, message: `لطفا ${label} را انتخاب کنید` },
+            ]}
+          >
+            <DatePicker
+              placeholder={`${label} را انتخاب کنید`}
+              style={{ width: "100%" }}
+              disabled={showViewOnly}
+            />
+          </Form.Item>
+        );
+
+      case "radio":
+        return (
+          <Form.Item
+            name={name}
+            key={field.id}
+            rules={[
+              { required: !!required, message: `لطفا ${label} را انتخاب کنید` },
+            ]}
+          >
+            <Radio.Group disabled={showViewOnly}>
+              {SelectItems?.map((item, index) => (
+                <Radio key={`${name}-${index}`} value={item.label}>
+                  {item.label}
+                </Radio>
+              ))}
+            </Radio.Group>
+          </Form.Item>
+        );
+
+      default:
+        return (
+          <Form.Item name={name} key={field.id}>
+            <Input disabled={showViewOnly} />
+          </Form.Item>
+        );
+    }
+  };
+
   return (
     <>
       <Tooltip title="فرم مربوطه">
@@ -205,17 +406,17 @@ export const FormModalButton: React.FC<IProps> = (data: IProps) => {
         footer={null}
         width={800}
       >
-        <div className="flex flex-col gap-3">
-          <div className="flex flex-col gap-2 items-center">
+        <div className="flex flex-col gap-14" style={{ marginTop: "2rem" }}>
+          <Flex align="center" justify="center">
             <img
               src="/douranLogo.png"
               alt="Logo"
               style={{ width: "50px", height: "50px", marginRight: "10px" }}
             />
-            <span style={{ fontSize: "30px", fontWeight: "bold" }}>
+            <span style={{ fontSize: "28px", fontWeight: "bold" }}>
               {data?.id?.name}
             </span>
-          </div>
+          </Flex>
           {data.id.type == "create" && (
             <div className="p-6 rounded-2xl border border-gray-200 mb-4">
               <button
@@ -254,58 +455,32 @@ export const FormModalButton: React.FC<IProps> = (data: IProps) => {
               )}
             </div>
           )}
-
           <Form
             form={form}
             name="create"
-            style={{ maxWidth: 500, width: "100%" }}
+            className="flex flex-col gap-2"
+            style={{ width: "100%" }}
             onFinish={onFinish}
             autoComplete="off"
           >
-            {data?.id?.fields
-              .filter((f) => {
-                return selectedFields?.has(f.id);
-              })
-              .map((f) => {
-                return (
-                  <Row gutter={[16, 16]} key={f.id}>
-                    <Col span={5} style={{ textAlign: "right" }}>
-                      <label>{f.label}:</label>
-                    </Col>
-                    <Col span={19}>
-                      {f.type === FormFieldTypeEnum.DATE ? (
-                        <Form.Item name={f.name} key={f.id}>
-                          <FormGeneratorDateListFormItem
-                            key={f.id}
-                            form={form}
-                            componentName={f.name}
-                            componentLabel={f.label}
-                          ></FormGeneratorDateListFormItem>{" "}
-                        </Form.Item>
-                      ) : f.type === FormFieldTypeEnum.FILE ? (
-                        <Form.Item name={f.name} key={f.id}>
-                          <FormGeneratorFileListFormItem
-                            form={form}
-                            name={f.name}
-                          ></FormGeneratorFileListFormItem>
-                        </Form.Item>
-                      ) : f.relatedInstanceApi ? (
-                        <Form.Item name={f.name} key={f.id}>
-                          <FormGeneratorDropdownWithApiFormItem
-                            data={f}
-                            key={f.id}
-                          ></FormGeneratorDropdownWithApiFormItem>
-                        </Form.Item>
-                      ) : (
-                        <Form.Item<any> name={f.name} key={f.id}>
-                          <Input />
-                        </Form.Item>
-                      )}
-                    </Col>
-                  </Row>
-                );
-              })}
-            <Form.Item style={{ textAlign: "center" }}>
+            <div className="grid grid-cols-2 gap-4">
+              {data?.id?.fields
+                .filter((f) => {
+                  return selectedFields?.has(f.id);
+                })
+                .map((f) => {
+                  return (
+                    <Row gutter={[16, 16]} key={f.id}>
+                      <Col span={5} style={{ textAlign: "right" }}>
+                        <label>{f.label}:</label>
+                      </Col>
+                      <Col span={19}>{renderFormField(f)}</Col>
+                    </Row>
+                  );
+                })}
+            </div>
+
+            <Form.Item style={{ textAlign: "end" }}>
               <Button
                 disabled={showViewOnly}
                 size="large"

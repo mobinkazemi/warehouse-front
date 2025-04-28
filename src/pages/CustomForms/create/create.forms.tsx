@@ -11,7 +11,15 @@ type FieldType = {
   name: string;
   fields: Array<{
     name: string;
-    type: "text" | "number" | "file" | "select" | "multiSelect" | "checkBox";
+    type:
+      | "text"
+      | "number"
+      | "file"
+      | "select"
+      | "select-multiple"
+      | "checkBox"
+      | "date"
+      |'radio';
     SelectItems: Array<{ label: string }>;
     required: boolean;
   }>;
@@ -19,11 +27,15 @@ type FieldType = {
 
 const inputTypeOptions = [
   { value: "text", label: "متن" },
+  { value: "password", label: "گذرواژه" },
+  { value: "email", label: "ایمیل" },
   { value: "number", label: "عدد" },
   { value: "file", label: "فایل" },
   { value: "select", label: "انتخاب تکی" },
-  { value: "multiSelect", label: "انتخاب چندتایی" },
+  { value: "select-multiple", label: "انتخاب چندتایی" },
   { value: "checkBox", label: "چک باکس" },
+  { value: "date", label: "تاریخ" },
+  { value: "radio", label: "چند گزینه ای" },
 ];
 
 const FormCreationPage: React.FC = () => {
@@ -60,15 +72,17 @@ const FormCreationPage: React.FC = () => {
   };
 
   const handleTypeChange = (value: string, fieldIndex: number) => {
-    setFieldTypes(prev => ({
+    setFieldTypes((prev) => ({
       ...prev,
-      [fieldIndex]: value
+      [fieldIndex]: value,
     }));
   };
 
   const shouldShowSelectItems = (fieldIndex: number) => {
     const type = fieldTypes[fieldIndex];
-    return type === "select" || type === "multiSelect" || type === "checkBox";
+    return (
+      type === "select" || type === "select-multiple" || type === "checkBox" || type === 'radio'
+    );
   };
 
   return (
@@ -81,7 +95,9 @@ const FormCreationPage: React.FC = () => {
         onFinishFailed={onFinishFailed}
         autoComplete="off"
         initialValues={{
-          fields: [{ name: "", type: "text", selectItems: [], required: false }],
+          fields: [
+            { name: "", type: "text", selectItems: [], required: false },
+          ],
         }}
       >
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -112,7 +128,7 @@ const FormCreationPage: React.FC = () => {
                             onClick={() => {
                               remove(fieldIndex);
                               // Remove the field type from state when field is removed
-                              const newFieldTypes = {...fieldTypes};
+                              const newFieldTypes = { ...fieldTypes };
                               delete newFieldTypes[fieldIndex];
                               setFieldTypes(newFieldTypes);
                             }}
@@ -151,7 +167,9 @@ const FormCreationPage: React.FC = () => {
                           <Select
                             options={inputTypeOptions}
                             placeholder="انتخاب نوع"
-                            onChange={(value) => handleTypeChange(value, fieldIndex)}
+                            onChange={(value) =>
+                              handleTypeChange(value, fieldIndex)
+                            }
                           />
                         </Form.Item>
 
@@ -228,7 +246,12 @@ const FormCreationPage: React.FC = () => {
                   <Button
                     type="dashed"
                     onClick={() =>
-                      add({ name: "", type: "text", selectItems: [], required: false })
+                      add({
+                        name: "",
+                        type: "text",
+                        selectItems: [],
+                        required: false,
+                      })
                     }
                     block
                     icon={<PlusOutlined />}
