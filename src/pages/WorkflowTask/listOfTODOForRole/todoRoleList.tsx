@@ -319,7 +319,7 @@ export const ListOfToDoTasksForRole: React.FC = () => {
                     </p>
                   </div>
 
-                  <div className="bg-white/20 text-white px-2 py-0.5 rounded text-xs">
+                  <div className="bg-white/20 text-white px-2 py-0.5 rounded text-xs s">
                     {task.status}
                   </div>
                 </div>

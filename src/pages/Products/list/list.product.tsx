@@ -16,8 +16,15 @@ import {
   Search,
   Filter,
 } from "lucide-react";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 import ProductCreationPage from "../create/create";
+import { Input } from "antd";
 
 interface DataType {
   id: React.Key;
@@ -103,8 +110,16 @@ const ProductsListPage: React.FC = () => {
       >
         <div className="flex mb-8 items-center justify-between col-span-full">
           <div className="min-w-0 flex-1">
-            <h2 className="text-3xl">مدیریت پروژه ها</h2>
+            <h2 className="text-3xl">مدیریت محصولات</h2>
           </div>
+
+          <input
+            type="text"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="py-2 rounded-md ml-4 border border-gray-300 px-3"
+            placeholder="جستجو کنید..."
+          />
 
           <Dialog>
             <DialogTrigger asChild>
@@ -142,7 +157,7 @@ const ProductsListPage: React.FC = () => {
                     کد پروژه: {product.code}
                   </p>
                 </div>
-                <div className="bg-white/20 text-white px-2 py-0.5 rounded text-xs">
+                <div className="bg-white/20 text-white px-2 py-0.5 rounded text-xs s">
                   {product.status === "active" ? "فعال" : "غیرفعال"}
                 </div>
               </div>

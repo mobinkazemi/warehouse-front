@@ -33,6 +33,21 @@
 h1 {
   font-family: "iranSans";
 }
+h2 {
+  font-family: "iranSans";
+}
+h3 {
+  font-family: "iranSans";
+}
+button {
+  font-family: "iranSans";
+}
+input {
+  font-family: "iranSans";
+}
+p {
+  font-family: "iranSans";
+}
 span {
   font-family: "iranSans";
 }
@@ -53,6 +68,10 @@ td {
 }
 
 strong {
+  font-family: "iranSans-bold";
+}
+
+.s {
   font-family: "iranSans-bold";
 }
 
