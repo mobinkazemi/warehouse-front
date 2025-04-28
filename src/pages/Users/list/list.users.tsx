@@ -336,7 +336,7 @@ const UsersListPage: React.FC = () => {
                     <div className="flex items-center">
                       <Phone size={16} className="ml-2 text-[#FE7E05]" />
                       <div className="text-sm text-gray-700">
-                        {user.mobile || "--"}
+                        {user.phoneNumber || "--"}
                       </div>
                     </div>
                   </td>

@@ -1,5 +1,16 @@
 import React, { useEffect, useState } from "react";
-import { Spin, Tooltip } from "antd";
+import {
+  Col,
+  Form,
+  Input,
+  message,
+  Row,
+  Select,
+  Space,
+  Spin,
+  Tooltip,
+  Upload,
+} from "antd";
 import { DeleteButton } from "./parts/DeleteButton";
 import { EditButton } from "./parts/EditButton";
 import apiClient from "../../../configs/axios.config";
@@ -14,7 +25,15 @@ import {
   Download,
   FileText,
 } from "lucide-react";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import ProductCreationPage from "@/pages/Products/create/create";
+import ProjectCreationPage from "../create/create";
 
 interface DataType {
   id: React.Key;
@@ -144,7 +163,7 @@ const ProjectsListPage: React.FC = () => {
               <DialogTitle>ایجاد پروژه</DialogTitle>
             </DialogHeader>
 
-
+            <ProjectCreationPage />
           </DialogContent>
         </Dialog>
       </div>
