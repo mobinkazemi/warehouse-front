@@ -28,6 +28,14 @@ import FormsListPage from "./pages/CustomForms/list/list.forms";
 import FormCreationPage from "./pages/CustomForms/create/create.forms";
 const router = createBrowserRouter([
   {
+    path: ROUTES_ENUM.LOGIN,
+    element: <LoginPage></LoginPage>,
+  },
+  {
+    path: ROUTES_ENUM.REGISTER,
+    element: <RegisterPage />,
+  },
+  {
     path: ROUTES_ENUM.HOME, // Base path
     element: <BaseLayout />, // Wrap with BaseLayout
     children: [
@@ -40,14 +48,14 @@ const router = createBrowserRouter([
       //
       //
       // AUTH
-      {
-        path: ROUTES_ENUM.LOGIN,
-        element: <LoginPage></LoginPage>,
-      },
-      {
-        path: ROUTES_ENUM.REGISTER,
-        element: <RegisterPage />,
-      },
+      // {
+      //   path: ROUTES_ENUM.LOGIN,
+      //   element: <LoginPage></LoginPage>,
+      // },
+      // {
+      //   path: ROUTES_ENUM.REGISTER,
+      //   element: <RegisterPage />,
+      // },
       //
       //
       //

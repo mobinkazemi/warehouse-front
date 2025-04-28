@@ -19,11 +19,11 @@ const LoginPage: React.FC = () => {
   const navigator = useNavigate();
 
   const onFinish: FormProps<FieldType>["onFinish"] = async (values: any) => {
-    console.log(values)
+    console.log(values);
     const response = await loginUser(values);
     console.log(response);
     if (response.result) {
-      localStorage.setItem(TOKEN_KEY_ENUM.ACCESS, response.token as string); 
+      localStorage.setItem(TOKEN_KEY_ENUM.ACCESS, response.token as string);
 
       const thisRole = await getMyRole();
       localStorage.setItem(ROLE_LOCAL_STORAGE_ENUM.ROLE, thisRole.role);
@@ -45,7 +45,89 @@ const LoginPage: React.FC = () => {
 
   return (
     <>
-      <Flex justify="center" align="center" style={{ marginTop: "10rem" }}>
+      <div className="size-full flex pt-8 justify-center">
+        <div className="max-w-6xl w-full relative">
+          <div className="bg-gray-900 h-48 rounded-2xl flex items-center px-8">
+            <img src="logo.png" alt="" className="w-48" />
+
+            <div className="text-4xl text-white flex flex-col gap-2 mr-8 font-bold">
+              <span>سامـانـه</span>
+              <span>دوریـنـو</span>
+            </div>
+          </div>
+
+          <div className="flex justify-between">
+            <div className="w-[30rem] pt-20">
+              <span className="mb-8 block text-orange-500">ورود به سیستم</span>
+
+              <Form
+                name="basic"
+                labelCol={{}}
+                wrapperCol={{}}
+                initialValues={{ remember: true }}
+                onFinish={onFinish}
+                onFinishFailed={onFinishFailed}
+                autoComplete="off"
+                className="w-fu"
+              >
+                <Form.Item<FieldType>
+                  label="نام کاربری"
+                  name="username"
+                  wrapperCol={{ offset: 2, span: 25 }}
+                  rules={[
+                    {
+                      required: true,
+                      message: "نام کاربری خود را وارد نمایید",
+                    },
+                  ]}
+                >
+                  <Input variant="filled" />
+                </Form.Item>
+
+                <Form.Item<FieldType>
+                  label="گذرواژه"
+                  wrapperCol={{ offset: 3, span: 24 }}
+                  name="password"
+                  rules={[
+                    { required: true, message: "رمز عبور خود را وارد نمایید" },
+                  ]}
+                >
+                  <Input.Password variant="filled" />
+                </Form.Item>
+
+                <div className="border-t border-gray-200 mb-8"></div>
+
+                {/* <div style={{ marginBottom: "3rem" }}></div> */}
+
+                <div className="flex justify-end">
+                  <Form.Item style={{ textAlign: "center" }}>
+                    <Button
+                      size="large"
+                      type="primary"
+                      htmlType="submit"
+                      style={{
+                        // width: "50%",
+                        backgroundColor: ColorPalletEnum.Primary,
+                      }}
+                      className="w-32"
+                    >
+                      ورود
+                    </Button>
+                  </Form.Item>
+                </div>
+              </Form>
+            </div>
+
+            <img
+              src="auth.png"
+              alt=""
+              className="w-[640px] h-[740px] absolute top-4 -left-14"
+            />
+          </div>
+        </div>
+      </div>
+
+      {/* <Flex justify="center" align="center" style={{ marginTop: "10rem" }}>
         <Card
           title={
             <Flex align="center" justify="center">
@@ -116,7 +198,7 @@ const LoginPage: React.FC = () => {
             </Form.Item>
           </Form>
         </Card>
-      </Flex>
+      </Flex> */}
     </>
   );
 };

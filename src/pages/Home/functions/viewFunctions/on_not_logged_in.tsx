@@ -2,9 +2,14 @@ import { Button, Flex } from "antd";
 import { useNavigate } from "react-router-dom";
 import { ROUTES_ENUM } from "../../../../shared/enums/routes.enum";
 import { ColorPalletEnum } from "../../../../shared/enums/colorPallet.enum";
+import { useEffect } from "react";
 
 export const contentOfNotLoggedIn = () => {
   const navigator = useNavigate();
+
+  useEffect(() => {
+    navigator('/login')
+  }, [])
 
   const onClickLogin = () => {
     navigator(ROUTES_ENUM.LOGIN);

@@ -30,11 +30,13 @@ const WorkflowCreationPage: React.FC = () => {
       message.success(response.message);
       setWorkflowId(response.data?.data.data.id);
 
-      setTimeout(() => {
-        setShowFirstStep(false);
-        setShowSecondStep(true);
-        setShowThirdStep(false);
-      }, 1000);
+      navigate(`/workflow/steps/${response.data?.data.data.id}`)
+
+      // setTimeout(() => {
+      //   setShowFirstStep(false);
+      //   setShowSecondStep(true);
+      //   setShowThirdStep(false);
+      // }, 1000);
     } else {
       message.error(response.message);
     }
