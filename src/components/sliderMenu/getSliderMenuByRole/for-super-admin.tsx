@@ -111,4 +111,9 @@ export const superAdminMenuItems = [
       },
     ],
   },
+  {
+    label: "فرم های اختصاصی",
+    key: ROUTES_ENUM._FORMS_,
+    icon: <CheckSquare style={{ fontSize: "1.5rem" }} />,
+  },
 ];

@@ -24,6 +24,8 @@ import { ListOfToDoTasksForRole } from "./pages/WorkflowTask/listOfTODOForRole/t
 import DoneByMyUserList from "./pages/WorkflowTask/listOfDoneByUser/DoneTasksByUser";
 import StepsPage from "./pages/Workflow/steps-page";
 import { ConfigProvider } from "antd";
+import FormsListPage from "./pages/CustomForms/list/list.forms";
+import FormCreationPage from "./pages/CustomForms/create/create.forms";
 const router = createBrowserRouter([
   {
     path: ROUTES_ENUM.HOME, // Base path
@@ -79,6 +81,19 @@ const router = createBrowserRouter([
       {
         path: ROUTES_ENUM.PROJECTS_UPDATE,
         element: <UpdateProjectPage></UpdateProjectPage>,
+      },
+      //
+      //
+      //
+      //
+      // PROJECT
+      {
+        path: ROUTES_ENUM.FORMS_LIST,
+        element: <FormsListPage />,
+      },
+      {
+        path: ROUTES_ENUM.FORMS_CREATE,
+        element: <FormCreationPage />,
       },
       //
       //

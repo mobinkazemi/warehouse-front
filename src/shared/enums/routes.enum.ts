@@ -31,6 +31,15 @@ export enum ROUTES_ENUM {
   PROJECTS_CREATE = "/projects/create",
   PROJECTS_DELETE = "/projects/delete/:id",
 
+    //
+  //
+  //
+  // ####################################
+  //          forms
+  _FORMS_ = "/forms/list",
+  FORMS_LIST = "/forms/list",
+  FORMS_CREATE = "/forms/create",
+
   //
   //
   //
