@@ -127,7 +127,7 @@ const SliderMenu: React.FC<SliderMenuProps> = ({ onClick, current }) => {
 
   return (
     <motion.div 
-      className="p-4 h-full absolute w-full"
+      className="p-4 h-full absolute w-full sidBarEffect"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.5 }}
