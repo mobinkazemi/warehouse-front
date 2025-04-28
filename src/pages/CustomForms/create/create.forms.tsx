@@ -11,21 +11,44 @@ type FieldType = {
   name: string;
   fields: Array<{
     name: string;
-    selectItems: Array<{ label: string }>;
+    type:
+      | "text"
+      | "number"
+      | "file"
+      | "select"
+      | "select-multiple"
+      | "checkBox"
+      | "date"
+      |'radio';
+    SelectItems: Array<{ label: string }>;
     required: boolean;
   }>;
 };
 
+const inputTypeOptions = [
+  { value: "text", label: "متن" },
+  { value: "password", label: "گذرواژه" },
+  { value: "email", label: "ایمیل" },
+  { value: "number", label: "عدد" },
+  { value: "file", label: "فایل" },
+  { value: "select", label: "انتخاب تکی" },
+  { value: "select-multiple", label: "انتخاب چندتایی" },
+  { value: "checkBox", label: "چک باکس" },
+  { value: "date", label: "تاریخ" },
+  { value: "radio", label: "چند گزینه ای" },
+];
+
 const FormCreationPage: React.FC = () => {
   const navigator = useNavigate();
   const [form] = Form.useForm();
+  const [fieldTypes, setFieldTypes] = useState<Record<number, string>>({});
 
   const onFinish: FormProps<FieldType>["onFinish"] = async (values) => {
     const finalData = {
       ...values,
       type: "custom",
       fields: values.fields.map((item) => {
-        return { ...item, label: item.name, type: "text" };
+        return { ...item, label: item.name };
       }),
     };
     const response = await createForm(finalData);
@@ -48,8 +71,22 @@ const FormCreationPage: React.FC = () => {
     console.log("Failed:", errorInfo);
   };
 
+  const handleTypeChange = (value: string, fieldIndex: number) => {
+    setFieldTypes((prev) => ({
+      ...prev,
+      [fieldIndex]: value,
+    }));
+  };
+
+  const shouldShowSelectItems = (fieldIndex: number) => {
+    const type = fieldTypes[fieldIndex];
+    return (
+      type === "select" || type === "select-multiple" || type === "checkBox" || type === 'radio'
+    );
+  };
+
   return (
-    <Card title="ساخت کاربر جدید" className="w-full">
+    <Card title="ساخت فرم جدید" className="w-full">
       <Form
         form={form}
         name="register"
@@ -58,7 +95,9 @@ const FormCreationPage: React.FC = () => {
         onFinishFailed={onFinishFailed}
         autoComplete="off"
         initialValues={{
-          fields: [{ name: "", selectItems: [], required: false }],
+          fields: [
+            { name: "", type: "text", selectItems: [], required: false },
+          ],
         }}
       >
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -78,25 +117,31 @@ const FormCreationPage: React.FC = () => {
           <Form.List name="fields">
             {(fields, { add, remove }) => (
               <>
-                {fields.map(({ key, name, ...restField }) => (
+                {fields.map(({ key, name: fieldIndex, ...restField }) => (
                   <div key={key} className="col-span-1 md:col-span-2">
                     <Card
                       size="small"
-                      title={`فیلد ${name + 1}`}
+                      title={`فیلد ${fieldIndex + 1}`}
                       extra={
                         fields.length > 1 ? (
                           <MinusCircleOutlined
-                            onClick={() => remove(name)}
+                            onClick={() => {
+                              remove(fieldIndex);
+                              // Remove the field type from state when field is removed
+                              const newFieldTypes = { ...fieldTypes };
+                              delete newFieldTypes[fieldIndex];
+                              setFieldTypes(newFieldTypes);
+                            }}
                             className="text-red-500"
                           />
                         ) : null
                       }
                       className="mb-4"
                     >
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                         <Form.Item
                           {...restField}
-                          name={[name, "name"]}
+                          name={[fieldIndex, "name"]}
                           label="نام فیلد"
                           rules={[
                             {
@@ -110,9 +155,28 @@ const FormCreationPage: React.FC = () => {
 
                         <Form.Item
                           {...restField}
-                          name={[name, "required"]}
+                          name={[fieldIndex, "type"]}
+                          label="نوع فیلد"
+                          rules={[
+                            {
+                              required: true,
+                              message: "لطفا نوع فیلد را انتخاب کنید",
+                            },
+                          ]}
+                        >
+                          <Select
+                            options={inputTypeOptions}
+                            placeholder="انتخاب نوع"
+                            onChange={(value) =>
+                              handleTypeChange(value, fieldIndex)
+                            }
+                          />
+                        </Form.Item>
+
+                        <Form.Item
+                          {...restField}
+                          name={[fieldIndex, "required"]}
                           label="اجباری"
-                          valuePropName="checked"
                         >
                           <Select
                             options={[
@@ -123,54 +187,56 @@ const FormCreationPage: React.FC = () => {
                           />
                         </Form.Item>
 
-                        <Form.List name={[name, "selectItems"]}>
-                          {(
-                            selectItems,
-                            { add: addItem, remove: removeItem }
-                          ) => (
-                            <div className="col-span-1 md:col-span-2">
-                              <div className="mb-2 flex justify-between items-center">
-                                <span>گزینه‌های انتخابی</span>
-                                <Button
-                                  type="dashed"
-                                  onClick={() => addItem({ label: "" })}
-                                  icon={<PlusOutlined />}
-                                >
-                                  افزودن گزینه
-                                </Button>
-                              </div>
-                              {selectItems.map((item, itemIndex) => (
-                                <Space
-                                  key={item.key}
-                                  className="mb-2 flex items-center mx-2"
-                                  align="baseline"
-                                >
-                                  <Form.Item
-                                    {...item}
-                                    name={[item.name, "label"]}
-                                    rules={[
-                                      {
-                                        required: true,
-                                        message:
-                                          "لطفا عنوان گزینه را وارد کنید",
-                                      },
-                                    ]}
-                                    noStyle
+                        {shouldShowSelectItems(fieldIndex) && (
+                          <Form.List name={[fieldIndex, "SelectItems"]}>
+                            {(
+                              selectItems,
+                              { add: addItem, remove: removeItem }
+                            ) => (
+                              <div className="col-span-1 md:col-span-3">
+                                <div className="mb-2 flex justify-between items-center">
+                                  <span>گزینه‌های انتخابی</span>
+                                  <Button
+                                    type="dashed"
+                                    onClick={() => addItem({ label: "" })}
+                                    icon={<PlusOutlined />}
                                   >
-                                    <Input
-                                      placeholder="عنوان گزینه"
-                                      style={{ width: "200px" }}
+                                    افزودن گزینه
+                                  </Button>
+                                </div>
+                                {selectItems.map((item, itemIndex) => (
+                                  <Space
+                                    key={item.key}
+                                    className="mb-2 flex items-center mx-2"
+                                    align="baseline"
+                                  >
+                                    <Form.Item
+                                      {...item}
+                                      name={[item.name, "label"]}
+                                      rules={[
+                                        {
+                                          required: true,
+                                          message:
+                                            "لطفا عنوان گزینه را وارد کنید",
+                                        },
+                                      ]}
+                                      noStyle
+                                    >
+                                      <Input
+                                        placeholder="عنوان گزینه"
+                                        style={{ width: "200px" }}
+                                      />
+                                    </Form.Item>
+                                    <MinusCircleOutlined
+                                      onClick={() => removeItem(item.name)}
+                                      className="text-red-500"
                                     />
-                                  </Form.Item>
-                                  <MinusCircleOutlined
-                                    onClick={() => removeItem(item.name)}
-                                    className="text-red-500"
-                                  />
-                                </Space>
-                              ))}
-                            </div>
-                          )}
-                        </Form.List>
+                                  </Space>
+                                ))}
+                              </div>
+                            )}
+                          </Form.List>
+                        )}
                       </div>
                     </Card>
                   </div>
@@ -180,7 +246,12 @@ const FormCreationPage: React.FC = () => {
                   <Button
                     type="dashed"
                     onClick={() =>
-                      add({ name: "", selectItems: [], required: false })
+                      add({
+                        name: "",
+                        type: "text",
+                        selectItems: [],
+                        required: false,
+                      })
                     }
                     block
                     icon={<PlusOutlined />}
@@ -203,7 +274,7 @@ const FormCreationPage: React.FC = () => {
               backgroundColor: ColorPalletEnum.Primary,
             }}
           >
-            ثبت کاربر
+            ثبت فرم
           </Button>
         </Flex>
       </Form>
