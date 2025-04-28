@@ -64,196 +64,169 @@ const ProductCreationPage: React.FC = () => {
       .catch();
   }, []);
   return (
-    <Flex justify="center" align="center" style={{ marginTop: "5rem" }}>
-      <Card
-        title={
-          <Flex align="center" justify="center">
-            <img
-              src="/douranLogo.png"
-              alt="Logo"
-              style={{ width: "50px", height: "50px", marginRight: "10px" }}
-            />
-            <span style={{ fontSize: "30px", fontWeight: "bold" }}>
-              ثبت محصول
-            </span>
-          </Flex>
-        }
-        bordered={false}
-        style={{
-          width: 450,
-          borderRadius: "10px",
-          boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
-        }}
-      >
-        <Form
-          name="create-product"
-          style={{ maxWidth: 500, width: "100%" }}
-          onFinish={onFinish}
-          autoComplete="off"
-        >
-          <Row gutter={[16, 16]}>
-            <Col span={5} style={{ textAlign: "right" }}>
-              <label>{"نام"}:</label>
-            </Col>
-            <Col span={19}>
-              <Form.Item<FieldType>
-                name="name"
-                rules={[
-                  { required: true, message: "نام محصول را وارد نمایید" },
-                ]}
-              >
-                <Input />
-              </Form.Item>
-            </Col>
-          </Row>
-
-          <Row gutter={[16, 16]}>
-            <Col span={5} style={{ textAlign: "right" }}>
-              <label>{"برند"}:</label>
-            </Col>
-            <Col span={19}>
-              <Form.Item<FieldType>
-                name="brand"
-                rules={[
-                  { required: true, message: "برند محصول را وارد نمایید" },
-                ]}
-              >
-                <Input />
-              </Form.Item>
-            </Col>
-          </Row>
-
-          <Row gutter={[16, 16]}>
-            <Col span={5} style={{ textAlign: "right" }}>
-              <label>{"پارت نامبر"}:</label>
-            </Col>
-            <Col span={19}>
-              <Form.Item<FieldType>
-                name="partNumber"
-                rules={[
-                  {
-                    required: true,
-                    message: "پارت نامبر محصول را وارد نمایید",
-                  },
-                ]}
-              >
-                <Input />
-              </Form.Item>
-            </Col>
-          </Row>
-
-          <Row gutter={[16, 16]}>
-            <Col span={5} style={{ textAlign: "right" }}>
-              <label>{"سریال نامبر"}:</label>
-            </Col>
-            <Col span={19}>
-              <Form.Item<FieldType>
-                name="serialNumber"
-                rules={[
-                  {
-                    required: true,
-                    message: "سریال نامبر محصول را وارد نمایید",
-                  },
-                ]}
-              >
-                <Input />
-              </Form.Item>
-            </Col>
-          </Row>
-
-          <Row gutter={[16, 16]}>
-            <Col span={5} style={{ textAlign: "right" }}>
-              <label>{"توضیحات"}:</label>
-            </Col>
-            <Col span={19}>
-              <Form.Item<FieldType>
-                name="description"
-                rules={[
-                  {
-                    required: true,
-                    message: "توضیحات محصول را وارد نمایید",
-                  },
-                ]}
-              >
-                <Input />
-              </Form.Item>
-            </Col>
-          </Row>
-
-          <Row gutter={[16, 16]}>
-            <Col span={5} style={{ textAlign: "right" }}>
-              <label>{"نوع"}:</label>
-            </Col>
-            <Col span={19}>
-              <Form.Item
-                name="type"
-                rules={[
-                  { required: true, message: "نوع محصول را وارد نمایید" },
-                ]}
-                style={{ marginBottom: "16px" }}
-              >
-                {
-                  <Select
-                    showSearch
-                    filterOption={(input, option) =>
-                      (option?.label ?? "")
-                        .toLowerCase()
-                        .includes(input.toLowerCase())
-                    }
-                    options={productTypesList.map((el) => {
-                      return { label: el, value: el };
-                    })}
-                  />
-                }
-              </Form.Item>
-            </Col>
-          </Row>
-
-          <Row gutter={[16, 16]}>
-            <Col span={5} style={{ textAlign: "right" }}>
-              <label>{"پروژه"}:</label>
-            </Col>
-            <Col span={19}>
-              <Form.Item
-                name="project"
-                rules={[
-                  { required: true, message: "پروژه محصول را انتخاب کنید" },
-                ]}
-                style={{ marginBottom: "16px" }}
-              >
-                {
-                  <Select
-                    showSearch
-                    filterOption={(input, option) =>
-                      (option?.label ?? "")
-                        .toLowerCase()
-                        .includes(input.toLowerCase())
-                    }
-                    options={(projects || []).map((el) => {
-                      return {
-                        label: `${el.name} با کد ${el.code}`,
-                        value: el.id,
-                      };
-                    })}
-                  />
-                }
-              </Form.Item>
-            </Col>
-          </Row>
-
-          <Form.Item style={{ textAlign: "center" }}>
-            <Button
-              size="large"
-              type="primary"
-              htmlType="submit"
-              style={{ width: "30%", backgroundColor: ColorPalletEnum.Primary }}
-            >
-              ثبت محصول
-            </Button>
+    <Form
+      name="create-product"
+      style={{ maxWidth: 500, width: "100%" }}
+      onFinish={onFinish}
+      autoComplete="off"
+    >
+      <Row gutter={[16, 16]}>
+        <Col span={5} style={{ textAlign: "right" }}>
+          <label>{"نام"}:</label>
+        </Col>
+        <Col span={19}>
+          <Form.Item<FieldType>
+            name="name"
+            rules={[{ required: true, message: "نام محصول را وارد نمایید" }]}
+          >
+            <Input />
           </Form.Item>
-        </Form>
-      </Card>
-    </Flex>
+        </Col>
+      </Row>
+
+      <Row gutter={[16, 16]}>
+        <Col span={5} style={{ textAlign: "right" }}>
+          <label>{"برند"}:</label>
+        </Col>
+        <Col span={19}>
+          <Form.Item<FieldType>
+            name="brand"
+            rules={[{ required: true, message: "برند محصول را وارد نمایید" }]}
+          >
+            <Input />
+          </Form.Item>
+        </Col>
+      </Row>
+
+      <Row gutter={[16, 16]}>
+        <Col span={5} style={{ textAlign: "right" }}>
+          <label>{"پارت نامبر"}:</label>
+        </Col>
+        <Col span={19}>
+          <Form.Item<FieldType>
+            name="partNumber"
+            rules={[
+              {
+                required: true,
+                message: "پارت نامبر محصول را وارد نمایید",
+              },
+            ]}
+          >
+            <Input />
+          </Form.Item>
+        </Col>
+      </Row>
+
+      <Row gutter={[16, 16]}>
+        <Col span={5} style={{ textAlign: "right" }}>
+          <label>{"سریال نامبر"}:</label>
+        </Col>
+        <Col span={19}>
+          <Form.Item<FieldType>
+            name="serialNumber"
+            rules={[
+              {
+                required: true,
+                message: "سریال نامبر محصول را وارد نمایید",
+              },
+            ]}
+          >
+            <Input />
+          </Form.Item>
+        </Col>
+      </Row>
+
+      <Row gutter={[16, 16]}>
+        <Col span={5} style={{ textAlign: "right" }}>
+          <label>{"توضیحات"}:</label>
+        </Col>
+        <Col span={19}>
+          <Form.Item<FieldType>
+            name="description"
+            rules={[
+              {
+                required: true,
+                message: "توضیحات محصول را وارد نمایید",
+              },
+            ]}
+          >
+            <Input />
+          </Form.Item>
+        </Col>
+      </Row>
+
+      <Row gutter={[16, 16]}>
+        <Col span={5} style={{ textAlign: "right" }}>
+          <label>{"نوع"}:</label>
+        </Col>
+        <Col span={19}>
+          <Form.Item
+            name="type"
+            rules={[{ required: true, message: "نوع محصول را وارد نمایید" }]}
+            style={{ marginBottom: "16px" }}
+          >
+            {
+              <Select
+                showSearch
+                dropdownStyle={{ zIndex: 9999 }}
+                getPopupContainer={(e) => e.parentNode}
+                filterOption={(input, option) =>
+                  (option?.label ?? "")
+                    .toLowerCase()
+                    .includes(input.toLowerCase())
+                }
+                options={productTypesList.map((el) => {
+                  return { label: el, value: el };
+                })}
+              />
+            }
+          </Form.Item>
+        </Col>
+      </Row>
+
+      <Row gutter={[16, 16]}>
+        <Col span={5} style={{ textAlign: "right" }}>
+          <label>{"پروژه"}:</label>
+        </Col>
+        <Col span={19}>
+          <Form.Item
+            name="project"
+            rules={[{ required: true, message: "پروژه محصول را انتخاب کنید" }]}
+            style={{ marginBottom: "16px" }}
+          >
+            {
+              <Select
+                showSearch
+                dropdownStyle={{ zIndex: 9999 }}
+                getPopupContainer={(e) => e.parentNode}
+                filterOption={(input, option) =>
+                  (option?.label ?? "")
+                    .toLowerCase()
+                    .includes(input.toLowerCase())
+                }
+                options={(projects || []).map((el) => {
+                  return {
+                    label: `${el.name} با کد ${el.code}`,
+                    value: el.id,
+                  };
+                })}
+              />
+            }
+          </Form.Item>
+        </Col>
+      </Row>
+
+      <Form.Item style={{ textAlign: "center" }}>
+        <Button
+          size="large"
+          type="primary"
+          htmlType="submit"
+          style={{ width: "30%", backgroundColor: ColorPalletEnum.Primary }}
+        >
+          ثبت محصول
+        </Button>
+      </Form.Item>
+    </Form>
   );
 };
 
