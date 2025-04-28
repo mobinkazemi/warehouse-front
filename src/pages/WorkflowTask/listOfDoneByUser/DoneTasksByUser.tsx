@@ -4,7 +4,7 @@ import { AxiosResponse } from "axios";
 import { BACKEND_ROUTES } from "../../../shared/backendRoutes";
 import apiClient from "../../../configs/axios.config";
 import { IBaseBackendResponse } from "../../../shared/interfaces/base-backend-response.interface";
-import { timestampToJalali } from "../../../shared/functions/timestamp-to-jalali.function";
+import { timestampToJalali, timestampToJalaliWithMonth } from "../../../shared/functions/timestamp-to-jalali.function";
 
 interface DataType {
   id: React.Key;
@@ -68,8 +68,8 @@ const DoneByMyUserList: React.FC = () => {
                   : item.status === "DONE-AND-REJECTED"
                   ? "رد شده"
                   : "نامشخص",
-              createdAt: timestampToJalali(item.createdAt),
-              doneAt: timestampToJalali(item.doneAt),
+              createdAt: timestampToJalaliWithMonth(item.createdAt),
+              doneAt: timestampToJalaliWithMonth(item.doneAt),
             };
           })
         );
