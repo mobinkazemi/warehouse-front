@@ -59,7 +59,7 @@ function Dashboard() {
   const [selectedEditId, setSelectedEditId] = useState([]);
   const [canCreateCustomTaskFlag, setCanCreateCustomTaskFlag] = useState(false);
 
-  console.log(canCreateCustomTaskFlag);
+  // console.log(canCreateCustomTaskFlag);
 
   const [show, setShow] = useState(false);
 
@@ -75,7 +75,6 @@ function Dashboard() {
   );
 
   const [formhayeNamayeshi, setFormhayeNamayeshi] = useState([]);
-
 
   const { workflowId } = useParams();
 
@@ -253,7 +252,7 @@ function Dashboard() {
         relatedForm,
         stepOrderToFillFormWith: +selectedEditId,
         showFilledFormsFromSteps: formhayeNamayeshi,
-        canCreateCustomTaskFlag:canCreateCustomTaskFlag,
+        canCreateCustomTaskFlag: canCreateCustomTaskFlag,
         estimateHour: +hour,
         estimateDay: +day,
         // next: { conditions: [] },
@@ -266,7 +265,7 @@ function Dashboard() {
         type: stepType,
         relatedForm,
         showFilledFormsFromSteps: formhayeNamayeshi,
-        canCreateCustomTaskFlag:canCreateCustomTaskFlag,
+        canCreateCustomTaskFlag: canCreateCustomTaskFlag,
         estimateHour: +hour,
         estimateDay: +day,
         // stepOrderToFillFormWith: +selectedEditId,
@@ -292,7 +291,13 @@ function Dashboard() {
 
     setNodes((nds) => [...nds, newNode]);
     setShowModal(false);
+
     setStepName("");
+    setStepType("");
+    setSelectedFormId("");
+    setAvailableFields([]);
+    setSelectedEditId("");
+    setFormhayeNamayeshi([]);
   };
 
   const onConnect = useCallback((params) => {
@@ -385,10 +390,12 @@ function Dashboard() {
         </Panel>
       </ReactFlow>
 
-      <Dialog open={showModal} onOpenChange={setShowModal} >
+      <Dialog open={showModal} onOpenChange={setShowModal}>
         <DialogContent dir="rtl">
           <DialogHeader dir="rtl">
-            <DialogTitle dir="rtl" className="text-start">افزودن مرحله جدید</DialogTitle>
+            <DialogTitle dir="rtl" className="text-start">
+              افزودن مرحله جدید
+            </DialogTitle>
           </DialogHeader>
 
           <div className="grid gap-4 py-4">
