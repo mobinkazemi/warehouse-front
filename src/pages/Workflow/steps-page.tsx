@@ -274,7 +274,6 @@ function Dashboard() {
         };
       }
 
-      // Send to server
       const response = await fetch(`${BASE_BACKEND_URL}/workflow/create-step`, {
         method: "POST",
         headers: {
@@ -284,31 +283,29 @@ function Dashboard() {
         body: JSON.stringify(newStep),
       });
 
-      if(!response.ok) {
+      if (!response.ok) {
         const errorText = await response.json();
-        console.log(errorText)
         message.error(errorText.message);
+      } else {
+        const newNode = {
+          id: `${newStep.order}`,
+          data: { label: newStep.name },
+          position: { x: Math.random() * 400, y: Math.random() * 400 },
+        };
+
+        setNodes((nds) => [...nds, newNode]);
+        setShowModal(false);
+
+        setStepName("");
+        setStepType("");
+        setSelectedFormId("");
+        setAvailableFields([]);
+        setSelectedEditId("");
+        setFormhayeNamayeshi([]);
       }
-
-
-      const newNode = {
-        id: `${newStep.order}`,
-        data: { label: newStep.name },
-        position: { x: Math.random() * 400, y: Math.random() * 400 },
-      };
-
-      setNodes((nds) => [...nds, newNode]);
-      setShowModal(false);
-
-      setStepName("");
-      setStepType("");
-      setSelectedFormId("");
-      setAvailableFields([]);
-      setSelectedEditId("");
-      setFormhayeNamayeshi([]);
     } catch (error) {
-      console.log(error)
-      message.error(error.message);
+      // console.log(error);
+      // message.error(error.message);
     }
   };
 
@@ -436,129 +433,138 @@ function Dashboard() {
               </Select>
             </div>
 
-            <div className="space-y-2">
-              <Label>فرم مرتبط</Label>
+            {stepType === "TODO" && (
+              <>
+                <div className="space-y-2">
+                  <Label>فرم مرتبط</Label>
 
-              <Select value={selectedFormId} onValueChange={handleFormChange}>
-                <SelectTrigger className="w-full">
-                  <SelectValue placeholder="فرم مرتبط" />
-                </SelectTrigger>
+                  <Select
+                    value={selectedFormId}
+                    onValueChange={handleFormChange}
+                  >
+                    <SelectTrigger className="w-full">
+                      <SelectValue placeholder="فرم مرتبط" />
+                    </SelectTrigger>
 
-                <SelectContent>
-                  {forms.map((form) => (
-                    <SelectItem key={form.id} value={form.id}>
-                      {form.name}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
+                    <SelectContent>
+                      {forms.map((form) => (
+                        <SelectItem key={form.id} value={form.id}>
+                          {form.name}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
 
-            <div className="space-y-2">
-              <Label>پیشبینی زمان انجام</Label>
+                <div className="space-y-2">
+                  <Label>پیشبینی زمان انجام</Label>
 
-              <div className="grid grid-cols-2 gap-x-4">
-                <Input
-                  value={hour}
-                  onChange={(e) => setHour(e.target.value)}
-                  placeholder="ساعت"
-                />
-
-                <Input
-                  value={day}
-                  onChange={(e) => setDay(e.target.value)}
-                  placeholder="روز"
-                />
-              </div>
-            </div>
-
-            {availableFields.length > 0 && (
-              <div className="space-y-2">
-                <Label>فیلدها</Label>
-
-                {availableFields.map((field) => (
-                  <div key={field.id} className="flex items-center gap-4">
-                    <Checkbox
-                      checked={!!selectedFields[field.id]}
-                      onCheckedChange={() => handleFieldToggle(field.id)}
-                      disabled={field.required}
+                  <div className="grid grid-cols-2 gap-x-4">
+                    <Input
+                      value={hour}
+                      onChange={(e) => setHour(e.target.value)}
+                      placeholder="ساعت"
                     />
 
-                    <label>{field.label}</label>
-
-                    {selectedFields[field.id] && !field.required && (
-                      <Select
-                        value={
-                          selectedFields[field.id].required ? "true" : "false"
-                        }
-                        onValueChange={(val) =>
-                          handleFieldRequiredChange(field.id, val)
-                        }
-                      >
-                        <SelectTrigger>
-                          <SelectValue />
-                        </SelectTrigger>
-
-                        <SelectContent>
-                          <SelectItem value="false">اختیاری</SelectItem>
-                          <SelectItem value="true">اجباری</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    )}
+                    <Input
+                      value={day}
+                      onChange={(e) => setDay(e.target.value)}
+                      placeholder="روز"
+                    />
                   </div>
-                ))}
-              </div>
-            )}
+                </div>
 
-            {show && (
-              <div className="space-y-2">
-                <Label>ویرایش مرحله ی</Label>
+                {availableFields.length > 0 && (
+                  <div className="space-y-2">
+                    <Label>فیلدها</Label>
 
-                <Select
-                  value={selectedEditId}
-                  onValueChange={(value) => setSelectedEditId(value)}
-                >
-                  <SelectTrigger className="w-full">
-                    <SelectValue placeholder="ویرایش مرحله ی" />
-                  </SelectTrigger>
+                    {availableFields.map((field) => (
+                      <div key={field.id} className="flex items-center gap-4">
+                        <Checkbox
+                          checked={!!selectedFields[field.id]}
+                          onCheckedChange={() => handleFieldToggle(field.id)}
+                          disabled={field.required}
+                        />
 
-                  <SelectContent>
-                    {steps.map((step) => (
-                      <SelectItem key={step.order} value={step.order}>
-                        {step.name}
-                      </SelectItem>
+                        <label>{field.label}</label>
+
+                        {selectedFields[field.id] && !field.required && (
+                          <Select
+                            value={
+                              selectedFields[field.id].required
+                                ? "true"
+                                : "false"
+                            }
+                            onValueChange={(val) =>
+                              handleFieldRequiredChange(field.id, val)
+                            }
+                          >
+                            <SelectTrigger>
+                              <SelectValue />
+                            </SelectTrigger>
+
+                            <SelectContent>
+                              <SelectItem value="false">اختیاری</SelectItem>
+                              <SelectItem value="true">اجباری</SelectItem>
+                            </SelectContent>
+                          </Select>
+                        )}
+                      </div>
                     ))}
-                  </SelectContent>
-                </Select>
-              </div>
+                  </div>
+                )}
+
+                {show && (
+                  <div className="space-y-2">
+                    <Label>ویرایش مرحله ی</Label>
+
+                    <Select
+                      value={selectedEditId}
+                      onValueChange={(value) => setSelectedEditId(value)}
+                    >
+                      <SelectTrigger className="w-full">
+                        <SelectValue placeholder="ویرایش مرحله ی" />
+                      </SelectTrigger>
+
+                      <SelectContent>
+                        {steps.map((step) => (
+                          <SelectItem key={step.order} value={step.order}>
+                            {step.name}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+                )}
+
+                <div className="space-y-2">
+                  <Label>فرم های نمایشی</Label>
+                  <MultiSelect
+                    className="w-full z-50"
+                    mode="tags"
+                    value={formhayeNamayeshi}
+                    onChange={setFormhayeNamayeshi}
+                    placeholder="ویرایش مرحله ی"
+                    getPopupContainer={(triggerNode) => triggerNode.parentNode}
+                    dropdownStyle={{ zIndex: 9999 }}
+                  >
+                    {steps.map((step) => (
+                      <MultiSelect.Option key={step.order} value={step.order}>
+                        {`مرحله ${step.name} شامل ${step?.relatedForm?.id?.name}`}{" "}
+                      </MultiSelect.Option>
+                    ))}
+                  </MultiSelect>
+                </div>
+
+                <div className="flex gap-2 items-center">
+                  <Label>امکان ایجادوظیفه سفارشی</Label>
+                  <Checkbox
+                    value={canCreateCustomTaskFlag}
+                    onClick={() => setCanCreateCustomTaskFlag((prev) => !prev)}
+                  />
+                </div>
+              </>
             )}
-
-            <div className="space-y-2">
-              <Label>فرم های نمایشی</Label>
-              <MultiSelect
-                className="w-full z-50"
-                mode="tags"
-                value={formhayeNamayeshi}
-                onChange={setFormhayeNamayeshi}
-                placeholder="ویرایش مرحله ی"
-                getPopupContainer={(triggerNode) => triggerNode.parentNode}
-                dropdownStyle={{ zIndex: 9999 }}
-              >
-                {steps.map((step) => (
-                  <MultiSelect.Option key={step.order} value={step.order}>
-                    {`مرحله ${step.name} شامل ${step?.relatedForm?.id?.name}`}{" "}
-                  </MultiSelect.Option>
-                ))}
-              </MultiSelect>
-            </div>
-
-            <div className="flex gap-2 items-center">
-              <Label>امکان ایجادوظیفه سفارشی</Label>
-              <Checkbox
-                value={canCreateCustomTaskFlag}
-                onClick={() => setCanCreateCustomTaskFlag((prev) => !prev)}
-              />
-            </div>
           </div>
 
           <DialogFooter>
