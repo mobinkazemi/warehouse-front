@@ -62,6 +62,7 @@ interface APIData {
   };
   formData: any;
   fillFormWith?: string;
+  runName: string;
 }
 
 const { url: todoListUrl, method: todoListMethod } =
@@ -212,7 +213,8 @@ export const ListOfToDoTasksForRole: React.FC = () => {
               fillFormWith: item.fillFormWith,
               hasShowFilledFormsFromSteps: item.hasShowFilledFormsFromSteps,
               estimate: item.estimate,
-              stepNumber: item.stepNumber
+              stepNumber: item.stepNumber,
+              runName: item.runName
             };
           })
         );
@@ -345,9 +347,7 @@ export const ListOfToDoTasksForRole: React.FC = () => {
                     />
                     <div>
                       <p className="text-gray-500 text-xs">نام مرحله</p>
-                      <p className="font-medium">
-                        {task.workflowName || "—"}
-                      </p>
+                      <p className="font-medium">{task.workflowName || "—"}</p>
                     </div>
                   </div>
 
@@ -385,6 +385,17 @@ export const ListOfToDoTasksForRole: React.FC = () => {
                         perviousTask={task.perviousTask}
                       ></ViewDetailsButton>
                     </Space>
+                  </div>
+                </div>
+
+                <div className="mt-4 pt-3 border-t border-gray-100">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center text-gray-700">
+                      <FileText size={18} className="ml-2 text-[#FE7E05]" />
+                      <span className="font-medium">نام اجرا :</span>
+                    </div>
+
+                    {task.runName ?? "-"}
                   </div>
                 </div>
 

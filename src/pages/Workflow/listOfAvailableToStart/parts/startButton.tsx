@@ -1,4 +1,4 @@
-import { Button, Flex, message, Modal, Tooltip } from "antd";
+import { Button, Flex, message, Modal, Tooltip, Input } from "antd";
 import { PlayCircleOutlined } from "@ant-design/icons";
 import apiClient from "../../../../configs/axios.config";
 import { BACKEND_ROUTES, setId } from "../../../../shared/backendRoutes";
@@ -13,14 +13,30 @@ export const StartButton: React.FC<IProps> = ({
   workflowId,
 }: IProps): React.ReactElement => {
   const showStartConfirm = () => {
+    let inputValue = "";
+
     Modal.confirm({
       title: "آیا از شروع این فرآیند اطمینان دارید؟",
+      content: (
+        <Input
+          placeholder="نام فرآیند را وارد نمایید"
+          onChange={(e) => (inputValue = e.target.value)}
+          required
+        />
+      ),
       okText: "بله، شروع شود",
       okType: "primary",
       cancelText: "خیر، منصرف شدم",
       onOk: () => {
-        apiClient[method](setId({ id: workflowId, url }))
-          .then((res) => {
+        if (!inputValue.trim()) {
+          message.warning("لطفاً نام فرآیند را وارد کنید.");
+          return Promise.reject();
+        }
+
+        apiClient[method](setId({ id: workflowId, url }), {
+          name: inputValue,
+        })
+          .then(() => {
             message.success("فرآیند شروع شد");
           })
           .catch((e) => {
@@ -41,9 +57,7 @@ export const StartButton: React.FC<IProps> = ({
       className="cursor-pointer"
     >
       <Tooltip title="شروع فرآیند">
-        <div
-          className="w-full flex items-center justify-center space-x-2 rtl:space-x-reverse !bg-orange-500 hover:bg-orange-600 !text-white py-3 px-4 rounded-lg transition-colors duration-300 font-medium"
-        >
+        <div className="w-full flex items-center justify-center space-x-2 rtl:space-x-reverse !bg-orange-500 hover:bg-orange-600 !text-white py-3 px-4 rounded-lg transition-colors duration-300 font-medium">
           <span>شروع فرایند</span>
           <ArrowLeft />
         </div>

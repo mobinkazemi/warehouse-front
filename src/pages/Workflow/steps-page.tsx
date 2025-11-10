@@ -1,7 +1,7 @@
 import { TOKEN_KEY_ENUM } from "../../shared/enums/token.enum";
 
 import { useCallback, useEffect, useState } from "react";
-import { Select as MultiSelect } from "antd";
+import { message, Select as MultiSelect } from "antd";
 
 import dagre from "@dagrejs/dagre";
 import {
@@ -234,70 +234,82 @@ function Dashboard() {
   };
 
   const handleAddStep = async () => {
-    const relatedForm = {
-      id: selectedFormId,
-      fields: Object.entries(selectedFields).map(([id, config]) => ({
-        id,
-        required: config.required,
-      })),
-    };
+    try {
+      const relatedForm = {
+        id: selectedFormId,
+        fields: Object.entries(selectedFields).map(([id, config]) => ({
+          id,
+          required: config.required,
+        })),
+      };
 
-    let newStep;
-    if (+selectedEditId != 0) {
-      newStep = {
-        workflowId,
-        order: nodes.length + 1,
-        name: stepName,
-        type: stepType,
-        relatedForm,
-        stepOrderToFillFormWith: +selectedEditId,
-        showFilledFormsFromSteps: formhayeNamayeshi,
-        canCreateCustomTaskFlag: canCreateCustomTaskFlag,
-        estimateHour: +hour,
-        estimateDay: +day,
-        // next: { conditions: [] },
+      let newStep;
+      if (+selectedEditId != 0) {
+        newStep = {
+          workflowId,
+          order: nodes.length + 1,
+          name: stepName,
+          type: stepType,
+          relatedForm,
+          stepOrderToFillFormWith: +selectedEditId,
+          showFilledFormsFromSteps: formhayeNamayeshi,
+          canCreateCustomTaskFlag: canCreateCustomTaskFlag,
+          estimateHour: +hour,
+          estimateDay: +day,
+          // next: { conditions: [] },
+        };
+      } else {
+        newStep = {
+          workflowId,
+          order: nodes.length + 1,
+          name: stepName,
+          type: stepType,
+          relatedForm,
+          showFilledFormsFromSteps: formhayeNamayeshi,
+          canCreateCustomTaskFlag: canCreateCustomTaskFlag,
+          estimateHour: +hour,
+          estimateDay: +day,
+          // stepOrderToFillFormWith: +selectedEditId,
+          // next: { conditions: [] },
+        };
+      }
+
+      // Send to server
+      const response = await fetch(`${BASE_BACKEND_URL}/workflow/create-step`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(newStep),
+      });
+
+      if(!response.ok) {
+        const errorText = await response.json();
+        console.log(errorText)
+        message.error(errorText.message);
+      }
+
+
+      const newNode = {
+        id: `${newStep.order}`,
+        data: { label: newStep.name },
+        position: { x: Math.random() * 400, y: Math.random() * 400 },
       };
-    } else {
-      newStep = {
-        workflowId,
-        order: nodes.length + 1,
-        name: stepName,
-        type: stepType,
-        relatedForm,
-        showFilledFormsFromSteps: formhayeNamayeshi,
-        canCreateCustomTaskFlag: canCreateCustomTaskFlag,
-        estimateHour: +hour,
-        estimateDay: +day,
-        // stepOrderToFillFormWith: +selectedEditId,
-        // next: { conditions: [] },
-      };
+
+      setNodes((nds) => [...nds, newNode]);
+      setShowModal(false);
+
+      setStepName("");
+      setStepType("");
+      setSelectedFormId("");
+      setAvailableFields([]);
+      setSelectedEditId("");
+      setFormhayeNamayeshi([]);
+    } catch (error) {
+      console.log(error)
+      message.error(error.message);
     }
-
-    // Send to server
-    await fetch(`${BASE_BACKEND_URL}/workflow/create-step`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify(newStep),
-    });
-
-    const newNode = {
-      id: `${newStep.order}`,
-      data: { label: newStep.name },
-      position: { x: Math.random() * 400, y: Math.random() * 400 },
-    };
-
-    setNodes((nds) => [...nds, newNode]);
-    setShowModal(false);
-
-    setStepName("");
-    setStepType("");
-    setSelectedFormId("");
-    setAvailableFields([]);
-    setSelectedEditId("");
-    setFormhayeNamayeshi([]);
   };
 
   const onConnect = useCallback((params) => {

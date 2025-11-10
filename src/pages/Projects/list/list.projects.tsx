@@ -79,22 +79,61 @@ const ProjectsListPage: React.FC = () => {
     (item) => deletedProject.indexOf(item.id as number) === -1
   );
 
+  // const handleDownloadFiles = (projectId: React.Key, files: string[] = []) => {
+
+  //   console.log(files)
+  //   if (files.length === 0) {
+  //     return;
+  //   }
+
+  //   files.forEach((fileId) => {
+  //     apiClient
+  //       .get(`/file/byId/${fileId}`, { responseType: "blob" })
+  //       .then((response) => {
+  //         const url = window.URL.createObjectURL(new Blob([response.data]));
+  //         const link = document.createElement("a");
+  //         link.href = url;
+  //         link.setAttribute("download", `file-${fileId}`);
+  //         document.body.appendChild(link);
+  //         link.click();
+  //         link.remove();
+  //       });
+  //   });
+  // };
+
   const handleDownloadFiles = (projectId: React.Key, files: string[] = []) => {
-    if (files.length === 0) {
-      return;
-    }
+    if (files.length === 0) return;
 
     files.forEach((fileId) => {
       apiClient
         .get(`/file/byId/${fileId}`, { responseType: "blob" })
         .then((response) => {
-          const url = window.URL.createObjectURL(new Blob([response.data]));
+          const contentType = response.headers["content-type"];
+
+          let fileName = `file-${fileId}`;
+          const contentDisposition = response.headers["content-disposition"];
+          if (contentDisposition) {
+            const match = contentDisposition.match(/filename="?([^"]+)"?/);
+            if (match && match[1]) {
+              fileName = match[1];
+            }
+          } else {
+            const extension = contentType?.split("/")[1] || "bin";
+            fileName = `${fileName}.${extension}`;
+          }
+
+          const blob = new Blob([response.data], { type: contentType });
+          const url = window.URL.createObjectURL(blob);
           const link = document.createElement("a");
           link.href = url;
-          link.setAttribute("download", `file-${fileId}.pdf`);
+          link.setAttribute("download", fileName);
           document.body.appendChild(link);
           link.click();
           link.remove();
+          window.URL.revokeObjectURL(url);
+        })
+        .catch((error) => {
+          console.error(`Error downloading file ${fileId}:`, error);
         });
     });
   };

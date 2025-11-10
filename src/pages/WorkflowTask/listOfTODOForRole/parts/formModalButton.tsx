@@ -99,6 +99,8 @@ export const FormModalButton: React.FC<IProps> = (data: IProps) => {
         }
       );
 
+      setVisible(false)
+
       setMessage1("✅ فایل با موفقیت آپلود شد!");
     } finally {
       setUploading(false);

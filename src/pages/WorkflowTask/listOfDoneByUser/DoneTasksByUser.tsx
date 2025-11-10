@@ -4,7 +4,10 @@ import { AxiosResponse } from "axios";
 import { BACKEND_ROUTES } from "../../../shared/backendRoutes";
 import apiClient from "../../../configs/axios.config";
 import { IBaseBackendResponse } from "../../../shared/interfaces/base-backend-response.interface";
-import { timestampToJalali, timestampToJalaliWithMonth } from "../../../shared/functions/timestamp-to-jalali.function";
+import {
+  timestampToJalali,
+  timestampToJalaliWithMonth,
+} from "../../../shared/functions/timestamp-to-jalali.function";
 
 interface DataType {
   id: React.Key;
@@ -22,6 +25,7 @@ interface APIData {
   status: string;
   createdAt: number;
   doneAt: number;
+  runName: string;
 }
 
 const { url: todoListUrl, method: todoListMethod } =
@@ -42,6 +46,10 @@ const DoneByMyUserList: React.FC = () => {
     {
       title: "وضعیت",
       dataIndex: "status",
+    },
+    {
+      title: "نام اجرا",
+      dataIndex: "runName",
     },
     {
       title: "تاریخ ایجاد",
@@ -70,6 +78,7 @@ const DoneByMyUserList: React.FC = () => {
                   : "نامشخص",
               createdAt: timestampToJalaliWithMonth(item.createdAt),
               doneAt: timestampToJalaliWithMonth(item.doneAt),
+              runName: item.runName ?? '-',
             };
           })
         );

@@ -77,7 +77,7 @@ const ProjectCreationPage: React.FC = () => {
     formData.append("files", file);
 
     try {
-      const response = await apiClient.post("/files/upload", formData, {
+      const response = await apiClient.post("/file/upload", formData, {
         headers: { "Content-Type": "multipart/form-data" },
       });
 

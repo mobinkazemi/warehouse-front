@@ -67,7 +67,7 @@ const ProductsListPage: React.FC = () => {
         item.code?.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
-  // Animation variants
+  // Animation  
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
