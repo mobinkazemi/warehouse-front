@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import {
+  Button,
   Col,
+  Flex,
   Form,
   Input,
   message,
@@ -16,6 +18,7 @@ import { EditButton } from "./parts/EditButton";
 import apiClient from "../../../configs/axios.config";
 import { BACKEND_ROUTES } from "../../../shared/backendRoutes";
 import { motion } from "framer-motion";
+import { UploadOutlined } from "@ant-design/icons";
 import {
   Code,
   Activity,
@@ -168,6 +171,45 @@ const ProjectsListPage: React.FC = () => {
       };
     }
   };
+
+  //
+
+  const handleUpload = async ({ file, id }) => {
+    const formData = new FormData();
+    formData.append("files", file);
+
+    try {
+      const response = await apiClient.post("/file/upload", formData, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
+
+      if (response.data?.data?.id) {
+        await apiClient.patch(`/project/update/${id}`, {
+          minutesOfMeetingsFiles: [response.data?.data?.id],
+        });
+
+        // const newFile = {
+        //   id: response.data.data.id,
+        //   url: URL.createObjectURL(file), // Temporary preview
+        //   name: file.name,
+        // };
+
+        // const newFiles = [...uploadedFiles, newFile];
+
+        // setUploadedFiles((prev: any) => [...prev, newFile]);
+
+        // props.form.setFieldsValue({
+        //   [props.name]: newFiles.map((f: any) => f.id),
+        // });
+
+        message.success(`فایل بارگزاری شد: ${file.name}`);
+      }
+    } catch (error) {
+      message.error("File upload failed.");
+    }
+  };
+
+  //
 
   if (loading) {
     return (
@@ -332,7 +374,9 @@ const ProjectsListPage: React.FC = () => {
                     >
                       <EditButton projectId={project.id as string} />
                     </motion.div>
+
                     <motion.div
+                      className="ml-2"
                       whileHover={{ scale: 1.1 }}
                       whileTap={{ scale: 0.95 }}
                     >
@@ -342,6 +386,15 @@ const ProjectsListPage: React.FC = () => {
                         deletedProject={deletedProject}
                       />
                     </motion.div>
+
+                    <Upload
+                      customRequest={({ file }) =>
+                        handleUpload({ file, id: project.id })
+                      }
+                      showUploadList={false}
+                    >
+                      <Button icon={<UploadOutlined />}>صورت جلسه</Button>
+                    </Upload>
                   </div>
                 </div>
               </div>

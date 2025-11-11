@@ -25,6 +25,9 @@ import {
   ScanLine,
   Tag,
 } from "lucide-react";
+import { useQuery } from "@tanstack/react-query";
+import { useSearchParams } from "react-router-dom";
+import queryString from "query-string";
 
 interface DataType {
   id: React.Key;
@@ -214,7 +217,7 @@ export const ListOfToDoTasksForRole: React.FC = () => {
               hasShowFilledFormsFromSteps: item.hasShowFilledFormsFromSteps,
               estimate: item.estimate,
               stepNumber: item.stepNumber,
-              runName: item.runName
+              runName: item.runName,
             };
           })
         );
@@ -282,6 +285,52 @@ export const ListOfToDoTasksForRole: React.FC = () => {
     );
   };
 
+  //
+
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  const { data: runNames } = useQuery({
+    queryKey: ["list-of-run-names"],
+    queryFn: async () => {
+      const response = await apiClient.get(
+        "/workflow-engine/list-of-run-names"
+      );
+
+      return response.data;
+    },
+  });
+
+  const [filters, setFilters] = useState({
+    runName: searchParams.get("runName") || "",
+  });
+
+  const { data: availableTasks } = useQuery({
+    queryKey: ["available-tasks", queryString.parse(searchParams.toString())],
+    queryFn: async () => {
+      const response = await apiClient.get(
+        `/workflow-engine/list-of-available-task?${searchParams.toString()}`
+      );
+
+      return response.data;
+    },
+  });
+
+  const updateQuery = (updates) => {
+    const newParams = new URLSearchParams(searchParams.toString());
+
+    Object.entries(updates).map(([key, value]) => {
+      if (value === "") {
+        newParams.delete(key);
+      } else {
+        newParams.set(key, value);
+      }
+    });
+
+    setSearchParams(newParams);
+  };
+
+  //
+
   return (
     <>
       <div className="p-6 h-full">
@@ -298,9 +347,24 @@ export const ListOfToDoTasksForRole: React.FC = () => {
             <div className="min-w-0 flex-1">
               <h2 className="text-3xl">تسک های فعلی</h2>
             </div>
+
+            <div>
+              <select
+                value={filters.runName}
+                onChange={(e) => {
+                  setFilters((f) => ({ ...f, runName: e.target.value }));
+                }}
+              >
+                {runNames?.data.map((item, idx) => (
+                  <option key={idx}>{item}</option>
+                ))}
+              </select>
+
+              <button onClick={() => updateQuery(filters)}>جستجو</button>
+            </div>
           </div>
 
-          {taskListData.map((task) => (
+          {availableTasks?.data.map((task) => (
             <motion.div
               key={task.id}
               className="rounded-xl overflow-hidden shadow-md bg-white"
@@ -322,7 +386,11 @@ export const ListOfToDoTasksForRole: React.FC = () => {
                   </div>
 
                   <div className="bg-white/20 text-white px-2 py-0.5 rounded text-xs s">
-                    {task.status}
+                    {task.status === "TODO"
+                      ? "جهت انجام"
+                      : task.status === "DONE-AND-REJECTED"
+                      ? "رد شده"
+                      : "نامشخص"}
                   </div>
                 </div>
               </div>
@@ -369,7 +437,9 @@ export const ListOfToDoTasksForRole: React.FC = () => {
                     />
                     <div>
                       <p className="text-gray-500 text-xs">تاریخ ایجاد</p>
-                      <p className="font-medium">{task.createdAt || "—"}</p>
+                      <p className="font-medium">
+                        {timestampToJalaliWithMonth(task.createdAt) || "—"}
+                      </p>
                     </div>
                   </div>
                 </div>

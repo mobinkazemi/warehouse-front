@@ -53,12 +53,27 @@ const UsersListPage: React.FC = () => {
   const [usersListData, setUsersListData] = useState<DataType[]>([]);
   const [deletedUser, setDeletedUser] = useState<number[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
+  const [open, setOpen] = useState(false);
 
   const onFinish: FormProps<FieldType>["onFinish"] = async (values) => {
     const response = await createUser(values);
 
     if (response.result) {
       message.success(response.message);
+
+      apiClient[listMethod](listUrl)
+        .then(({ data }) => {
+          setUsersListData(
+            data.data.map((sw: any) => ({
+              ...sw,
+            }))
+          );
+        })
+        .finally(() => {
+          setLoading(false);
+        });
+
+      setOpen(false);
 
       // setTimeout(() => {
       //   navigator(ROUTES_ENUM.USERS_LIST);
@@ -247,7 +262,7 @@ const UsersListPage: React.FC = () => {
           <h2 className="text-3xl">مدیریت کاربران</h2>
         </div>
 
-        <Dialog>
+        <Dialog open={open} onOpenChange={setOpen}>
           <DialogTrigger asChild>
             <button className="inline-flex items-center rounded-md bg-[#FE7E05] px-3 py-2 text-sm text-white shadow-xs">
               ایجاد کاربر
