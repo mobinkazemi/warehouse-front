@@ -174,7 +174,7 @@ const ProjectsListPage: React.FC = () => {
 
   //
 
-  const handleUpload = async ({ file, id }) => {
+  const handleUpload = async ({ file, id, oldFiles }) => {
     const formData = new FormData();
     formData.append("files", file);
 
@@ -185,7 +185,7 @@ const ProjectsListPage: React.FC = () => {
 
       if (response.data?.data?.id) {
         await apiClient.patch(`/project/update/${id}`, {
-          minutesOfMeetingsFiles: [response.data?.data?.id],
+          minutesOfMeetingsFiles: [...oldFiles, response.data?.data?.id],
         });
 
         // const newFile = {
@@ -389,7 +389,7 @@ const ProjectsListPage: React.FC = () => {
 
                     <Upload
                       customRequest={({ file }) =>
-                        handleUpload({ file, id: project.id })
+                        handleUpload({ file, id: project.id, oldFiles: project.minutesOfMeetingsFiles })
                       }
                       showUploadList={false}
                     >
