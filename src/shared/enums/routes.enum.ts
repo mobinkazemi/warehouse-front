@@ -39,6 +39,8 @@ export enum ROUTES_ENUM {
   _FORMS_ = "/forms/list",
   FORMS_LIST = "/forms/list",
   FORMS_CREATE = "/forms/create",
+  FORMS_EDIT = "/forms/edit/:id",
+  FORMS_VIEW = "/forms/view/:id",
 
   //
   //

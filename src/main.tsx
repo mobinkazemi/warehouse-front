@@ -1,4 +1,3 @@
-import React from "react";
 import ReactDOM from "react-dom/client";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import HomePage from "./pages/Home/HomePage";
@@ -26,6 +25,8 @@ import StepsPage from "./pages/Workflow/steps-page";
 import { ConfigProvider } from "antd";
 import FormsListPage from "./pages/CustomForms/list/list.forms";
 import FormCreationPage from "./pages/CustomForms/create/create.forms";
+import FormUpdatePage from "./pages/CustomForms/update/update.forms";
+import FormViewPage from "./pages/CustomForms/view/view.forms";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 const router = createBrowserRouter([
@@ -104,6 +105,14 @@ const router = createBrowserRouter([
       {
         path: ROUTES_ENUM.FORMS_CREATE,
         element: <FormCreationPage />,
+      },
+      {
+        path: ROUTES_ENUM.FORMS_EDIT,
+        element: <FormUpdatePage />,
+      },
+      {
+        path: ROUTES_ENUM.FORMS_VIEW,
+        element: <FormViewPage />,
       },
       //
       //
