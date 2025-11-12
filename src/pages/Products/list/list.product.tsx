@@ -67,7 +67,7 @@ const ProductsListPage: React.FC = () => {
         item.code?.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
-  // Animation  
+  // Animation
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -97,13 +97,28 @@ const ProductsListPage: React.FC = () => {
     },
   };
 
+  const container = {
+    hidden: { opacity: 0 },
+    show: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.05,
+      },
+    },
+  };
+
+  const item = {
+    hidden: { opacity: 0, y: 10 },
+    show: { opacity: 1, y: 0 },
+  };
+
   return (
     <div className="p-6 h-full">
       {/* Header with actions */}
 
       {/* Cards grid */}
       <motion.div
-        className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+        className="grid grid-cols-1 gap-6"
         variants={containerVariants}
         initial="hidden"
         animate="visible"
@@ -138,99 +153,201 @@ const ProductsListPage: React.FC = () => {
           </Dialog>
         </div>
 
-        {filteredProducts.map((product) => (
-          <motion.div
-            key={product.id}
-            className="rounded-xl overflow-hidden shadow-md bg-white"
-            variants={cardVariants}
-            whileHover="hover"
-          >
-            <div className="bg-gradient-to-br from-[#FE7E05] to-[#FFAA5B] p-4 text-white">
-              <div className="flex justify-between items-start">
-                <div>
-                  <h3 className="font-bold text-xl flex items-center">
-                    <Package2 className="ml-1" size={18} />
-                    {product.name}
-                  </h3>
-                  <p className="text-sm opacity-80 flex items-center mt-1">
-                    <Hash size={14} className="ml-1" />
-                    کد پروژه: {product.code}
-                  </p>
-                </div>
-                <div className="bg-white/20 text-white px-2 py-0.5 rounded text-xs s">
-                  {product.status === "active" ? "فعال" : "غیرفعال"}
-                </div>
-              </div>
-            </div>
+        <div className="bg-white rounded-xl shadow-md overflow-hidden">
+          <div className="overflow-x-auto">
+            <motion.table
+              className="min-w-full divide-y divide-gray-200"
+              variants={container}
+              initial="hidden"
+              animate="show"
+            >
+              <thead className="bg-gray-50">
+                <tr>
+                  <th
+                    scope="col"
+                    className="px-6 py-4 text-right text-xs font-medium text-gray-500 uppercase tracking-wider"
+                  >
+                    نام محصول
+                  </th>
+                  <th
+                    scope="col"
+                    className="px-6 py-4 text-right text-xs font-medium text-gray-500 uppercase tracking-wider"
+                  >
+                    کد پروژه
+                  </th>
+                  <th
+                    scope="col"
+                    className="px-6 py-4 text-right text-xs font-medium text-gray-500 uppercase tracking-wider"
+                  >
+                    وضعیت
+                  </th>
+                  <th
+                    scope="col"
+                    className="px-6 py-4 text-right text-xs font-medium text-gray-500 uppercase tracking-wider"
+                  >
+                    نوع
+                  </th>
+                  <th
+                    scope="col"
+                    className="px-6 py-4 text-right text-xs font-medium text-gray-500 uppercase tracking-wider"
+                  >
+                    برند
+                  </th>
+                  <th
+                    scope="col"
+                    className="px-6 py-4 text-right text-xs font-medium text-gray-500 uppercase tracking-wider"
+                  >
+                    پارت نامبر
+                  </th>
+                  <th
+                    scope="col"
+                    className="px-6 py-4 text-right text-xs font-medium text-gray-500 uppercase tracking-wider"
+                  >
+                    سریال نامبر
+                  </th>
+                  <th
+                    scope="col"
+                    className="px-6 py-4 text-right text-xs font-medium text-gray-500 uppercase tracking-wider"
+                  >
+                    توضیحات
+                  </th>
+                  <th
+                    scope="col"
+                    className="px-6 py-4 text-center text-xs font-medium text-gray-500 uppercase tracking-wider"
+                  >
+                    اقدامات
+                  </th>
+                </tr>
+              </thead>
 
-            <div className="p-5">
-              <div className="grid grid-cols-2 gap-3 mb-4">
-                <div className="flex items-start gap-1">
-                  <Tag
-                    className="ml-1.5 text-[#FE7E05] mt-0.5 flex-shrink-0"
-                    size={16}
-                  />
-                  <div>
-                    <p className="text-gray-500 text-xs">نوع</p>
-                    <p className="font-medium">{product.type || "—"}</p>
-                  </div>
-                </div>
-                <div className="flex items-start gap-1">
-                  <Briefcase
-                    className="ml-1.5 text-[#FE7E05] mt-0.5 flex-shrink-0"
-                    size={16}
-                  />
-                  <div>
-                    <p className="text-gray-500 text-xs">برند</p>
-                    <p className="font-medium">{product.brand || "—"}</p>
-                  </div>
-                </div>
-                <div className="flex items-start gap-1">
-                  <Barcode
-                    className="ml-1.5 text-[#FE7E05] mt-0.5 flex-shrink-0"
-                    size={16}
-                  />
-                  <div>
-                    <p className="text-gray-500 text-xs">پارت نامبر</p>
-                    <p className="font-medium">{product.partNumber || "—"}</p>
-                  </div>
-                </div>
-                <div className="flex items-start gap-1">
-                  <ScanLine
-                    className="ml-1.5 text-[#FE7E05] mt-0.5 flex-shrink-0"
-                    size={16}
-                  />
-                  <div>
-                    <p className="text-gray-500 text-xs">سریال نامبر</p>
-                    <p className="font-medium">{product.serialNumber || "—"}</p>
-                  </div>
-                </div>
-              </div>
+              <tbody className="bg-white divide-y divide-gray-200">
+                {filteredProducts.map((product, index) => (
+                  <motion.tr
+                    key={product.id}
+                    variants={item}
+                    className={index % 2 === 0 ? "bg-white" : "bg-gray-50"}
+                  >
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      <div className="flex items-center">
+                        <div className="flex-shrink-0 h-8 w-8 bg-[#FE7E05]/10 rounded-full flex items-center justify-center">
+                          <Package2 className="text-[#FE7E05]" size={16} />
+                        </div>
+                        <div className="mr-3">
+                          <div className="text-sm font-medium text-gray-900">
+                            {product.name || "--"}
+                          </div>
+                        </div>
+                      </div>
+                    </td>
 
-              {product.description && (
-                <div className="mb-4 flex items-start gap-1">
-                  <FileText
-                    className="ml-1.5 text-[#FE7E05] mt-0.5 flex-shrink-0"
-                    size={16}
-                  />
-                  <div>
-                    <p className="text-gray-500 text-xs">توضیحات</p>
-                    <p className="font-medium text-sm">{product.description}</p>
-                  </div>
-                </div>
-              )}
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      <div className="flex items-center">
+                        <div className="flex-shrink-0 h-8 w-8 bg-[#FE7E05]/10 rounded-full flex items-center justify-center">
+                          <Hash className="text-[#FE7E05]" size={16} />
+                        </div>
+                        <div className="mr-3">
+                          <div className="text-sm font-medium text-gray-900">
+                            {product.code || "--"}
+                          </div>
+                        </div>
+                      </div>
+                    </td>
 
-              <div className="flex justify-end space-x-2 rtl:space-x-reverse mt-4 pt-3 border-t border-gray-100">
-                <DeleteButton
-                  productId={product.id as string}
-                  setDeletedProduct={setDeletedProduct}
-                  deletedProduct={deletedProduct}
-                />
-                <EditButton productId={product.id as string} />
-              </div>
-            </div>
-          </motion.div>
-        ))}
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      <div className="flex items-center">
+                        <div className="flex-shrink-0 h-8 w-8 bg-[#FE7E05]/10 rounded-full flex items-center justify-center">
+                          <Filter className="text-[#FE7E05]" size={16} />
+                        </div>
+                        <div className="mr-3">
+                          <div className="text-sm font-medium text-gray-900">
+                            {product.status === "active" ? "فعال" : "غیرفعال"}
+                          </div>
+                        </div>
+                      </div>
+                    </td>
+
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      <div className="flex items-center">
+                        <div className="flex-shrink-0 h-8 w-8 bg-[#FE7E05]/10 rounded-full flex items-center justify-center">
+                          <Tag className="text-[#FE7E05]" size={16} />
+                        </div>
+                        <div className="mr-3">
+                          <div className="text-sm font-medium text-gray-900">
+                            {product.type || "--"}
+                          </div>
+                        </div>
+                      </div>
+                    </td>
+
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      <div className="flex items-center">
+                        <div className="flex-shrink-0 h-8 w-8 bg-[#FE7E05]/10 rounded-full flex items-center justify-center">
+                          <Briefcase className="text-[#FE7E05]" size={16} />
+                        </div>
+                        <div className="mr-3">
+                          <div className="text-sm font-medium text-gray-900">
+                            {product.brand || "--"}
+                          </div>
+                        </div>
+                      </div>
+                    </td>
+
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      <div className="flex items-center">
+                        <div className="flex-shrink-0 h-8 w-8 bg-[#FE7E05]/10 rounded-full flex items-center justify-center">
+                          <Barcode className="text-[#FE7E05]" size={16} />
+                        </div>
+                        <div className="mr-3">
+                          <div className="text-sm font-medium text-gray-900">
+                            {product.partNumber || "--"}
+                          </div>
+                        </div>
+                      </div>
+                    </td>
+
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      <div className="flex items-center">
+                        <div className="flex-shrink-0 h-8 w-8 bg-[#FE7E05]/10 rounded-full flex items-center justify-center">
+                          <ScanLine className="text-[#FE7E05]" size={16} />
+                        </div>
+                        <div className="mr-3">
+                          <div className="text-sm font-medium text-gray-900">
+                            {product.serialNumber || "--"}
+                          </div>
+                        </div>
+                      </div>
+                    </td>
+
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      <div className="flex items-center">
+                        <div className="flex-shrink-0 h-8 w-8 bg-[#FE7E05]/10 rounded-full flex items-center justify-center">
+                          <FileText className="text-[#FE7E05]" size={16} />
+                        </div>
+                        <div className="mr-3">
+                          <div className="text-sm font-medium text-gray-900">
+                            {product.description || "--"}
+                          </div>
+                        </div>
+                      </div>
+                    </td>
+
+                    <td className="px-6 py-4 whitespace-nowrap text-center">
+                      <div className="flex items-center justify-center space-x-2 space-x-reverse">
+                        <DeleteButton
+                          productId={product.id as string}
+                          setDeletedProduct={setDeletedProduct}
+                          deletedProduct={deletedProduct}
+                        />
+
+                        <EditButton productId={product.id as string} />
+                      </div>
+                    </td>
+                  </motion.tr>
+                ))}
+              </tbody>
+            </motion.table>
+          </div>
+        </div>
       </motion.div>
 
       {filteredProducts.length === 0 && (
