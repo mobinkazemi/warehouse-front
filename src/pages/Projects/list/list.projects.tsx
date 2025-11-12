@@ -109,11 +109,11 @@ const ProjectsListPage: React.FC = () => {
 
     files.forEach((fileId) => {
       apiClient
-        .get(`/file/byId/${fileId}`, { responseType: "blob" })
+        .get(`/file/byId/${fileId.id}`, { responseType: "blob" })
         .then((response) => {
           const contentType = response.headers["content-type"];
 
-          let fileName = `file-${fileId}`;
+          let fileName = `file-${fileId.name}`;
           const contentDisposition = response.headers["content-disposition"];
           if (contentDisposition) {
             const match = contentDisposition.match(/filename="?([^"]+)"?/);
@@ -206,6 +206,27 @@ const ProjectsListPage: React.FC = () => {
       }
     } catch (error) {
       message.error("File upload failed.");
+    }
+  };
+
+  const handleOpenFile = async (file) => {
+    try {
+      const response = await apiClient.get(`/file/byId/${file.id}`, {
+        responseType: "blob",
+      });
+
+      const fileUrl = URL.createObjectURL(response.data);
+
+      if (file.type === "application/pdf") {
+        window.open(fileUrl, "_blank");
+      } else if (file.type.startsWith("image/")) {
+        const imgWindow = window.open();
+        imgWindow.document.write(
+          `<img src="${fileUrl}" style="max-width:100%;height:auto;"/>`
+        );
+      }
+    } catch (error) {
+      console.error("خطا در دریافت فایل:", error);
     }
   };
 
@@ -352,6 +373,57 @@ const ProjectsListPage: React.FC = () => {
                       </div>
                     </div>
                   )}
+
+                  <div className="mt-4 pt-3 border-t border-gray-100">
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center text-gray-700">
+                        <FileText size={18} className="ml-2 text-[#FE7E05]" />
+                        <span className="font-medium">صورت جلسه ها:</span>
+                        <span className="mr-2 text-xs bg-gray-100 px-2 py-0.5 rounded-full">
+                          {project.minutesOfMeetingsFiles?.length}
+                        </span>
+                      </div>
+
+                      {project.minutesOfMeetingsFiles?.length > 0 && (
+                        <Dialog>
+                          <DialogTrigger asChild>
+                            <Tooltip title="مشاهده فایل‌ها">
+                              <motion.button
+                                whileHover={{ scale: 1.1 }}
+                                whileTap={{ scale: 0.9 }}
+                                className="flex cursor-pointer items-center justify-center p-1.5 rounded-lg bg-[#FE7E05]/10 text-[#FE7E05] hover:bg-[#FE7E05]/20 transition-colors duration-200 focus:outline-none"
+                              >
+                                <Download size={16} />
+                              </motion.button>
+                            </Tooltip>
+                          </DialogTrigger>
+
+                          <DialogContent>
+                            <DialogHeader>
+                              <DialogTitle>صورت جلسه ها</DialogTitle>
+                            </DialogHeader>
+
+                            <ul className="space-y-2">
+                              {project.minutesOfMeetingsFiles.map((m) => (
+                                <li className="bg-gray-100 rounded-lg flex justify-between items-center p-4">
+                                  <span className="text-gray-800 text-sm">
+                                    {m.name}
+                                  </span>
+
+                                  <button
+                                    className="bg-white p-2 rounded-lg text-sm hover:cursor-pointer"
+                                    onClick={() => handleOpenFile(m)}
+                                  >
+                                    مشاهده
+                                  </button>
+                                </li>
+                              ))}
+                            </ul>
+                          </DialogContent>
+                        </Dialog>
+                      )}
+                    </div>
+                  </div>
                 </div>
 
                 <div className="px-6 py-3 bg-gray-50 border-t border-gray-100 flex justify-between">
@@ -389,7 +461,13 @@ const ProjectsListPage: React.FC = () => {
 
                     <Upload
                       customRequest={({ file }) =>
-                        handleUpload({ file, id: project.id, oldFiles: project.minutesOfMeetingsFiles })
+                        handleUpload({
+                          file,
+                          id: project.id,
+                          oldFiles: project.minutesOfMeetingsFiles.map(
+                            (x) => x.id
+                          ),
+                        })
                       }
                       showUploadList={false}
                     >
