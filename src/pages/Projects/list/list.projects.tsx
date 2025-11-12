@@ -403,15 +403,15 @@ const ProjectsListPage: React.FC = () => {
                               <DialogTitle>صورت جلسه ها</DialogTitle>
                             </DialogHeader>
 
-                            <ul className="space-y-2">
+                            <ul className="space-y-2 min-w-0">
                               {project.minutesOfMeetingsFiles.map((m) => (
                                 <li className="bg-gray-100 rounded-lg flex justify-between items-center p-4">
-                                  <span className="text-gray-800 text-sm">
-                                    {m.name}
+                                  <span className="text-gray-800 text-sm truncate block">
+                                    {m.name}kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk
                                   </span>
 
                                   <button
-                                    className="bg-white p-2 rounded-lg text-sm hover:cursor-pointer"
+                                    className="bg-white p-2 rounded-lg text-sm hover:cursor-pointer mr-8"
                                     onClick={() => handleOpenFile(m)}
                                   >
                                     مشاهده
