@@ -132,11 +132,11 @@ const ProductsListPage: React.FC = () => {
             type="text"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="py-2 rounded-md ml-4 border border-gray-300 px-3"
+            className="py-2 rounded-md border border-gray-300 px-3"
             placeholder="جستجو کنید..."
           />
 
-          <Dialog>
+          {/* <Dialog>
             <DialogTrigger asChild>
               <button className="inline-flex items-center rounded-md bg-[#FE7E05] px-3 py-2 text-sm text-white shadow-xs">
                 ایجاد محصول
@@ -150,7 +150,7 @@ const ProductsListPage: React.FC = () => {
 
               <ProductCreationPage />
             </DialogContent>
-          </Dialog>
+          </Dialog> */}
         </div>
 
         <div className="bg-white rounded-xl shadow-md overflow-hidden">

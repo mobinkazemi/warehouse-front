@@ -141,8 +141,11 @@ const FormsListPage: React.FC = () => {
       {filteredForms.length === 0 && !loading ? (
         <div className="bg-white rounded-xl shadow-md p-12 text-center">
           <FileText className="mx-auto text-orange-500 opacity-30 mb-4" size={64} />
+          
           <h3 className="text-xl font-medium text-gray-700 mb-2">هیچ فرمی یافت نشد</h3>
+
           <p className="text-gray-500 mb-6">فرمی با معیارهای جستجوی شما یافت نشد یا هنوز فرمی ایجاد نکرده‌اید.</p>
+
           <button 
             className="bg-orange-500 hover:bg-orange-600 text-white px-6 py-2 rounded-lg inline-flex items-center gap-2 transition-colors"
             onClick={() => navigate("/forms/create")}

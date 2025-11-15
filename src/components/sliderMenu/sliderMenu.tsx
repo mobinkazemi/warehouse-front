@@ -7,7 +7,12 @@ import { ProjectRole } from "../../shared/enums/project.roles.enum";
 import { superAdminMenuItems } from "./getSliderMenuByRole/for-super-admin";
 import { technicalManagerMenuItems } from "./getSliderMenuByRole/for-technical-manager";
 import { othersMenuItems } from "./getSliderMenuByRole/others";
-import { ChevronDown, ChevronUp } from "lucide-react";
+import {
+  ArrowRightCircle,
+  ArrowRightCircleIcon,
+  ChevronDown,
+  ChevronUp,
+} from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { ROUTES_ENUM } from "@/shared/enums/routes.enum";
 // Import framer-motion directly
@@ -15,7 +20,6 @@ import * as framerMotion from "framer-motion";
 
 // Destructure what we need from framer-motion
 const { motion, AnimatePresence } = framerMotion;
-
 
 let items: any = [];
 if (localStorage.getItem(TOKEN_KEY_ENUM.ACCESS)) {
@@ -75,6 +79,8 @@ const SliderMenu: React.FC<SliderMenuProps> = ({ onClick, current }) => {
     }
   };
 
+  const navigate = useNavigate();
+
   // Animation variants
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -126,19 +132,19 @@ const SliderMenu: React.FC<SliderMenuProps> = ({ onClick, current }) => {
   };
 
   return (
-    <motion.div 
+    <motion.div
       className="p-4 h-full absolute w-full sidBarEffect"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.5 }}
     >
-      <motion.div 
+      <motion.div
         className="bg-white text-[#1E2226] h-full rounded-3xl shadow-lg flex flex-col gap-12 overflow-auto"
         initial={{ y: 20 }}
         animate={{ y: 0 }}
         transition={{ type: "spring", stiffness: 300, damping: 24 }}
       >
-        <motion.div 
+        <motion.div
           className="w-full flex justify-center items-center"
           whileHover="hover"
         >
@@ -151,7 +157,7 @@ const SliderMenu: React.FC<SliderMenuProps> = ({ onClick, current }) => {
           />
         </motion.div>
 
-        <motion.div 
+        <motion.div
           className="w-full flex flex-col gap-4"
           variants={containerVariants}
           initial="hidden"
@@ -174,7 +180,7 @@ const SliderMenu: React.FC<SliderMenuProps> = ({ onClick, current }) => {
               transition={{ type: "spring", stiffness: 400, damping: 17 }}
             >
               <div className="flex items-center justify-between">
-                <motion.div 
+                <motion.div
                   className="flex items-center gap-2"
                   initial={{ x: -10, opacity: 0 }}
                   animate={{ x: 0, opacity: 1 }}
@@ -196,10 +202,10 @@ const SliderMenu: React.FC<SliderMenuProps> = ({ onClick, current }) => {
                   </motion.div>
                 )}
               </div>
-              
+
               <AnimatePresence>
                 {stateOpenKeys.includes(item?.key) && (
-                  <motion.div 
+                  <motion.div
                     className="flex flex-col gap-3 pr-4 border-r border-r-gray-400 mx-2"
                     variants={childrenVariants}
                     initial="hidden"
@@ -233,6 +239,30 @@ const SliderMenu: React.FC<SliderMenuProps> = ({ onClick, current }) => {
               </AnimatePresence>
             </motion.div>
           ))}
+
+          <motion.div
+            className={`flex flex-col mx-2 px-4 rounded-3xl py-2.5 gap-2 cursor-pointer hover:bg-[#FE7E05] hover:text-white`}
+            variants={menuItemVariants}
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
+            transition={{ type: "spring", stiffness: 400, damping: 17 }}
+            onClick={() => {
+              localStorage.removeItem("access_token");
+              navigate("/login");
+            }}
+          >
+            <div className="flex items-center justify-between">
+              <motion.div
+                className="flex items-center gap-2"
+                initial={{ x: -10, opacity: 0 }}
+                animate={{ x: 0, opacity: 1 }}
+                transition={{ duration: 0.3 }}
+              >
+                <ArrowRightCircle style={{ fontSize: "1.5rem" }} />
+                <p className="text-sm font-semibold">خروج از حساب کاربری</p>
+              </motion.div>
+            </div>
+          </motion.div>
         </motion.div>
       </motion.div>
     </motion.div>

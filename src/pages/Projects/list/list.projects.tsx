@@ -286,7 +286,7 @@ const ProjectsListPage: React.FC = () => {
           <h2 className="text-3xl">مدیریت پروژه ها</h2>
         </div>
 
-        <Dialog>
+        {/* <Dialog>
           <DialogTrigger asChild>
             <button className="inline-flex items-center rounded-md bg-[#FE7E05] px-3 py-2 text-sm text-white shadow-xs">
               ایجاد پروژه
@@ -300,7 +300,7 @@ const ProjectsListPage: React.FC = () => {
 
             <ProjectCreationPage />
           </DialogContent>
-        </Dialog>
+        </Dialog> */}
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
