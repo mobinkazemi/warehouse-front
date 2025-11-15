@@ -353,7 +353,7 @@ const ProjectsListPage: React.FC = () => {
                       <div className="flex items-center justify-between">
                         <div className="flex items-center text-gray-700">
                           <FileText size={18} className="ml-2 text-[#FE7E05]" />
-                          <span className="font-medium">فایل‌ها:</span>
+                          <span className="font-medium">قراردادها:</span>
                           <span className="mr-2 text-xs bg-gray-100 px-2 py-0.5 rounded-full">
                             {project.files?.length}
                           </span>
@@ -407,7 +407,8 @@ const ProjectsListPage: React.FC = () => {
                               {project.minutesOfMeetingsFiles.map((m) => (
                                 <li className="bg-gray-100 rounded-lg flex justify-between items-center p-4">
                                   <span className="text-gray-800 text-sm truncate block">
-                                    {m.name}kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk
+                                    {m.name}
+                                    kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk
                                   </span>
 
                                   <button
