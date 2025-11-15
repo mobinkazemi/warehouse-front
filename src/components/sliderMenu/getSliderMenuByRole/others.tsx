@@ -49,16 +49,16 @@ export const othersMenuItems = [
     key: ROUTES_ENUM._WORKFLOW_,
     icon: <Workflow style={{ fontSize: "1.5rem" }} />,
     children: [
-      {
-        className: "slider-submenu-item-workflow-list",
-        label: "لیست فرایند ها",
-        key: ROUTES_ENUM.WORKFLOW_LIST,
-      },
-      {
-        className: "slider-submenu-item-workflow-create",
-        label: "ایجاد فرایند",
-        key: ROUTES_ENUM.WORKFLOW_CREATE,
-      },
+      // {
+      //   className: "slider-submenu-item-workflow-list",
+      //   label: "لیست فرایند ها",
+      //   key: ROUTES_ENUM.WORKFLOW_LIST,
+      // },
+      // {
+      //   className: "slider-submenu-item-workflow-create",
+      //   label: "ایجاد فرایند",
+      //   key: ROUTES_ENUM.WORKFLOW_CREATE,
+      // },
       {
         className: "slider-submenu-item-workflow-start-role-list",
         label: "شروع فرایند",
