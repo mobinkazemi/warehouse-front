@@ -29,7 +29,7 @@ export const RejectButton: React.FC<IProps> = ({
             setDoneTask([...doneTask, taskId]);
           })
           .catch((err) => {
-            message.error(err.message);
+            message.error(err.response.data.message);
           });
       },
       onCancel() {

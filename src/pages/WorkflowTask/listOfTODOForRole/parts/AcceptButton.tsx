@@ -82,7 +82,7 @@ export const AcceptButton: React.FC<IProps> = ({
       setDoneTask([...doneTask, taskId]);
       message.success("تسک با موفقیت انجام شد");
     } catch (err) {
-      message.error(err.message);
+      message.error(err.response.data.message);
     }
     setIsModalOpen(false);
     setTextMessage("");
