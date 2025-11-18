@@ -76,6 +76,10 @@ export const ViewFormsButton: React.FC<IProps> = ({ taskId }) => {
       );
     }
 
+    if (data.key === "minutesOfMeetingsFiles") {
+      return null;
+    }
+
     return data.value;
   };
 

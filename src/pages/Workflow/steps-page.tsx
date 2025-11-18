@@ -548,7 +548,7 @@ function Dashboard() {
                     getPopupContainer={(triggerNode) => triggerNode.parentNode}
                     dropdownStyle={{ zIndex: 9999 }}
                   >
-                    {steps.map((step) => (
+                    {steps.filter(step => step?.relatedForm?.id).map((step) => (
                       <MultiSelect.Option key={step.order} value={step.order}>
                         {`مرحله ${step.name} شامل ${step?.relatedForm?.id?.name}`}{" "}
                       </MultiSelect.Option>

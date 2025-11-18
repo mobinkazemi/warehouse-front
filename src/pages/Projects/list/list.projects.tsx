@@ -230,6 +230,43 @@ const ProjectsListPage: React.FC = () => {
     }
   };
 
+  const handleLOM = async (id) => {
+    const response = await apiClient.get(`/project/csv-of-materials/${id}`);
+    console.log(response);
+    // handleDownloadFiles(null, [response.data.data.id]);
+
+    await apiClient
+      .get(`/file/byId/${response.data.data.id}`, { responseType: "blob" })
+      .then((response) => {
+        const contentType = response.headers["content-type"];
+
+        let fileName = `file-lom.csv`;
+        // const contentDisposition = response.headers["content-disposition"];
+        // if (contentDisposition) {
+        //   const match = contentDisposition.match(/filename="?([^"]+)"?/);
+        //   if (match && match[1]) {
+        //     fileName = match[1];
+        //   }
+        // } else {
+        //   const extension = contentType?.split("/")[1] || "bin";
+        //   fileName = `${fileName}.${extension}`;
+        // }
+
+        const blob = new Blob([response.data], { type: contentType });
+        const url = window.URL.createObjectURL(blob);
+        const link = document.createElement("a");
+        link.href = url;
+        link.setAttribute("download", fileName);
+        document.body.appendChild(link);
+        link.click();
+        link.remove();
+        window.URL.revokeObjectURL(url);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
+
   //
 
   if (loading) {
@@ -408,7 +445,6 @@ const ProjectsListPage: React.FC = () => {
                                 <li className="bg-gray-100 rounded-lg flex justify-between items-center p-4">
                                   <span className="text-gray-800 text-sm truncate block">
                                     {m.name}
-                                    kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk
                                   </span>
 
                                   <button
@@ -425,6 +461,28 @@ const ProjectsListPage: React.FC = () => {
                       )}
                     </div>
                   </div>
+
+                  {project.hasProducts && (
+                    <div className="mt-4 pt-3 border-t border-gray-100">
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center text-gray-700">
+                          <FileText size={18} className="ml-2 text-[#FE7E05]" />
+                          <span className="font-medium">L.O.M</span>
+                        </div>
+
+                        <Tooltip title="دانلود فایل‌ها">
+                          <motion.button
+                            onClick={() => handleLOM(project.id)}
+                            whileHover={{ scale: 1.1 }}
+                            whileTap={{ scale: 0.9 }}
+                            className="flex cursor-pointer items-center justify-center p-1.5 rounded-lg bg-[#FE7E05]/10 text-[#FE7E05] hover:bg-[#FE7E05]/20 transition-colors duration-200 focus:outline-none"
+                          >
+                            <Download size={16} />
+                          </motion.button>
+                        </Tooltip>
+                      </div>
+                    </div>
+                  )}
                 </div>
 
                 <div className="px-6 py-3 bg-gray-50 border-t border-gray-100 flex justify-between">

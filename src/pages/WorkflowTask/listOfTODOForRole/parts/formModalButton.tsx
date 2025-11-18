@@ -163,6 +163,7 @@ export const FormModalButton: React.FC<IProps> = (data: IProps) => {
       .then((res: any) => {
         message.success(res.data.message);
         setShowViewOnly(true);
+        console.log(res.data.data)
         apiClient[createFormDataMethod as "post"](createFormDataUrl, {
           id: data.taskId,
           data: res.data.data,

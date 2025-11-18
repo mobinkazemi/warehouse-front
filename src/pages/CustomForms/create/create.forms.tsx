@@ -39,7 +39,7 @@ const inputTypeOptions = [
 ];
 
 const FormCreationPage: React.FC = () => {
-  const navigator = useNavigate();
+  // const navigator = useNavigate();
   const [form] = Form.useForm();
   const [fieldTypes, setFieldTypes] = useState<Record<number, string>>({});
 
@@ -56,10 +56,10 @@ const FormCreationPage: React.FC = () => {
     if (response.result) {
       message.success(response.message);
 
-      setTimeout(() => {
-        navigator(ROUTES_ENUM.FORMS_LIST);
-        window.location.reload();
-      }, 1000);
+      // setTimeout(() => {
+      //   navigator(ROUTES_ENUM.FORMS_LIST);
+      //   window.location.reload();
+      // }, 1000);
     } else {
       message.error(response.message);
     }

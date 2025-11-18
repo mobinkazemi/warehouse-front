@@ -28,6 +28,7 @@ import {
 import { useQuery } from "@tanstack/react-query";
 import { useSearchParams } from "react-router-dom";
 import queryString from "query-string";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 
 interface DataType {
   id: React.Key;
@@ -507,6 +508,22 @@ export const ListOfToDoTasksForRole: React.FC = () => {
                       setDoneTask={setDoneTask}
                       doneTask={doneTask}
                     ></RejectButton>{" "}
+
+                    <Dialog>
+                      <DialogTrigger asChild>
+                        <button className="inline-flex items-center rounded-md px-3 py-1.5 text-sm text-black shadow-xs border border-gray-800">
+                          وظیفه سفارشی
+                        </button>
+                      </DialogTrigger>
+
+                      <DialogContent>
+                        <DialogHeader>
+                          <DialogTitle>ایجاد وظیفه سفارشی</DialogTitle>
+                        </DialogHeader>
+
+                        gfgf
+                      </DialogContent>
+                    </Dialog>
                   </Space>
                 </div>
               </div>
