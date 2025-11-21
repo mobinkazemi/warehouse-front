@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import type { FormProps } from "antd";
 import { Button, Card, Form, Input, message, Flex, Select, Space } from "antd";
 import { useNavigate } from "react-router-dom";
@@ -6,6 +6,8 @@ import { ROUTES_ENUM } from "../../../shared/enums/routes.enum";
 import { ColorPalletEnum } from "../../../shared/enums/colorPallet.enum";
 import { createForm } from "./functions/create.form.function";
 import { PlusOutlined, MinusCircleOutlined } from "@ant-design/icons";
+import { useQuery } from "@tanstack/react-query";
+import apiClient from "@/configs/axios.config";
 
 type FieldType = {
   name: string;
@@ -19,7 +21,7 @@ type FieldType = {
       | "select-multiple"
       | "checkBox"
       | "date"
-      |'radio';
+      | "radio";
     SelectItems: Array<{ label: string }>;
     required: boolean;
   }>;
@@ -81,7 +83,10 @@ const FormCreationPage: React.FC = () => {
   const shouldShowSelectItems = (fieldIndex: number) => {
     const type = fieldTypes[fieldIndex];
     return (
-      type === "select" || type === "select-multiple" || type === "checkBox" || type === 'radio'
+      type === "select" ||
+      type === "select-multiple" ||
+      type === "checkBox" ||
+      type === "radio"
     );
   };
 

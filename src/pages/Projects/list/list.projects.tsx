@@ -467,7 +467,7 @@ const ProjectsListPage: React.FC = () => {
                       <div className="flex items-center justify-between">
                         <div className="flex items-center text-gray-700">
                           <FileText size={18} className="ml-2 text-[#FE7E05]" />
-                          <span className="font-medium">L.O.M</span>
+                          <span className="font-medium">فایل LoM ها</span>
                         </div>
 
                         <Tooltip title="دانلود فایل‌ها">

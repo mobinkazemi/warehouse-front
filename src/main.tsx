@@ -27,6 +27,7 @@ import { ConfigProvider } from "antd";
 import FormsListPage from "./pages/CustomForms/list/list.forms";
 import FormCreationPage from "./pages/CustomForms/create/create.forms";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import UpdateFormPage from "./pages/CustomForms/update/updateFormPage";
 
 const router = createBrowserRouter([
   {
@@ -104,6 +105,10 @@ const router = createBrowserRouter([
       {
         path: ROUTES_ENUM.FORMS_CREATE,
         element: <FormCreationPage />,
+      },
+      {
+        path: ROUTES_ENUM.FORMS_UPDATE,
+        element: <UpdateFormPage />,
       },
       //
       //

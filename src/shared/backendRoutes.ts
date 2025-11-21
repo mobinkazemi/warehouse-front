@@ -34,7 +34,7 @@ interface IBackendRoutes {
   form: {
     create: IRoute;
     list: IRoute;
-    // update: IRoute;
+    update: IRoute;
     // info: IRoute;
     // delete: IRoute;
   };
@@ -118,6 +118,7 @@ export const BACKEND_ROUTES: IBackendRoutes = {
   form: {
     create: { method: "post", url: "/form/create" },
     list: { method: "get", url: "/form/list" },
+    update: { method: "patch", url: "/form/update/:id" },
   },
   project: {
     create: { method: "post", url: "/project/create" },

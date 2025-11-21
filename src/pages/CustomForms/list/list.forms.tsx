@@ -219,14 +219,14 @@ const FormsListPage: React.FC = () => {
                   </div>
                 </div>
                 
-                <div className="mt-6 pt-4 border-t border-gray-100">
+                {/* <div className="mt-6 pt-4 border-t border-gray-100">
                   <button 
                     className="w-full bg-gray-50 hover:bg-orange-50 text-gray-700 hover:text-orange-600 py-2 rounded-lg transition-colors flex items-center justify-center gap-2 font-medium"
                     onClick={() => navigate(`/forms/view/${form.id}`)}
                   >
                     <span>مشاهده جزئیات</span>
                   </button>
-                </div>
+                </div> */}
               </div>
             </motion.div>
           ))}

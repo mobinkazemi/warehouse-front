@@ -1,5 +1,16 @@
 import React, { useEffect, useState } from "react";
-import { Space, Table, Tooltip } from "antd";
+import {
+  Button,
+  Col,
+  Form,
+  Input,
+  message,
+  Row,
+  Select,
+  Space,
+  Table,
+  Tooltip,
+} from "antd";
 import { AxiosResponse } from "axios";
 import { AcceptButton } from "./parts/AcceptButton";
 import { RejectButton } from "./parts/rejectButton";
@@ -28,7 +39,16 @@ import {
 import { useQuery } from "@tanstack/react-query";
 import { useSearchParams } from "react-router-dom";
 import queryString from "query-string";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { ColorPalletEnum } from "@/shared/enums/colorPallet.enum";
+import { ProjectRole } from "@/shared/enums/project.roles.enum";
+import UpdateForm from "@/components/createOrUpdateForm/updateForm";
 
 interface DataType {
   id: React.Key;
@@ -75,6 +95,7 @@ const { url: todoListUrl, method: todoListMethod } =
 export const ListOfToDoTasksForRole: React.FC = () => {
   const [taskListData, setTasksListData] = useState<DataType[]>([]);
   const [doneTask, setDoneTask] = useState<string[]>([]);
+  const [form] = Form.useForm();
 
   const columns = [
     {
@@ -256,6 +277,8 @@ export const ListOfToDoTasksForRole: React.FC = () => {
   };
 
   const renderer = (estimate) => {
+    if(!estimate) return '—'
+
     const now = Date.now();
     let diff = Math.abs(now - estimate);
 
@@ -508,22 +531,23 @@ export const ListOfToDoTasksForRole: React.FC = () => {
                       setDoneTask={setDoneTask}
                       doneTask={doneTask}
                     ></RejectButton>{" "}
+                    {task.canCreateCustomTaskFlag && (
+                      <Dialog>
+                        <DialogTrigger asChild>
+                          <button className="inline-flex items-center rounded-md px-3 py-1.5 text-sm text-black shadow-xs border border-gray-800">
+                            وظیفه سفارشی
+                          </button>
+                        </DialogTrigger>
 
-                    <Dialog>
-                      <DialogTrigger asChild>
-                        <button className="inline-flex items-center rounded-md px-3 py-1.5 text-sm text-black shadow-xs border border-gray-800">
-                          وظیفه سفارشی
-                        </button>
-                      </DialogTrigger>
+                        <DialogContent>
+                          <DialogHeader>
+                            <DialogTitle>ایجاد وظیفه سفارشی</DialogTitle>
+                          </DialogHeader>
 
-                      <DialogContent>
-                        <DialogHeader>
-                          <DialogTitle>ایجاد وظیفه سفارشی</DialogTitle>
-                        </DialogHeader>
-
-                        gfgf
-                      </DialogContent>
-                    </Dialog>
+                          <CustomTaskForm id={task.id} />
+                        </DialogContent>
+                      </Dialog>
+                    )}
                   </Space>
                 </div>
               </div>
@@ -556,5 +580,132 @@ export const ListOfToDoTasksForRole: React.FC = () => {
     </>
   );
 };
+
+function CustomTaskForm({ id }) {
+  const [roles, setRoles] = useState([]);
+  const [users, setUsers] = useState([]);
+  const [loadingRoles, setLoadingRoles] = useState(false);
+  const [loadingUsers, setLoadingUsers] = useState(false);
+
+  useEffect(() => {
+    fetchRoles();
+  }, []);
+
+  const fetchRoles = async () => {
+    try {
+      setLoadingRoles(true);
+      const response = await apiClient.get("/role/list");
+      setRoles(response.data.data);
+    } catch (err) {
+      console.error("Error fetching roles", err);
+    } finally {
+      setLoadingRoles(false);
+    }
+  };
+
+  const fetchUsersByRole = async (roleId) => {
+    try {
+      setLoadingUsers(true);
+      const response = await apiClient.get(`/user/list-by-role/${roleId}`);
+      setUsers(response.data.data);
+    } catch (err) {
+      console.error("Error fetching users", err);
+    } finally {
+      setLoadingUsers(false);
+    }
+  };
+
+  const onRoleChange = (roleId) => {
+    setUsers([]);
+    fetchUsersByRole(roleId);
+  };
+
+  function cleanObject(object) {
+    return Object.fromEntries(
+      Object.entries(object).filter(
+        ([_, val]) =>
+          val !== 0 && val !== null && val !== "" && val !== undefined
+      )
+    );
+  }
+
+  const onFinish = async (values) => {
+    const data = {
+      ...cleanObject(values),
+      parentTaskId: id,
+      estimateTimeDay: Number(values.estimateTimeDay),
+      estimateTimeHour: Number(values.estimateTimeHour),
+    };
+
+    await apiClient.post("/workflow-task/create-custom-task", data);
+  };
+
+  return (
+    <Form layout="vertical" onFinish={onFinish}>
+      <Form.Item
+        label="نقش"
+        name="forRoleId"
+        rules={[{ required: true, message: "انتخاب نقش الزامی است" }]}
+      >
+        <Select
+          placeholder="انتخاب نقش"
+          loading={loadingRoles}
+          onChange={onRoleChange}
+          allowClear
+        >
+          {roles.map((role) => (
+            <Select.Option key={role.id} value={role.id}>
+              {role.name}
+            </Select.Option>
+          ))}
+        </Select>
+      </Form.Item>
+
+      <Form.Item
+        label="کاربر"
+        name="forUserId"
+        // rules={[{ required: true, message: "حداقل یک کاربر انتخاب کنید" }]}
+      >
+        <Select
+          loading={loadingUsers}
+          disabled={loadingRoles}
+        >
+          {users.map((user) => (
+            <Select.Option key={user.id} value={user.id}>
+              {user.username}
+            </Select.Option>
+          ))}
+        </Select>
+      </Form.Item>
+
+      <Form.Item
+        label="متن وظیفه"
+        name="textMessage"
+        rules={[{ required: true, message: "این فیلد باید پر شود" }]}
+      >
+        <Input />
+      </Form.Item>
+
+      <Form.Item label="پیشبینی زمان انجام (روز)" name="estimateTimeDay">
+        <Input />
+      </Form.Item>
+
+      <Form.Item label="پیشبینی زمان انجام (ساعت)" name="estimateTimeHour">
+        <Input />
+      </Form.Item>
+
+      <Form.Item>
+        <Button
+          block
+          type="primary"
+          htmlType="submit"
+          style={{ backgroundColor: ColorPalletEnum.Primary }}
+        >
+          ایجاد وظیفه سفارشی
+        </Button>
+      </Form.Item>
+    </Form>
+  );
+}
 
 export default ListOfToDoTasksForRole;
