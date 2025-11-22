@@ -18,8 +18,12 @@ const UpdateUserPage: React.FC = () => {
   const onFinish = async (values: any) => {
     const response = await updateUser({
       id: id,
-      ...values,
-      roles: values.roles ? [values.roles] : undefined,
+      username: values.username,
+      password: values.password,
+      fullName: values.fullName,
+      email: values.email,
+      phoneNumber: values.phoneNumber,
+      // roles: values.roles ? [values.roles] : undefined,
     });
 
     if (response.result) {
