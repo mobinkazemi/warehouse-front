@@ -16,7 +16,6 @@ const UpdateUserPage: React.FC = () => {
   const { id } = useParams();
   const [roles, setRoles] = useState<IRole[]>();
   const onFinish = async (values: any) => {
-    console.log(values);
     const response = await updateUser({
       id: id,
       ...values,

@@ -38,7 +38,8 @@ const UpdateForm: React.FC<IProps> = (data: IProps) => {
   }, [data.id]);
 
   useEffect(() => {
-    form.setFieldsValue(initialData);
+    form.setFieldsValue({...initialData, roles: initialData?.roles[0]?.name});
+    // console.log(initialData.roles)
   }, [initialData]);
 
   const { method: roleListMethod, url: roleListUrl } = BACKEND_ROUTES.role.list;
@@ -125,15 +126,16 @@ const UpdateForm: React.FC<IProps> = (data: IProps) => {
                 <label>{"نقش"}:</label>
               </Col>
               <Col span={19}>
-                <Form.Item name="starterRoles">
+                <Form.Item name="roles">
                   <Select
-                    mode="multiple"
+                    // mode="multiple"
                     allowClear
                     style={{ width: "100%" }}
                     // placeholder="نقش های شروع کننده را انتخاب کنید"
-                    onChange={(value) => {
-                      console.log(value);
-                    }}
+                    // onChange={(value) => {
+                    //   console.log(value);
+                    // }}
+                    // defaultValue={initialData ? initialData.roles : null}
                     options={roles?.map((item) => {
                       return {
                         label: item.name,
@@ -148,6 +150,7 @@ const UpdateForm: React.FC<IProps> = (data: IProps) => {
             {/*  */}
             {/* {data.dropdownItems && data.dropdownData
               ? data.dropdownItems.map((item, index) => {
+                  console.log(item);
                   return (
                     <Row key={index} gutter={[16, 16]}>
                       <Col span={5} style={{ textAlign: "right" }}>
