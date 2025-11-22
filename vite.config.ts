@@ -1,7 +1,7 @@
-import { defineConfig } from 'vite'
-import react from '@vitejs/plugin-react-swc'
+import { defineConfig } from "vite";
+import react from "@vitejs/plugin-react-swc";
 import tailwindcss from "@tailwindcss/vite";
-import path from "path"
+import path from "path";
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -12,6 +12,15 @@ export default defineConfig({
     },
   },
   optimizeDeps: {
-    include: ['framer-motion']
-  }
-})
+    include: ["framer-motion"],
+  },
+  server: {
+    port: 5173,
+    host: true,
+    allowedHosts: true,
+  },
+  preview: {
+    port: 5173,
+    host: true,
+  },
+});
