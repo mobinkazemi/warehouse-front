@@ -240,7 +240,7 @@ const UpdateFormPage: React.FC = () => {
                                   <div className="mb-2 flex justify-between items-center">
                                     <span>گزینه‌های انتخابی</span>
 
-                                    {formData.isCostom && (
+                                    {formData.isCustom && (
                                       <Button
                                         type="dashed"
                                         onClick={() => addItem({ label: "" })}
@@ -289,7 +289,7 @@ const UpdateFormPage: React.FC = () => {
                     );
                   })}
 
-                  {formData.isCostom && (
+                  {formData.isCustom && (
                     <Form.Item className="col-span-1 md:col-span-2">
                       <Button
                         type="dashed"
@@ -314,7 +314,7 @@ const UpdateFormPage: React.FC = () => {
           </Form.List>
         </div>
 
-        {formData.isCostom && (
+        {formData.isCustom && (
           <Flex justify="end" className="mt-8">
             <Button
               size="large"
