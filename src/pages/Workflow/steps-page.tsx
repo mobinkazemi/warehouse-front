@@ -117,6 +117,9 @@ function Dashboard() {
     return { nodes: layoutedNodes, edges };
   };
 
+  const [users, setUsers] = useState([]);
+  const [selectedUser, setSelectedUser] = useState("");
+
   useEffect(() => {
     fetch(`${BASE_BACKEND_URL}/form/list`, {
       headers: {
@@ -173,6 +176,18 @@ function Dashboard() {
         setEdges(layoutedEdges);
       });
   }, []);
+
+  useEffect(() => {
+    if (selectedRoleId) {
+      fetch(`${BASE_BACKEND_URL}/user/list-by-role/${selectedRoleId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+        .then((res) => res.json())
+        .then((data) => setUsers(data.data));
+    }
+  }, [selectedRoleId]);
 
   useEffect(() => {
     if (pendingEdge) {
@@ -322,6 +337,7 @@ function Dashboard() {
       forStatus: edgeMode,
       forStepNumber: parseInt(pendingEdge.target),
       forRole: selectedRoleId,
+      ...(selectedUser && { forUser: selectedUser }),
       ...(selectedFieldId &&
         conditionOperator &&
         conditionValue && {
@@ -365,6 +381,7 @@ function Dashboard() {
     setSelectedFieldId("");
     setConditionOperator("");
     setConditionValue("");
+    setSelectedUser("");
     setFilteredFieldsForCondition([]);
   };
 
@@ -548,11 +565,13 @@ function Dashboard() {
                     getPopupContainer={(triggerNode) => triggerNode.parentNode}
                     dropdownStyle={{ zIndex: 9999 }}
                   >
-                    {steps.filter(step => step?.relatedForm?.id).map((step) => (
-                      <MultiSelect.Option key={step.order} value={step.order}>
-                        {`مرحله ${step.name} شامل ${step?.relatedForm?.id?.name}`}{" "}
-                      </MultiSelect.Option>
-                    ))}
+                    {steps
+                      .filter((step) => step?.relatedForm?.id)
+                      .map((step) => (
+                        <MultiSelect.Option key={step.order} value={step.order}>
+                          {`مرحله ${step.name} شامل ${step?.relatedForm?.id?.name}`}{" "}
+                        </MultiSelect.Option>
+                      ))}
                   </MultiSelect>
                 </div>
 
@@ -604,9 +623,33 @@ function Dashboard() {
                 </SelectTrigger>
 
                 <SelectContent>
-                  {roles.map((role) => (
+                  {roles?.map((role) => (
                     <SelectItem key={role.id} value={role.id}>
                       {role.name}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+
+            <div className="space-y-2">
+              <Label>کاربر</Label>
+
+              <Select
+                disabled={users.length === 0}
+                value={selectedUser}
+                onValueChange={setSelectedUser}
+              >
+                <SelectTrigger className="w-full">
+                  <SelectValue placeholder="انتخاب کاربر" />
+                </SelectTrigger>
+
+                <SelectContent>
+                  {/* <SelectItem disabled value='none'>موردی وجود ندارد</SelectItem> */}
+
+                  {users?.map((user) => (
+                    <SelectItem key={user.id} value={user.id}>
+                      {user.username}
                     </SelectItem>
                   ))}
                 </SelectContent>
