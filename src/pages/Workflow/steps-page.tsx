@@ -37,6 +37,11 @@ import { useParams } from "react-router-dom";
 import { BASE_BACKEND_URL } from "@/configs/axios.config";
 
 import { Select as SelectAnt } from "antd";
+import { SmartBezierEdge } from "@tisoap/react-flow-smart-edge";
+
+const edgeTypes = {
+  custom: SmartBezierEdge,
+};
 
 function Dashboard() {
   const [nodes, setNodes] = useState([]);
@@ -95,7 +100,7 @@ function Dashboard() {
     });
 
     edges.forEach((edge) => {
-      dagreGraph.setEdge(edge.source, edge.target);
+      dagreGraph.setEdge(edge.source, edge.target, { type: "custom" });
     });
 
     dagre.layout(dagreGraph);
@@ -114,7 +119,10 @@ function Dashboard() {
       };
     });
 
-    return { nodes: layoutedNodes, edges };
+    return {
+      nodes: layoutedNodes,
+      edges: edges.map((edg) => ({ ...edg, type: "custom" })),
+    };
   };
 
   const [users, setUsers] = useState([]);
@@ -366,7 +374,9 @@ function Dashboard() {
       body: JSON.stringify(updatedStep),
     });
 
-    setEdges((eds) => addEdge({ ...pendingEdge, label: edgeMode }, eds));
+    setEdges((eds) =>
+      addEdge({ ...pendingEdge, label: edgeMode, type: "custom" }, eds)
+    );
 
     setNodes((nds) =>
       nds.map((n) =>
@@ -399,6 +409,7 @@ function Dashboard() {
         fitView
         nodes={nodes}
         edges={edges}
+        edgeTypes={edgeTypes}
         onNodesChange={(changes) =>
           setNodes((nds) => applyNodeChanges(changes, nds))
         }
