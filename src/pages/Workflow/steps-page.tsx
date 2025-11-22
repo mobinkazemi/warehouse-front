@@ -37,11 +37,11 @@ import { useParams } from "react-router-dom";
 import { BASE_BACKEND_URL } from "@/configs/axios.config";
 
 import { Select as SelectAnt } from "antd";
-import { SmartBezierEdge } from "@tisoap/react-flow-smart-edge";
+// import { SmartBezierEdge } from "@tisoap/react-flow-smart-edge";
 
-const edgeTypes = {
-  custom: SmartBezierEdge,
-};
+// const edgeTypes = {
+//   custom: SmartBezierEdge,
+// };
 
 function Dashboard() {
   const [nodes, setNodes] = useState([]);
@@ -121,7 +121,7 @@ function Dashboard() {
 
     return {
       nodes: layoutedNodes,
-      edges: edges.map((edg) => ({ ...edg, type: "custom" })),
+      edges: edges.map((edg) => ({ ...edg })),
     };
   };
 
@@ -409,7 +409,7 @@ function Dashboard() {
         fitView
         nodes={nodes}
         edges={edges}
-        edgeTypes={edgeTypes}
+        // edgeTypes={edgeTypes}
         onNodesChange={(changes) =>
           setNodes((nds) => applyNodeChanges(changes, nds))
         }
