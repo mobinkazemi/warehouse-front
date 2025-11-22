@@ -23,7 +23,7 @@ const UpdateUserPage: React.FC = () => {
       fullName: values.fullName,
       email: values.email,
       phoneNumber: values.phoneNumber,
-      // roles: values.roles ? [values.roles] : undefined,
+      roles: values.roles ? [values.roles] : undefined,
     });
 
     if (response.result) {
