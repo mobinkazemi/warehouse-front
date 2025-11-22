@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Button, Card, Form, Input, InputNumber, Flex, Row, Col } from "antd";
-import { IRoute, setId } from "../../shared/backendRoutes";
+import { BACKEND_ROUTES, IRoute, setId } from "../../shared/backendRoutes";
 import apiClient from "../../configs/axios.config";
 import { ColorPalletEnum } from "../../shared/enums/colorPallet.enum";
 import { Rule } from "antd/es/form";
@@ -40,6 +40,16 @@ const UpdateForm: React.FC<IProps> = (data: IProps) => {
   useEffect(() => {
     form.setFieldsValue(initialData);
   }, [initialData]);
+
+  const { method: roleListMethod, url: roleListUrl } = BACKEND_ROUTES.role.list;
+
+  const [roles, setRoles] = useState();
+
+  useEffect(() => {
+    apiClient[roleListMethod](roleListUrl).then((response) => {
+      setRoles(response.data.data);
+    });
+  }, []);
 
   return (
     <Flex justify="center" align="center" style={{ marginTop: "50px" }}>
@@ -110,8 +120,33 @@ const UpdateForm: React.FC<IProps> = (data: IProps) => {
               </Row>
             ))}
 
+            <Row gutter={[16, 16]}>
+              <Col span={5} style={{ textAlign: "right" }}>
+                <label>{"نقش"}:</label>
+              </Col>
+              <Col span={19}>
+                <Form.Item name="starterRoles">
+                  <Select
+                    mode="multiple"
+                    allowClear
+                    style={{ width: "100%" }}
+                    // placeholder="نقش های شروع کننده را انتخاب کنید"
+                    onChange={(value) => {
+                      console.log(value);
+                    }}
+                    options={roles?.map((item) => {
+                      return {
+                        label: item.name,
+                        value: item.id,
+                      };
+                    })}
+                  />
+                </Form.Item>
+              </Col>
+            </Row>
+
             {/*  */}
-            {data.dropdownItems && data.dropdownData
+            {/* {data.dropdownItems && data.dropdownData
               ? data.dropdownItems.map((item, index) => {
                   return (
                     <Row key={index} gutter={[16, 16]}>
@@ -139,7 +174,7 @@ const UpdateForm: React.FC<IProps> = (data: IProps) => {
                     </Row>
                   );
                 })
-              : null}
+              : null} */}
             {/*  */}
 
             <Row>

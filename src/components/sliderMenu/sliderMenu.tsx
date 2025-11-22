@@ -27,9 +27,13 @@ if (localStorage.getItem(TOKEN_KEY_ENUM.ACCESS)) {
     case ProjectRole.Super_Admin:
       items = superAdminMenuItems;
       break;
+    case 'کارشناس فنی':
+      // items = technicalManagerMenuItems;
+      items = superAdminMenuItems;
+      break;
     case ProjectRole.Technical_Manager:
       // items = technicalManagerMenuItems;
-      items = othersMenuItems;
+      items = superAdminMenuItems;
       break;
     default:
       items = othersMenuItems;
